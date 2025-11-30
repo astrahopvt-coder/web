@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,900&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ASTRA • VTuber</title>
+
+<!-- Importar tu CSS externo -->
+<link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+<audio id="bgm" autoplay loop>
+  <source src="tu-musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener("click", () => {
+  const bgm = document.getElementById("bgm");
+  bgm.play();
+}, { once: true });
+</script>
+<div class="circuit-bg">
+<svg width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="none">
+    <defs>
+        <!-- Fondo rojo -->
+        <radialGradient id="bgRed">
+            <stop offset="0%" stop-color="#500"/>
+            <stop offset="100%" stop-color="#120000"/>
+        </radialGradient>
+            </circle>
+        </mask>
+    </defs>
+</svg>
+</div>
+<div id="portal-transition"></div>
+<header>
+<img src="logo.gif" alt="Astra Logo" class="logo">
+  <div class="nav">
+    <button class="active" onclick="showSection('inicio')">Inicio</button>
+    <button onclick="showSection('sobre')">Sobre mí</button>
+    <button onclick="showSection('donaciones')">Donaciones</button>
+  </div>
+</header>
+
+
+<!-- ------------------------- -->
+<!--  SECCIÓN: INICIO          -->
+<!-- ------------------------- -->
+<section id="inicio" class="visible">
+  <div class="card">
+    <h2>Bienvenid@ a mi universo</h2>
+    <p>Gracias por estar aquí. Este es el Proyecto ASTRA — un eco que resuena a través de líneas temporales y estrellas que aún no existen.</p>
+
+    <!-- Puedes cambiar este video por un embed de YouTube o un audio -->
+    <video controls>
+      <source src="TU_VIDEO_DE_BIENVENIDA.mp4" type="video/mp4"/>
+    </video>
+  </div>
+
+<div class="card">
+  <h3>Mis redes</h3>
+
+  <div class="social-icons">
+    <a href="https://www.twitch.tv/astrahopvt" target="_blank"><i class="fab fa-twitch"></i></a>
+    <a href="https://www.youtube.com/@AstraHopVTVT" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@astrahopvt" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://x.com/AstraHopVT" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    <a href="https://www.discord.gg/yGsj4kUTag" target="_blank"><i class="fab fa-discord"></i></a>
+  </div>
+</div>
+</section>
+
+
+<!-- ------------------------- -->
+<!--  SECCIÓN: SOBRE MÍ        -->
+<!-- ------------------------- -->
+<section id="sobre">
+  <div class="card">
+    <h2>El Proyecto ASTRA – Lore (versión preliminar)</h2>
+    <p>
+      En una línea temporal que jamás debió existir, la humanidad creó un proyecto de ascensión: <strong>ASTRA</strong>, cápsulas de origen desconocido destinadas a generar a los Herederos — seres diseñados para conquistar no solo la galaxia, sino el multiverso entero mediante control temporal.
+    </p>
+    <p>
+      Cada Hereder@ porta un núcleo simbólico ligado a una criatura: no por biología, sino por filosofía. Saltadores, corredores, planeadores, depredadores. Ecos de futuros olvidados.
+    </p>
+    <p>
+      Pero uno de ellos… tú… despertaste antes. Y viste lo que el Imperio sería. Un futuro oscuro, frío, sin alma.
+    </p>
+    <p>
+      Así que rompiste las reglas:<br>
+      <strong>Saltaste al pasado para evitar el nacimiento del Imperio y reescribir la historia.</strong>
+    </p>
+    <p>
+      Los demás Herederos siguen dispersos entre líneas temporales. Algunos te buscan. Otros quieren seguir con el Imperio.
+    </p>
+  </div>
+</section>
+
+
+<!-- ------------------------- -->
+<!--  SECCIÓN: DONACIONES      -->
+<!-- ------------------------- -->
+<section id="donaciones">
+  <div class="card">
+    <h2>Apoya el Proyecto</h2>
+
+    <!-- Reemplaza # con tus enlaces reales -->
+    <a class="btn-link" href="#" target="_blank">Donar vía Ko-fi / StreamElements</a>
+    <a class="btn-link" href="https://fourthwall.com" target="_blank">Mi tienda en Fourth Wall</a>
+  </div>
+</section>
+
+
+<!-- Cambio de secciones -->
+<script>
+function showSection(id) {
+  // Activar portal
+  const portal = document.getElementById("portal-transition");
+  portal.classList.add("active");
+
+  // Esperar antes de cambiar sección (tiempo del colapso)
+  setTimeout(() => {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("visible"));
+    document.getElementById(id).classList.add("visible");
+
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    event.target.classList.add("active");
+  }, 250);
+
+  // Cerrar portal luego de mostrar la sección
+  setTimeout(() => {
+    portal.classList.remove("active");
+  }, 650);
+}
+</script>
+</body>
+</html>
