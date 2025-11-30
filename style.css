@@ -272,6 +272,9 @@ a, nav a,
   min-height: 600px; /* ajusta según cuántos productos tengas */
   border: none;
 }
+#fw-collection {
+  min-height: 700px;  /* fuerza espacio para el embed */
+}
 
 
 
