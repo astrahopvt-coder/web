@@ -101,32 +101,33 @@ document.addEventListener("click", () => {
   </div>
 </section>
 
-
 <!-- ------------------------- -->
 <!--  SECCIÓN: DONACIONES      -->
 <!-- ------------------------- -->
 <section id="donaciones">
+  <!-- Card principal con botones de apoyo -->
   <div class="card">
     <h2>Apoya el Proyecto</h2>
 
-    <!-- Reemplaza # con tus enlaces reales -->
     <a class="btn-link" href="#" target="_blank">Donar vía Ko-fi / StreamElements</a>
     <a class="btn-link" href="https://fourthwall.com" target="_blank">Mi tienda en Fourth Wall</a>
   </div>
-  <div class="card">
-  <h3>Mi tienda oficial</h3>
 
-  <div id="fw-collection"></div>
-<!-- Embed Fourthwall limpio -->
-<div id="fw-collection-wrapper" style="width:100%; max-width:1000px; margin:0 auto;">
-  <div id="fw-collection"></div>
-  <script 
-    src="https://widgets.fourthwall.com/widgets/collection.js"
-    data-store-url="https://astrahopvt-shop.fourthwall.com"
-    data-collection="all"
-    data-theme="dark">
-  </script>
-</div>
+  <!-- Card limpia para embed de Fourthwall -->
+  <div id="fw-collection-wrapper" class="card">
+    <h3>Mi tienda oficial</h3>
+
+    <!-- Contenedor del widget -->
+    <div id="fw-collection"></div>
+
+    <script 
+      src="https://widgets.fourthwall.com/widgets/collection.js"
+      data-store-url="https://astrahopvt-shop.fourthwall.com"
+      data-collection="all"
+      data-theme="dark">
+    </script>
+  </div>
+</section>
 
 
 </section>
@@ -156,6 +157,7 @@ function showSection(id) {
 </script>
 </body>
 </html>
+
 
 
 
