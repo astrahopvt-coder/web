@@ -260,6 +260,19 @@ a, nav a,
     height: 100%;
     display: block;
 }
+/* Estilos para el embed de Fourthwall */
+#fw-collection {
+  width: 100%;
+  max-width: 900px;   /* igual que tus cards */
+  margin: 0 auto;
+}
+
+#fw-collection iframe {
+  width: 100% !important;
+  min-height: 600px; /* ajusta según cuántos productos tengas */
+  border: none;
+}
+
 
 
 
