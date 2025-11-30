@@ -42,6 +42,7 @@ document.addEventListener("click", () => {
     <button class="active" onclick="showSection('inicio')">Inicio</button>
     <button onclick="showSection('sobre')">Sobre mí</button>
     <button onclick="showSection('donaciones')">Donaciones</button>
+    <button onclick="window.open('shop.astrahopvt.online', '_blank')">Tienda</button>
   </div>
 </header>
 
@@ -112,21 +113,6 @@ document.addEventListener("click", () => {
     <a class="btn-link" href="#" target="_blank">Donar vía Ko-fi / StreamElements</a>
     <a class="btn-link" href="https://fourthwall.com" target="_blank">Mi tienda en Fourth Wall</a>
   </div>
-
-  <!-- Card limpia para embed de Fourthwall -->
-  <div id="fw-collection-wrapper" class="card">
-    <h3>Mi tienda oficial</h3>
-
-    <!-- Contenedor del widget -->
-    <div id="fw-collection"></div>
-
-    <script 
-      src="https://widgets.fourthwall.com/widgets/collection.js"
-      data-store-url="https://astrahopvt-shop.fourthwall.com"
-      data-collection="all"
-      data-theme="dark">
-    </script>
-  </div>
 </section>
 
 
@@ -157,6 +143,7 @@ function showSection(id) {
 </script>
 </body>
 </html>
+
 
 
 
