@@ -29,8 +29,11 @@ body {
 /* CABECERA Y MENÚ               */
 /* ----------------------------- */
 header {
+  display: flex;
+  flex-direction: column; /* logo arriba, nav abajo */
+  align-items: center;    /* centra horizontalmente */
   padding: 20px;
-  text-align: center;
+  gap: 15px;              /* espacio entre logo y nav */
 }
 
 h1 {
@@ -260,6 +263,7 @@ a, nav a,
     height: 100%;
     display: block;
 }
+
 
 
 
