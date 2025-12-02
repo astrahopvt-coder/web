@@ -289,6 +289,19 @@ a, nav a,
 .galeria img:hover {
   transform: scale(1.05);
 }
+/* --- TARJETA ESPECIAL SOLO PARA KO-FI --- */
+.kofi-card {
+  background: #ffffff !important;
+  border: 1px solid #ffffffaa !important;
+  color: #300 !important;
+  box-shadow: 0 0 15px rgba(255,180,80,0.5);
+}
+
+.kofi-card h2 {
+  color: #400;
+  text-shadow: none;
+}
+
 
 
 
