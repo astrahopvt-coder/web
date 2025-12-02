@@ -19,7 +19,22 @@
 <audio id="bgm" autoplay loop>
   <source src="tu-musica.mp3" type="audio/mpeg">
 </audio>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const defaultAvatar = "donador/default.png";
 
+  document.querySelectorAll(".donador-avatar").forEach(img => {
+    const name = img.dataset.avatar;
+    const customURL = `donador/${name}.png`;
+
+    fetch(customURL, { method: "HEAD" })
+      .then(res => {
+        img.src = res.ok ? customURL : defaultAvatar;
+      })
+      .catch(() => img.src = defaultAvatar);
+  });
+});
+</script>
 <script>
 document.addEventListener("click", () => {
   const bgm = document.getElementById("bgm");
@@ -163,6 +178,48 @@ document.addEventListener("click", () => {
 </section>
   
 <section id="patrocinadores">
+  <div class="card donadores-carrusel">
+    <h2>💛 Astros Leyenda — Gracias por su apoyo</h2>
+    <div class="carrusel-wrapper">
+      <div class="carrusel">
+        <div class="donador-slide"><img data-avatar="DarkFoxVT" class="donador-avatar"><div class="donador-name">DarkFoxVT</div></div>
+        <div class="donador-slide"><img data-avatar="MAX ASURA" class="donador-avatar"><div class="donador-name">[MAX ASURA]</div></div>
+        <div class="donador-slide"><img data-avatar="Gødsito_fun 2.0" class="donador-avatar"><div class="donador-name">✞♦‼Gødsito_fun‼♦✞ 2.0</div></div>
+        <div class="donador-slide"><img data-avatar="Ainz A9525 MX" class="donador-avatar"><div class="donador-name">▼ Ainz ⚔ A9525 MX ⚔</div></div>
+        <div class="donador-slide"><img data-avatar="badass el Ciego-man" class="donador-avatar"><div class="donador-name">badass el Ciego-man</div></div>
+        <div class="donador-slide"><img data-avatar="CoronelJ_D" class="donador-avatar"><div class="donador-name">CoronelJ_D 🗡</div></div>
+        <div class="donador-slide"><img data-avatar="Eldeyxd" class="donador-avatar"><div class="donador-name">Eldeyxd</div></div>
+        <div class="donador-slide"><img data-avatar="Galex Marloz" class="donador-avatar"><div class="donador-name">Galex Marloz</div></div>
+        <div class="donador-slide"><img data-avatar="Golem Cuyano" class="donador-avatar"><div class="donador-name">Golem Cuyano</div></div>
+        <div class="donador-slide"><img data-avatar="Hover" class="donador-avatar"><div class="donador-name">Hover</div></div>
+        <div class="donador-slide"><img data-avatar="Ikuoro" class="donador-avatar"><div class="donador-name">Ikuoro</div></div>
+        <div class="donador-slide"><img data-avatar="lav_playy" class="donador-avatar"><div class="donador-name">lav_playy</div></div>
+        <div class="donador-slide"><img data-avatar="Lerna_vt" class="donador-avatar"><div class="donador-name">Lerna_vt</div></div>
+        <div class="donador-slide"><img data-avatar="Lirith" class="donador-avatar"><div class="donador-name">Lirith | Busco editor/clipero</div></div>
+        <div class="donador-slide"><img data-avatar="Lucifer0236p" class="donador-avatar"><div class="donador-name">Lucifer0236p</div></div>
+        <div class="donador-slide"><img data-avatar="Mahito_XD" class="donador-avatar"><div class="donador-name">Mahito_XD</div></div>
+        <div class="donador-slide"><img data-avatar="MatiGrowl" class="donador-avatar"><div class="donador-name">MatiGrowl</div></div>
+        <div class="donador-slide"><img data-avatar="MeilyVT" class="donador-avatar"><div class="donador-name">MeilyVT 🌙</div></div>
+        <div class="donador-slide"><img data-avatar="MIKUECANON" class="donador-avatar"><div class="donador-name">MIKUECANON</div></div>
+        <div class="donador-slide"><img data-avatar="Nando564ewrw" class="donador-avatar"><div class="donador-name">Nando564ewrw</div></div>
+        <div class="donador-slide"><img data-avatar="Natsuru_vt" class="donador-avatar"><div class="donador-name">Natsuru_vt</div></div>
+        <div class="donador-slide"><img data-avatar="NicoZZ" class="donador-avatar"><div class="donador-name">NicoZZ 🖤💙</div></div>
+        <div class="donador-slide"><img data-avatar="Nox" class="donador-avatar"><div class="donador-name">Nox</div></div>
+        <div class="donador-slide"><img data-avatar="PrekumGaming" class="donador-avatar"><div class="donador-name">PrekumGaming</div></div>
+        <div class="donador-slide"><img data-avatar="Robotin" class="donador-avatar"><div class="donador-name">Robotin</div></div>
+        <div class="donador-slide"><img data-avatar="Robrod" class="donador-avatar"><div class="donador-name">Robrod</div></div>
+        <div class="donador-slide"><img data-avatar="StarNight" class="donador-avatar"><div class="donador-name">Star☆Night</div></div>
+        <div class="donador-slide"><img data-avatar="TheNinja" class="donador-avatar"><div class="donador-name">TheNinja</div></div>
+        <div class="donador-slide"><img data-avatar="Tortuga AsesinaDioses" class="donador-avatar"><div class="donador-name">Tortuga AsesinaDioses</div></div>
+
+        <!-- LOS QUE QUEDAN IGUAL -->
+        <div class="donador-slide"><img data-avatar="yuto_neta" class="donador-avatar"><div class="donador-name">yuto_neta</div></div>
+        <div class="donador-slide"><img data-avatar="xfroxedeg" class="donador-avatar"><div class="donador-name">xfroxedeg</div></div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <h2>Patrocinadores del Proyecto</h2>
     <p>Organizaciones que apoyan la misión a través del espacio-tiempo.</p>
@@ -255,6 +312,7 @@ function showSection(id) {
 </script>
 </body>
 </html>
+
 
 
 
