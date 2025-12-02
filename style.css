@@ -792,6 +792,28 @@ table tr:hover {
         width: 90%;
     }
 }
+.astra-model-image {
+    width: 300px; 
+    height: auto;
+    border-radius: 12px;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 15px var(--accent2);
+    
+    /* Esta es la clave para que el texto la rodee */
+    float: right; 
+    /* Deja un margen de 25px a la izquierda para que el texto no se pegue */
+    margin: 0 0 15px 25px; 
+}
+
+/* Y esto es para que se centre en móviles */
+@media (max-width: 768px) {
+    .astra-model-image {
+        float: none; 
+        display: block;
+        width: 80%;
+        margin: 15px auto 25px auto;
+    }
+}
 
 
 
