@@ -313,6 +313,25 @@ a, nav a,
   color: var(--accent2);
   box-shadow: 0 0 12px rgba(255,185,90,0.4);
 }
+.stream-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: var(--glow);
+}
+
+.stream-container iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+
 
 
 
