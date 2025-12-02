@@ -33,7 +33,6 @@ body {
   0% { filter: brightness(0.6) saturate(0.9); }
   100% { filter: brightness(1.2) saturate(1.1); }
 }
-}
 
 /* ----------------------------- */
 /* CABECERA Y MENÚ               */
@@ -369,6 +368,7 @@ body, section, p, h1, h2, h3, h4, h5, h6 {
 *, body {
   font-family: "Inter Tight", sans-serif !important;
 }
+
 
 
 
