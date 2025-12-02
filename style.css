@@ -13,13 +13,14 @@
 }
 
 /* === FONDO ANIMADO ONDULADO SUAVE === */
+/* === FONDO ANIMADO ROJO → DORADO === */
 body {
   margin: 0;
   background: linear-gradient(
     135deg,
-    #050005 0%,      /* casi negro */
-    #32002c 25%,     /* púrpura oscuro */
-    #8a0018 55%,     /* rojo profundo predominante */
+    #4a0000 0%,      /* rojo extremadamente oscuro */
+    #7a0000 35%,     /* rojo profundo */
+    #b8000a 65%,     /* rojo intenso predominante */
     #ffb45a 100%     /* dorado suave */
   );
   background-size: 250% 250%;
@@ -371,6 +372,7 @@ body, section, p, h1, h2, h3, h4, h5, h6 {
 *, body {
   font-family: "Inter Tight", sans-serif !important;
 }
+
 
 
 
