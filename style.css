@@ -446,6 +446,127 @@ body, p, a, li, button, input, textarea, select, span, div {
   line-height: 1.2;
   word-wrap: break-word;
 }
+/* ============================== */
+/*   OPTIMIZACIÓN MÓVILES 768px   */
+/* ============================== */
+@media (max-width: 768px) {
+
+  /* Fondo animado más suave */
+  body {
+    background-size: 200% 200%;
+    animation-duration: 26s;
+  }
+
+  /* Logo más pequeño */
+  .logo {
+    width: 260px;
+    margin-top: 5px;
+  }
+
+  /* Menú adaptado a dos filas */
+  .nav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav button {
+    font-size: 1.2rem !important;
+    padding: 8px 16px;
+  }
+
+  /* Secciones más compactas */
+  section {
+    padding: 25px;
+  }
+
+  /* Fanarts grid */
+  .galeria {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  /* Stream responsivo */
+  .stream-container {
+    padding-bottom: 60%;
+  }
+
+  /* Cards */
+  .card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  /* Carrusel */
+  .donador-slide {
+    min-width: 150px;
+    padding: 10px;
+  }
+
+  .donador-avatar {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* ============================== */
+/*   OPTIMIZACIÓN MÓVILES 480px   */
+/* ============================== */
+@media (max-width: 480px) {
+
+  /* Fondo aún más suave sin quitar animación */
+  body {
+    background-size: 240% 240%;
+    animation-duration: 32s;
+  }
+
+  /* Logo */
+  .logo {
+    width: 210px;
+  }
+
+  /* Menú más compacto */
+  .nav button {
+    font-size: 1rem !important;
+    padding: 6px 14px;
+  }
+
+  /* Texto general */
+  p, li {
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  h2, h3 {
+    font-size: 1.4rem;
+  }
+
+  /* Carrusel más compacto */
+  .donador-slide {
+    min-width: 130px;
+    padding: 8px;
+  }
+
+  .donador-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Galería fanarts */
+  .galeria {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  /* Stream */
+  .stream-container {
+    padding-bottom: 68%;
+  }
+
+  /* Menos padding en secciones */
+  section {
+    padding: 18px;
+  }
+}
+
 
 
 
