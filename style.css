@@ -263,6 +263,17 @@ a, nav a,
     height: 100%;
     display: block;
 }
+.lista-patro li,
+.lista-aportadores li {
+  margin: 5px 0;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  list-style: none;
+  text-shadow: none;
+  font-weight: bold;
+}
+
 
 
 
