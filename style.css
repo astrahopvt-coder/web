@@ -365,6 +365,13 @@ a, nav a,
   display: block;
   background: #111;
 }
+body, section, p, h1, h2, h3, h4, h5, h6 {
+  color: var(--text) !important;
+}
+*, body {
+  font-family: "Inter Tight", sans-serif !important;
+}
+
 
 
 
