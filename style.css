@@ -11,21 +11,18 @@
   --text: #fff8e8;
   --glow: 0 0 12px rgba(255,170,80,0.6);
 }
-
-/* === FONDO ANIMADO ONDULADO SUAVE === */
-/* === FONDO ANIMADO ROJO → DORADO === */
 body {
   margin: 0;
   background: linear-gradient(
     135deg,
-    #4a0000 0%,      /* rojo extremadamente oscuro */
-    #7a0000 35%,     /* rojo profundo */
-    #b8000a 65%,     /* rojo intenso predominante */
-    #ffb45a 100%     /* dorado suave */
+    #7d141b 0%,     /* rojo oscuro elegante */
+    #b72a2f 55%,    /* rojo cálido vibrante */
+    #ffb922 100%    /* dorado brillante */
   );
   background-size: 250% 250%;
   animation: ondaSuave 18s ease-in-out infinite;
 }
+
 @keyframes ondaSuave {
   0%   { background-position: 50% 0%; }
   50%  { background-position: 50% 100%; }
@@ -372,6 +369,7 @@ body, section, p, h1, h2, h3, h4, h5, h6 {
 *, body {
   font-family: "Inter Tight", sans-serif !important;
 }
+
 
 
 
