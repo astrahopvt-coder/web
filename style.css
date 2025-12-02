@@ -654,6 +654,144 @@ footer {
         padding: 20px 10px;
     }
 }
+/* ----------------------------- */
+/* SECCIÓN DONACIONES (FILOSOFÍA)*/
+/* ----------------------------- */
+
+/* Estilo para la tarjeta de filosofía de apoyo */
+.support-philosophy-card {
+    border: 2px solid var(--accent); 
+    box-shadow: var(--glow);
+    animation: pulseGlow 4s infinite alternate; 
+}
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 10px rgba(255, 180, 90, 0.6); }
+    100% { box-shadow: 0 0 20px rgba(255, 180, 90, 1.0); }
+}
+
+/* ----------------------------- */
+/* BOTONES DE APOYO Y GRIDS      */
+/* ----------------------------- */
+
+/* Estilos para el botón principal de suscripción */
+.main-support-button {
+    display: block;
+    width: 80%;
+    margin: 30px auto 10px;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #400; /* Texto oscuro sobre el fondo dorado */
+    border: none;
+    box-shadow: 0 0 20px rgba(255, 180, 90, 0.9); /* Resplandor intenso */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-support-button:hover {
+    transform: scale(1.02);
+    background: var(--accent2);
+    box-shadow: 0 0 30px rgba(255, 180, 90, 1.0); 
+}
+
+/* Diseño de cuadrícula para los beneficios de Sub */
+.beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px dashed rgba(255, 180, 90, 0.3);
+    border-radius: 10px;
+}
+
+.beneficios-grid div {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--accent);
+    border-radius: 5px;
+}
+
+.beneficios-grid h3 {
+    color: var(--accent);
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+/* Estilos para Tablas (Bits) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: rgba(0, 0, 0, 0.4); 
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 5px var(--accent);
+}
+
+table thead tr {
+    background-color: rgba(255, 180, 90, 0.2); 
+}
+
+table th, table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+table th {
+  color: var(--accent2);
+  font-weight: bold;
+}
+
+table tr:hover {
+  background-color: rgba(255, 180, 90, 0.05);
+}
+
+/* BOTÓN STREAMLOOTS */
+.streamloots-button {
+    display: block;
+    width: 70%;
+    margin: 25px auto 10px;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    background: #5021a8; /* Púrpura */
+    color: #fff; 
+    border: 2px solid #a07eff;
+    box-shadow: 0 0 15px #a07eff; 
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.streamloots-button:hover {
+    transform: translateY(-2px); 
+    background: #6c35c4;
+    box-shadow: 0 0 25px #a07eff;
+}
+
+/* Ajuste Móvil */
+@media (max-width: 600px) {
+    .main-support-button {
+        width: 100%;
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
+    .beneficios-grid {
+        grid-template-columns: 1fr; 
+        gap: 15px;
+    }
+    .streamloots-button {
+        width: 90%;
+    }
+}
 
 
 
