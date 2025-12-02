@@ -142,7 +142,7 @@ video, audio {
   pointer-events: none;
   transform: scale(0);
   opacity: 0;
-  transition: transform 0.6s ease, opacity 0.4s ease;
+  transition: transform 0.3s ease, opacity 0.2s ease;
   z-index: 9999;
   border-radius: 50%;
   backdrop-filter: blur(4px);
@@ -313,6 +313,7 @@ a, nav a,
   color: var(--accent2);
   box-shadow: 0 0 12px rgba(255,185,90,0.4);
 }
+
 
 
 
