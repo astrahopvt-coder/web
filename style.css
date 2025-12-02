@@ -493,6 +493,8 @@ body, p, a, li, button, input, textarea, select, span, div {
     font-size: 12px; 
         /* Reduce el margen */
     margin: 5px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   /* Cards */
   .card {
@@ -521,6 +523,8 @@ body, p, a, li, button, input, textarea, select, span, div {
     font-size: 8px; 
         /* Reduce el margen */
     margin: 5px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   /* Fondo aún más suave sin quitar animación */
   body {
@@ -576,6 +580,7 @@ body, p, a, li, button, input, textarea, select, span, div {
     padding: 18px;
   }
 }
+
 
 
 
