@@ -2,13 +2,16 @@
 /* PALETA Y ESTILO GENERAL       */
 /* ----------------------------- */
 :root {
-  --bg1: #b31217;
-  --bg2: #cf3e18;
+  --bg1: #050005;      /* negro profundo con leve púrpura */
+  --bg2: #300028;      /* púrpura suave */
+  --bg3: #6a0010;      /* rojo oscuro elegante */
+  --bg4: #ffc56a;      /* dorado cálido */
   --accent: #ffb45a;
   --accent2: #ffe3b5;
   --text: #fff8e8;
   --glow: 0 0 12px rgba(255,170,80,0.6);
 }
+
 /* === FONDO ANIMADO ONDULADO SUAVE === */
 body {
   margin: 0;
@@ -363,6 +366,7 @@ a, nav a,
   display: block;
   background: #111;
 }
+
 
 
 
