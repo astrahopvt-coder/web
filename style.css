@@ -490,7 +490,7 @@ body, p, a, li, button, input, textarea, select, span, div {
   }
   .social-icons a {
         /* Reduce el tamaño del ícono a 1.5 veces el tamaño de fuente base */
-    font-size: 1.5em; 
+    font-size: 12px; 
         /* Reduce el margen */
     margin: 5px;
   }
@@ -518,7 +518,7 @@ body, p, a, li, button, input, textarea, select, span, div {
 @media (max-width: 480px) {
   .social-icons a {
         /* Reduce el tamaño del ícono a 1.5 veces el tamaño de fuente base */
-    font-size: 1em; 
+    font-size: 8px; 
         /* Reduce el margen */
     margin: 5px;
   }
@@ -576,6 +576,7 @@ body, p, a, li, button, input, textarea, select, span, div {
     padding: 18px;
   }
 }
+
 
 
 
