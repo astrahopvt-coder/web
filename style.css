@@ -301,6 +301,19 @@ a, nav a,
   color: #400;
   text-shadow: none;
 }
+.afiliados-aviso {
+  margin: 15px 0 25px 0;
+  padding: 12px 18px;
+  background: rgba(255, 200, 120, 0.15);
+  border: 1px solid rgba(255,200,120,0.4);
+  border-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--accent2);
+  box-shadow: 0 0 12px rgba(255,185,90,0.4);
+}
+
 
 
 
