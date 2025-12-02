@@ -273,6 +273,23 @@ a, nav a,
   text-shadow: none;
   font-weight: bold;
 }
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.galeria img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: var(--glow);
+  transition: 0.3s;
+}
+
+.galeria img:hover {
+  transform: scale(1.05);
+}
+
 
 
 
