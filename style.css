@@ -364,7 +364,9 @@ a, nav a,
 }
 body, p, a, li, button, input, textarea, select, span, div {
     font-family: "Inter Tight", sans-serif;
+    color: var(--text) !important;
 }
+
 
 
 
