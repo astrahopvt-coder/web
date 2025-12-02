@@ -362,11 +362,11 @@ a, nav a,
   display: block;
   background: #111;
 }
-body, section, p, h1, h2, h3, h4, h5, h6 {
-  color: var(--text) !important;
-html, body, button, input, textarea, select {
-  font-family: "Inter Tight", sans-serif;
+body, p, a, li, button, input, textarea, select, span, div {
+    font-family: "Inter Tight", sans-serif;
 }
+
+
 
 
 
