@@ -126,6 +126,29 @@ document.addEventListener("click", () => {
     </ul>
   </div>
 </section>
+<!-- ------------------------- -->
+<!--  SECCIÓN: FANARTS         -->
+<!-- ------------------------- -->
+<section id="fanart">
+  <div class="card">
+    <h2>Galería de Fanarts</h2>
+    <p>Gracias por cada obra creada. ¡Eres parte del proyecto!</p>
+
+    <div id="fanart-gallery" class="galeria"></div>
+  </div>
+</section>
+
+<script>
+// AUTOCARGA DE IMÁGENES DE LA CARPETA /fanarts/
+const totalImgs = 50; // puedes aumentar este número
+const gallery = document.getElementById("fanart-gallery");
+
+for (let i = 1; i <= totalImgs; i++) {
+  const img = new Image();
+  img.src = `fanarts/${i}.png`; // puedes usar .jpg si quieres
+  img.onload = () => gallery.appendChild(img);
+}
+</script>
 
 <!-- ------------------------- -->
 <!--  SECCIÓN: DONACIONES      -->
@@ -166,6 +189,7 @@ function showSection(id) {
 </script>
 </body>
 </html>
+
 
 
 
