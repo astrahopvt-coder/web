@@ -591,6 +591,69 @@ body, p, a, li, button, input, textarea, select, span, div {
     padding: 18px;
   }
 }
+/* ----------------------------- */
+/* PIE DE PÁGINA (FOOTER)        */
+/* ----------------------------- */
+
+footer {
+  margin-top: 50px;
+  padding: 30px 20px;
+  /* Fondo transparente con un ligero desenfoque para mantener la estética */
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los enlaces se apilen en móvil */
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.footer-links a {
+  /* Usar el mismo estilo dorado/texto que el resto de la página */
+  color: var(--accent2) !important; 
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+  /* Usamos un text-shadow más sutil para el footer */
+  text-shadow: 0 0 5px rgba(255, 200, 120, 0.6); 
+}
+
+.footer-links a:hover {
+  color: var(--accent) !important;
+  text-decoration: underline;
+}
+
+.copyright {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 15px;
+  display: block; /* Para que ocupe su propia línea */
+}
+
+
+/* --- Optimización Móvil (480px) --- */
+
+@media (max-width: 480px) {
+    .footer-links {
+        flex-direction: column; /* Apila los enlaces verticalmente */
+        gap: 10px;
+    }
+    .footer-links a,
+    .copyright {
+        font-size: 0.8rem;
+    }
+    footer {
+        padding: 20px 10px;
+    }
+}
 
 
 
