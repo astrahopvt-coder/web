@@ -488,7 +488,12 @@ body, p, a, li, button, input, textarea, select, span, div {
   .stream-container {
     padding-bottom: 60%;
   }
-
+  .social-icons a {
+        /* Reduce el tamaño del ícono a 1.5 veces el tamaño de fuente base */
+    font-size: 1.5em; 
+        /* Reduce el margen */
+    margin: 5px;
+  }
   /* Cards */
   .card {
     padding: 18px;
@@ -511,7 +516,12 @@ body, p, a, li, button, input, textarea, select, span, div {
 /*   OPTIMIZACIÓN MÓVILES 480px   */
 /* ============================== */
 @media (max-width: 480px) {
-
+  .social-icons a {
+        /* Reduce el tamaño del ícono a 1.5 veces el tamaño de fuente base */
+    font-size: 1em; 
+        /* Reduce el margen */
+    margin: 5px;
+  }
   /* Fondo aún más suave sin quitar animación */
   body {
     background-size: 240% 240%;
@@ -566,6 +576,7 @@ body, p, a, li, button, input, textarea, select, span, div {
     padding: 18px;
   }
 }
+
 
 
 
