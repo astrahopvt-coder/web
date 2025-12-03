@@ -397,12 +397,12 @@ body, p, a, li, button, input, textarea, select, span, div {
   display: flex;
   gap: 28px;
   padding: 10px 0;
-  animation: carruselScroll 40s linear infinite;   /* 90 segundos = muy suave con 31 nombres */
+  animation: carruselScroll 60s linear infinite;   /* 90 segundos = muy suave con 31 nombres */
 }
 
 @keyframes carruselScroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-400%); }   /* -100% porque NO duplicamos (pero ahora sí llega) */
+  100% { transform: translateX(-700%); }   /* -100% porque NO duplicamos (pero ahora sí llega) */
 }
 
 /* Pausa al pasar el ratón */
@@ -826,6 +826,7 @@ table tr:hover {
   overflow: hidden;               /* Este sí lo mantiene (el que recorta el movimiento) */
   border-radius: 16px;            /* Opcional: para que el fade de bordes quede bonito */
 }
+
 
 
 
