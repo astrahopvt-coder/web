@@ -366,14 +366,17 @@ body, p, a, li, button, input, textarea, select, span, div {
     font-family: "Inter Tight", sans-serif;
     color: var(--text) !important;
 }
-/* ======== TARJETA DEL CARRUSEL ======== */
 .donadores-carrusel {
-  text-align: center;
-  padding: 25px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 20px;
+  box-shadow: var(--glow);
   margin-bottom: 35px;
+  padding: 25px 20px 35px;           /* padding normal */
+  overflow: visible !important;      /* ya no lo corta nadie */
+  position: relative;                /* importante para el wrapper */
+  backdrop-filter: none !important;  /* ¡¡QUITAMOS EL BLUR DE LA TARJETA!! */
 }
-
 .donadores-carrusel h2 {
   font-size: 1.8rem;
   margin-bottom: 20px;
@@ -385,20 +388,21 @@ body, p, a, li, button, input, textarea, select, span, div {
 /* ===== CARRUSEL 100 % FUNCIONAL ===== */
 .carrusel-wrapper {
   width: 100%;
-  padding: 10px 0;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-top: 20px;
 }
 
 .carrusel {
   display: flex;
-  gap: 25px;
-  /* ¡¡LO ÚNICO QUE IMPORTA!! */
-  animation: carruselScroll 35s linear infinite;
-  /* Quita cualquier padding-left o margin que tengas aquí */
+  gap: 28px;
+  padding: 10px 0;
+  animation: carruselScroll 30s linear infinite;   /* 90 segundos = muy suave con 31 nombres */
 }
 
 @keyframes carruselScroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-100%)); }  /* calc(-100%) es más preciso que -100% */
+  100% { transform: translateX(-200%); }   /* -100% porque NO duplicamos (pero ahora sí llega) */
 }
 
 /* Pausa al pasar el ratón */
@@ -822,6 +826,7 @@ table tr:hover {
   overflow: hidden;               /* Este sí lo mantiene (el que recorta el movimiento) */
   border-radius: 16px;            /* Opcional: para que el fade de bordes quede bonito */
 }
+
 
 
 
