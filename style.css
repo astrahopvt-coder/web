@@ -400,7 +400,7 @@ body, p, a, li, button, input, textarea, select, span, div {
 /* Esto es un ejemplo, ajusta el valor actual de '50s' en tu archivo */
 @keyframes carruselScroll {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-150%); } /* O -100% */
+  100% { transform: translateX(-50%); } /* O -100% */
 }
 
 /* Si deseas que pare al pasar el mouse */
@@ -815,6 +815,7 @@ table tr:hover {
         margin: 15px auto 25px auto;
     }
 }
+
 
 
 
