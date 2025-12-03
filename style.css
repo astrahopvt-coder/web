@@ -382,28 +382,29 @@ body, p, a, li, button, input, textarea, select, span, div {
 }
 
 /* ======== CARRUSEL CONTENEDOR ======== */
+/* ===== CARRUSEL 100 % FUNCIONAL ===== */
 .carrusel-wrapper {
   width: 100%;
   overflow: hidden;
-  position: relative;
-  padding: 0px 0;
+  padding: 10px 0;
+  /* Opcional: fade en los bordes para que quede más bonito */
+  mask-image: linear-gradient(90deg, transparent, white 5%, white 95%, transparent);
 }
 
 .carrusel {
   display: flex;
   gap: 25px;
-  animation: carruselScroll 25s linear infinite;
-  padding: 10px;
+  /* ¡¡LO ÚNICO QUE IMPORTA!! */
+  animation: carruselScroll 35s linear infinite;
+  /* Quita cualquier padding-left o margin que tengas aquí */
 }
 
-/* Animación de desplazamiento */
-/* Esto es un ejemplo, ajusta el valor actual de '50s' en tu archivo */
 @keyframes carruselScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); } /* O -100% */
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-100%)); }  /* calc(-100%) es más preciso que -100% */
 }
 
-/* Si deseas que pare al pasar el mouse */
+/* Pausa al pasar el ratón */
 .carrusel-wrapper:hover .carrusel {
   animation-play-state: paused;
 }
@@ -815,6 +816,7 @@ table tr:hover {
         margin: 15px auto 25px auto;
     }
 }
+
 
 
 
