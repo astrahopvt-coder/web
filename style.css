@@ -398,7 +398,7 @@ body, p, a, li, button, input, textarea, select, span, div {
 
 /* Animación de desplazamiento */
 /* Esto es un ejemplo, ajusta el valor actual de '50s' en tu archivo */
-@keyframes scroll-carrusel {
+@keyframes carruselScroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-150%); } /* O -100% */
 }
@@ -815,6 +815,7 @@ table tr:hover {
         margin: 15px auto 25px auto;
     }
 }
+
 
 
 
