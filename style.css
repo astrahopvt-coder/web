@@ -385,10 +385,7 @@ body, p, a, li, button, input, textarea, select, span, div {
 /* ===== CARRUSEL 100 % FUNCIONAL ===== */
 .carrusel-wrapper {
   width: 100%;
-  overflow: hidden;
   padding: 10px 0;
-  /* Opcional: fade en los bordes para que quede más bonito */
-  mask-image: linear-gradient(90deg, transparent, white 5%, white 95%, transparent);
 }
 
 .carrusel {
@@ -825,6 +822,7 @@ table tr:hover {
   overflow: hidden;               /* Este sí lo mantiene (el que recorta el movimiento) */
   border-radius: 16px;            /* Opcional: para que el fade de bordes quede bonito */
 }
+
 
 
 
