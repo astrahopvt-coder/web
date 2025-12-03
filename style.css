@@ -814,7 +814,16 @@ table tr:hover {
         display: block;
         width: 80%;
         margin: 15px auto 25px auto;
-    }
+}
+/* ¡¡SOLUCIÓN DEFINITIVA!! */
+.donadores-carrusel {
+  overflow: visible !important;   /* Permite que el carrusel se salga de la tarjeta */
+  padding-bottom: 30px;           /* Un poco de espacio extra abajo para que no se corte */
+}
+
+.carrusel-wrapper {
+  overflow: hidden;               /* Este sí lo mantiene (el que recorta el movimiento) */
+  border-radius: 16px;            /* Opcional: para que el fade de bordes quede bonito */
 }
 
 
