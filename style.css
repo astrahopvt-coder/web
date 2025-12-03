@@ -392,14 +392,15 @@ body, p, a, li, button, input, textarea, select, span, div {
 .carrusel {
   display: flex;
   gap: 25px;
-  animation: carruselScroll 28s linear infinite;
+  animation: carruselScroll 15s linear infinite;
   padding: 10px;
 }
 
 /* Animación de desplazamiento */
-@keyframes carruselScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+/* Esto es un ejemplo, ajusta el valor actual de '50s' en tu archivo */
+@keyframes scroll-carrusel {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* O -100% */
 }
 
 /* Si deseas que pare al pasar el mouse */
@@ -814,6 +815,7 @@ table tr:hover {
         margin: 15px auto 25px auto;
     }
 }
+
 
 
 
