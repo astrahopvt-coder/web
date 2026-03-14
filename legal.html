@@ -13,51 +13,82 @@
     /* Estilos específicos para la página legal */
     body {
         min-height: 100vh;
-        padding-top: 50px; /* Espacio superior para que el contenido no pegue */
+        padding-top: 50px;
+        background: linear-gradient(135deg, #ff6b7a 0%, #ff8fa3 40%, #ffb3c1 75%, #ffc8d4 100%);
     }
     .back-button {
       display: block;
       width: 150px;
       margin: 20px auto 40px;
       padding: 10px 20px;
-      background: var(--accent);
-      color: #400; /* color oscuro sobre el fondo brillante */
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      color: #7a1530;
+      border-radius: 25px;
       text-align: center;
       text-decoration: none;
-      font-weight: bold;
-      box-shadow: var(--glow);
-      transition: 0.2s;
+      font-weight: 900;
+      font-style: italic;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 15px rgba(255, 100, 130, 0.4);
+      transition: all 0.2s;
     }
     .back-button:hover {
         transform: scale(1.05);
+        background: rgba(255, 255, 255, 0.65);
     }
     /* Estilo para el botón de correo */
     .btn-link {
         padding: 10px 20px;
-        background: var(--accent);
-        color: #400 !important;
-        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.45);
+        color: #7a1530 !important;
+        border-radius: 25px;
         text-decoration: none;
-        font-weight: bold;
-        box-shadow: 0 0 10px rgba(255, 180, 90, 0.7);
-        transition: background 0.2s;
+        font-weight: 900;
+        font-style: italic;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 4px 15px rgba(255, 100, 130, 0.4);
+        transition: all 0.2s;
     }
     .btn-link:hover {
-        background: var(--accent2);
+        background: rgba(255, 255, 255, 0.7);
         text-decoration: none;
     }
   </style>
 </head>
 <body>
 <div class="circuit-bg">
-<svg width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="none">
-    <defs>
-        <radialGradient id="bgRed">
-            <stop offset="0%" stop-color="#500"/>
-            <stop offset="100%" stop-color="#120000"/>
-        </radialGradient>
-    </defs>
+<svg width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgPink" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#ffb3c1" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ff6b7a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bgGlow1" cx="20%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .heart-deco { animation: floatHeart 6s ease-in-out infinite alternate; }
+      .heart-deco2 { animation: floatHeart 9s ease-in-out infinite alternate-reverse; }
+      .sparkle { animation: sparkleAnim 4s ease-in-out infinite alternate; }
+      @keyframes floatHeart {
+        0%   { transform: translateY(0px) scale(1); opacity: 0.15; }
+        100% { transform: translateY(-20px) scale(1.05); opacity: 0.28; }
+      }
+      @keyframes sparkleAnim {
+        0%   { transform: scale(0.8) rotate(0deg); opacity: 0.2; }
+        100% { transform: scale(1.2) rotate(20deg); opacity: 0.4; }
+      }
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bgPink)"/>
+  <rect width="1600" height="900" fill="url(#bgGlow1)"/>
+  <path class="heart-deco" d="M800,550 C800,550 580,400 580,270 C580,180 660,130 720,150 C760,165 790,190 800,210 C810,190 840,165 880,150 C940,130 1020,180 1020,270 C1020,400 800,550 800,550 Z" fill="rgba(255,255,255,0.15)"/>
+  <path class="heart-deco2" d="M280,320 C280,320 195,250 195,185 C195,140 225,115 248,122 C262,127 272,138 280,148 C288,138 298,127 312,122 C335,115 365,140 365,185 C365,250 280,320 280,320 Z" fill="rgba(255,255,255,0.12)"/>
+  <path class="sparkle" d="M1280,540 L1285,575 L1320,580 L1285,585 L1280,620 L1275,585 L1240,580 L1275,575 Z" fill="rgba(255,255,255,0.2)"/>
+  <path class="sparkle" d="M420,140 L423,158 L441,161 L423,164 L420,182 L417,164 L399,161 L417,158 Z" fill="rgba(255,255,255,0.22)"/>
+  <text x="1450" y="400" font-size="16" fill="rgba(255,255,255,0.18)">♡</text>
+  <text x="900" y="100" font-size="20" fill="rgba(255,255,255,0.15)">♡</text>
 </svg>
 </div>
 
@@ -96,11 +127,6 @@
             Para consultas de negocios, alianzas o reportar una inminente incursión del Dominio Eterno en su línea temporal, por favor, contacte a:
         </p>
         <p style="text-align: center; margin-bottom: 20px;">
-            <a href="mailto:astrahopvt@proton.me" class="btn-link" style="width: auto; display: inline-block;">Enviar Mensaje Psíquico (Correo Electrónico)</a>
+            <a href="/cdn-cgi/l/email-protection#1677656264777e7966606256666479627978387b73" class="btn-link" style="width: auto; display: inline-block;">Enviar Mensaje Psíquico (Correo Electrónico)</a>
         </p>
-        <p class="copyright" style="text-shadow: none; color: #aaa;">Última Actualización del Manifiesto: Diciembre 2025</p>
-
-    </div>
-</main>
-</body>
-</html>
+        <p class="copyright" style="text-shadow: none; color: #aaa;">Última Actualización del Manifiesto: Diciembre 20
