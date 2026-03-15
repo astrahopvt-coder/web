@@ -7,8 +7,8 @@
   <title>ASTRA • VTuber</title>
   <meta name="description" content="Astrahop: General Psico-Adoctrinadora renegada que escapó del Dominio Eterno. Únete a la Resistencia y conviértete en un Agente de la Libre Voluntad. Streams de variedad, lore y caos temporal." />
   <link rel="icon" type="image/x-icon" href="favicon.ico">  
-  <!-- Fuente principal -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,900&display=swap" rel="stylesheet">
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,900&family=Comfortaa:wght@400;600;700&family=Yusei+Magic&display=swap" rel="stylesheet">
 
   <!-- Iconos Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -46,71 +46,68 @@ document.addEventListener("click", () => {
 <div class="circuit-bg">
 <svg width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="bgPink" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="#ffb3c1" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#ff6b7a" stop-opacity="0"/>
+    <radialGradient id="bgDeep" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#800020" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#1a0005" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="bgGlow1" cx="20%" cy="30%" r="40%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    <radialGradient id="bgGlowL" cx="15%" cy="25%" r="38%">
+      <stop offset="0%" stop-color="#cc2040" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#cc2040" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="bgGlow2" cx="80%" cy="70%" r="35%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    <radialGradient id="bgGlowR" cx="85%" cy="75%" r="32%">
+      <stop offset="0%" stop-color="#ff4060" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ff4060" stop-opacity="0"/>
     </radialGradient>
     <style>
-      .heart-deco { animation: floatHeart 6s ease-in-out infinite alternate; transform-origin: center; }
-      .heart-deco2 { animation: floatHeart 9s ease-in-out infinite alternate-reverse; transform-origin: center; }
-      .heart-deco3 { animation: floatHeart 7s ease-in-out 1s infinite alternate; transform-origin: center; }
-      .sparkle { animation: sparkleAnim 4s ease-in-out infinite alternate; transform-origin: center; }
-      .sparkle2 { animation: sparkleAnim 5s ease-in-out 0.5s infinite alternate-reverse; transform-origin: center; }
-      @keyframes floatHeart {
-        0%   { transform: translateY(0px) scale(1); opacity: 0.15; }
-        100% { transform: translateY(-20px) scale(1.05); opacity: 0.28; }
+      .hd { animation: fh 7s ease-in-out infinite alternate; }
+      .hd2 { animation: fh 10s ease-in-out infinite alternate-reverse; }
+      .hd3 { animation: fh 8s ease-in-out 1.2s infinite alternate; }
+      .sp { animation: fs 5s ease-in-out infinite alternate; }
+      .sp2 { animation: fs 6s ease-in-out 0.8s infinite alternate-reverse; }
+      @keyframes fh {
+        0%   { opacity: 0.12; transform: translateY(0); }
+        100% { opacity: 0.22; transform: translateY(-18px); }
       }
-      @keyframes sparkleAnim {
-        0%   { transform: scale(0.8) rotate(0deg); opacity: 0.2; }
-        100% { transform: scale(1.2) rotate(20deg); opacity: 0.4; }
+      @keyframes fs {
+        0%   { opacity: 0.15; transform: scale(0.85) rotate(0deg); }
+        100% { opacity: 0.3; transform: scale(1.15) rotate(18deg); }
       }
     </style>
   </defs>
 
-  <!-- Capas de glow suave -->
-  <rect width="1600" height="900" fill="url(#bgPink)"/>
-  <rect width="1600" height="900" fill="url(#bgGlow1)"/>
-  <rect width="1600" height="900" fill="url(#bgGlow2)"/>
+  <rect width="1600" height="900" fill="url(#bgDeep)"/>
+  <rect width="1600" height="900" fill="url(#bgGlowL)"/>
+  <rect width="1600" height="900" fill="url(#bgGlowR)"/>
 
-  <!-- Corazón grande central (como en el overlay) -->
-  <path class="heart-deco" d="M800,550 C800,550 580,400 580,270 C580,180 660,130 720,150 C760,165 790,190 800,210 C810,190 840,165 880,150 C940,130 1020,180 1020,270 C1020,400 800,550 800,550 Z" fill="rgba(255,255,255,0.18)"/>
+  <!-- Corazón grande central -->
+  <path class="hd" d="M800,555 C800,555 575,398 575,265 C575,172 658,120 720,142 C762,158 793,184 800,205 C807,184 838,158 880,142 C942,120 1025,172 1025,265 C1025,398 800,555 800,555 Z" fill="rgba(255,80,110,0.14)"/>
 
   <!-- Corazón mediano izquierda -->
-  <path class="heart-deco2" d="M280,320 C280,320 195,250 195,185 C195,140 225,115 248,122 C262,127 272,138 280,148 C288,138 298,127 312,122 C335,115 365,140 365,185 C365,250 280,320 280,320 Z" fill="rgba(255,255,255,0.14)"/>
+  <path class="hd2" d="M260,330 C260,330 178,260 178,195 C178,148 208,122 232,129 C248,134 258,146 265,156 C272,146 282,134 298,129 C322,122 352,148 352,195 C352,260 260,330 260,330 Z" fill="rgba(255,80,110,0.12)"/>
 
-  <!-- Corazón pequeño derecha arriba -->
-  <path class="heart-deco3" d="M1350,200 C1350,200 1300,155 1300,115 C1300,88 1318,74 1330,78 C1338,81 1345,88 1350,95 C1355,88 1362,81 1370,78 C1382,74 1400,88 1400,115 C1400,155 1350,200 1350,200 Z" fill="rgba(255,255,255,0.18)"/>
+  <!-- Corazón pequeño derecha -->
+  <path class="hd3" d="M1360,195 C1360,195 1308,152 1308,112 C1308,84 1326,70 1338,74 C1347,77 1354,84 1360,91 C1366,84 1373,77 1382,74 C1394,70 1412,84 1412,112 C1412,152 1360,195 1360,195 Z" fill="rgba(255,100,130,0.16)"/>
 
-  <!-- Corazón pequeño izquierda abajo -->
-  <path class="heart-deco" d="M200,700 C200,700 158,665 158,635 C158,614 172,603 182,606 C188,608 194,614 200,620 C206,614 212,608 218,606 C228,603 242,614 242,635 C242,665 200,700 200,700 Z" fill="rgba(255,255,255,0.12)"/>
+  <!-- Corazón abajo izquierda -->
+  <path class="hd" d="M190,710 C190,710 150,675 150,645 C150,624 163,613 173,616 C180,619 186,625 190,631 C194,625 200,619 207,616 C217,613 230,624 230,645 C230,675 190,710 190,710 Z" fill="rgba(255,80,110,0.1)"/>
 
-  <!-- Estrella de 4 puntas grande derecha (como en overlay) -->
-  <path class="sparkle" d="M1280,580 L1293,610 L1325,610 L1299,628 L1309,660 L1280,642 L1251,660 L1261,628 L1235,610 L1267,610 Z" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
-  <!-- Estrella 4 puntas estilo VTuber -->
-  <path class="sparkle" d="M1280,540 L1285,575 L1320,580 L1285,585 L1280,620 L1275,585 L1240,580 L1275,575 Z" fill="rgba(255,255,255,0.22)"/>
+  <!-- Estrella 4 puntas grande derecha -->
+  <path class="sp" d="M1288,548 L1294,586 L1332,580 L1294,574 L1288,536 L1282,574 L1244,580 L1282,586 Z" fill="rgba(255,120,150,0.22)"/>
 
-  <!-- Estrella 4 puntas mediana centro-derecha -->
-  <path class="sparkle2" d="M1050,680 L1054,705 L1078,708 L1054,712 L1050,737 L1046,712 L1022,708 L1046,705 Z" fill="rgba(255,255,255,0.28)"/>
+  <!-- Estrella 4 puntas centro-bajo -->
+  <path class="sp2" d="M1060,685 L1064,712 L1090,716 L1064,720 L1060,747 L1056,720 L1030,716 L1056,712 Z" fill="rgba(255,120,150,0.24)"/>
 
-  <!-- Estrella 4 puntas pequeña izquierda -->
-  <path class="sparkle" d="M420,140 L423,158 L441,161 L423,164 L420,182 L417,164 L399,161 L417,158 Z" fill="rgba(255,255,255,0.22)"/>
+  <!-- Estrella pequeña izquierda -->
+  <path class="sp" d="M415,138 L419,158 L439,162 L419,166 L415,186 L411,166 L391,162 L411,158 Z" fill="rgba(255,120,150,0.2)"/>
 
-  <!-- Estrella 4 puntas arriba derecha -->
-  <path class="sparkle2" d="M1480,120 L1484,142 L1506,145 L1484,148 L1480,170 L1476,148 L1454,145 L1476,142 Z" fill="rgba(255,255,255,0.2)"/>
+  <!-- Estrella pequeña arriba derecha -->
+  <path class="sp2" d="M1490,115 L1494,138 L1518,142 L1494,146 L1490,169 L1486,146 L1462,142 L1486,138 Z" fill="rgba(255,100,130,0.18)"/>
 
-  <!-- Pequeños puntos decorativos (♡) -->
-  <text x="100" y="200" font-size="18" fill="rgba(255,255,255,0.2)" class="heart-deco2">♡</text>
-  <text x="600" y="820" font-size="14" fill="rgba(255,255,255,0.18)" class="heart-deco3">♡</text>
-  <text x="1450" y="400" font-size="16" fill="rgba(255,255,255,0.18)" class="heart-deco">♡</text>
-  <text x="900" y="100" font-size="20" fill="rgba(255,255,255,0.15)" class="heart-deco2">♡</text>
+  <!-- Pequeños corazones flotantes -->
+  <text x="95" y="195" font-size="18" fill="rgba(255,100,130,0.18)" class="hd2">♡</text>
+  <text x="610" y="825" font-size="14" fill="rgba(255,100,130,0.15)" class="hd3">♡</text>
+  <text x="1455" y="395" font-size="16" fill="rgba(255,100,130,0.16)" class="hd">♡</text>
+  <text x="910" y="95"  font-size="20" fill="rgba(255,80,110,0.14)"  class="hd2">♡</text>
 </svg>
 </div>
 <div id="portal-transition"></div>

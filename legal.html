@@ -6,7 +6,7 @@
   <title>Legal y Contacto • ASTRA</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">  
   
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,900&family=Comfortaa:wght@400;600;700&family=Yusei+Magic&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   
   <style>
@@ -14,7 +14,7 @@
     body {
         min-height: 100vh;
         padding-top: 50px;
-        background: linear-gradient(135deg, #ff6b7a 0%, #ff8fa3 40%, #ffb3c1 75%, #ffc8d4 100%);
+        background: linear-gradient(135deg, #1a0005 0%, #4a0012 25%, #7d0020 55%, #b52030 80%, #cc3a3a 100%);
     }
     .back-button {
       display: block;
@@ -59,36 +59,36 @@
 <div class="circuit-bg">
 <svg width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="bgPink" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="#ffb3c1" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#ff6b7a" stop-opacity="0"/>
+    <radialGradient id="bgDeep" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#800020" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#1a0005" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="bgGlow1" cx="20%" cy="30%" r="40%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    <radialGradient id="bgGlowL" cx="15%" cy="25%" r="38%">
+      <stop offset="0%" stop-color="#cc2040" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#cc2040" stop-opacity="0"/>
     </radialGradient>
     <style>
-      .heart-deco { animation: floatHeart 6s ease-in-out infinite alternate; }
-      .heart-deco2 { animation: floatHeart 9s ease-in-out infinite alternate-reverse; }
-      .sparkle { animation: sparkleAnim 4s ease-in-out infinite alternate; }
-      @keyframes floatHeart {
-        0%   { transform: translateY(0px) scale(1); opacity: 0.15; }
-        100% { transform: translateY(-20px) scale(1.05); opacity: 0.28; }
+      .hd  { animation: fh 7s ease-in-out infinite alternate; }
+      .hd2 { animation: fh 10s ease-in-out infinite alternate-reverse; }
+      .sp  { animation: fs 5s ease-in-out infinite alternate; }
+      @keyframes fh {
+        0%   { opacity: 0.10; transform: translateY(0); }
+        100% { opacity: 0.20; transform: translateY(-18px); }
       }
-      @keyframes sparkleAnim {
-        0%   { transform: scale(0.8) rotate(0deg); opacity: 0.2; }
-        100% { transform: scale(1.2) rotate(20deg); opacity: 0.4; }
+      @keyframes fs {
+        0%   { opacity: 0.12; transform: scale(0.85) rotate(0deg); }
+        100% { opacity: 0.26; transform: scale(1.15) rotate(18deg); }
       }
     </style>
   </defs>
-  <rect width="1600" height="900" fill="url(#bgPink)"/>
-  <rect width="1600" height="900" fill="url(#bgGlow1)"/>
-  <path class="heart-deco" d="M800,550 C800,550 580,400 580,270 C580,180 660,130 720,150 C760,165 790,190 800,210 C810,190 840,165 880,150 C940,130 1020,180 1020,270 C1020,400 800,550 800,550 Z" fill="rgba(255,255,255,0.15)"/>
-  <path class="heart-deco2" d="M280,320 C280,320 195,250 195,185 C195,140 225,115 248,122 C262,127 272,138 280,148 C288,138 298,127 312,122 C335,115 365,140 365,185 C365,250 280,320 280,320 Z" fill="rgba(255,255,255,0.12)"/>
-  <path class="sparkle" d="M1280,540 L1285,575 L1320,580 L1285,585 L1280,620 L1275,585 L1240,580 L1275,575 Z" fill="rgba(255,255,255,0.2)"/>
-  <path class="sparkle" d="M420,140 L423,158 L441,161 L423,164 L420,182 L417,164 L399,161 L417,158 Z" fill="rgba(255,255,255,0.22)"/>
-  <text x="1450" y="400" font-size="16" fill="rgba(255,255,255,0.18)">♡</text>
-  <text x="900" y="100" font-size="20" fill="rgba(255,255,255,0.15)">♡</text>
+  <rect width="1600" height="900" fill="url(#bgDeep)"/>
+  <rect width="1600" height="900" fill="url(#bgGlowL)"/>
+  <path class="hd" d="M800,555 C800,555 575,398 575,265 C575,172 658,120 720,142 C762,158 793,184 800,205 C807,184 838,158 880,142 C942,120 1025,172 1025,265 C1025,398 800,555 800,555 Z" fill="rgba(255,80,110,0.12)"/>
+  <path class="hd2" d="M260,330 C260,330 178,260 178,195 C178,148 208,122 232,129 C248,134 258,146 265,156 C272,146 282,134 298,129 C322,122 352,148 352,195 C352,260 260,330 260,330 Z" fill="rgba(255,80,110,0.1)"/>
+  <path class="sp" d="M1288,548 L1294,586 L1332,580 L1294,574 L1288,536 L1282,574 L1244,580 L1282,586 Z" fill="rgba(255,120,150,0.2)"/>
+  <path class="sp" d="M415,138 L419,158 L439,162 L419,166 L415,186 L411,166 L391,162 L411,158 Z" fill="rgba(255,120,150,0.18)"/>
+  <text x="1455" y="395" font-size="16" fill="rgba(255,100,130,0.15)">♡</text>
+  <text x="910" y="95"  font-size="20" fill="rgba(255,80,110,0.12)">♡</text>
 </svg>
 </div>
 
