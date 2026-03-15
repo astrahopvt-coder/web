@@ -1,7 +1,7 @@
 /* ----------------------------- */
 /* FUENTES                        */
 /* ----------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Yusei+Magic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Yusei+Magic&display=swap');
 
 /* ----------------------------- */
 /* PALETA Y ESTILO GENERAL       */
@@ -80,6 +80,7 @@ body, p, li, input, textarea, select,
 .donador-name, .copyright,
 table td {
   font-family: 'Comfortaa', cursive;
+  font-weight: 700;
   color: var(--text) !important;
 }
 
@@ -97,6 +98,9 @@ table th,
   color: #fff;
   font-weight: normal;
   font-style: normal;
+  /* Yusei Magic has no bold variant — simulate weight with stroke */
+  -webkit-text-stroke: 0.6px currentColor;
+  paint-order: stroke fill;
   text-shadow:
     0 0 10px rgba(255, 120, 150, 0.8),
     0 0 20px rgba(255, 60, 90, 0.5),
@@ -216,7 +220,7 @@ section {
 }
 
 /* Media */
-video, audio {
+video:not(.logo), audio {
   width: 100%;
   border-radius: 18px;
   margin-top: 10px;
