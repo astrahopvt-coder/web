@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
 <script>
 document.addEventListener("click", () => {
   const bgm = document.getElementById("bgm");
-  bgm.volume = 0.05
-  bgm.play();
+  bgm.volume = 0.05;
+  bgm.play().catch(() => {});
 }, { once: true });
 </script>
 <div class="circuit-bg">
@@ -336,14 +336,112 @@ document.addEventListener("click", () => {
 
 <script>
 // AUTOCARGA DE IMÁGENES DE LA CARPETA /fanarts/
-const totalImgs = 50; // puedes aumentar este número
+const totalImgs = 50;
 const gallery = document.getElementById("fanart-gallery");
+const fanartSrcs = [];
 
 for (let i = 1; i <= totalImgs; i++) {
   const img = new Image();
-  img.src = `fanarts/${i}.jpg`; // puedes usar .jpg si quieres
-  img.onload = () => gallery.appendChild(img);
+  img.src = `fanarts/${i}.jpg`;
+  img.style.cursor = 'pointer';
+  img.onload = () => {
+    const idx = fanartSrcs.push(img.src) - 1;
+    img.dataset.idx = idx;
+    img.addEventListener('click', () => openLightbox(parseInt(img.dataset.idx)));
+    gallery.appendChild(img);
+  };
 }
+</script>
+
+<!-- ========================= -->
+<!--  LIGHTBOX (VISOR FANARTS)  -->
+<!-- ========================= -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Ver imagen">
+  <div id="lb-overlay"></div>
+  <div id="lb-container">
+    <button id="lb-close" aria-label="Cerrar">✕</button>
+    <button id="lb-prev" aria-label="Anterior">❮</button>
+    <img id="lb-img" src="" alt="Fanart ampliado">
+    <button id="lb-next" aria-label="Siguiente">❯</button>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!--  BOTÓN MÚSICA             -->
+<!-- ========================= -->
+<button id="music-toggle" aria-label="Pausar/Reanudar música" title="Música">
+  <span id="music-icon">♪</span>
+</button>
+
+<script>
+// ---- LIGHTBOX ----
+let lbIndex = 0;
+
+function openLightbox(idx) {
+  lbIndex = idx;
+  document.getElementById('lb-img').src = fanartSrcs[lbIndex];
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+  lbIndex = (lbIndex + dir + fanartSrcs.length) % fanartSrcs.length;
+  const img = document.getElementById('lb-img');
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = fanartSrcs[lbIndex];
+    img.style.opacity = '1';
+  }, 150);
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-overlay').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', () => lbNav(-1));
+document.getElementById('lb-next').addEventListener('click', () => lbNav(1));
+
+document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('active')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   lbNav(-1);
+  if (e.key === 'ArrowRight')  lbNav(1);
+});
+
+// Swipe táctil para lightbox
+(function() {
+  let startX = 0;
+  const lbEl = document.getElementById('lb-container');
+  lbEl.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  lbEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) lbNav(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
+
+// ---- BOTÓN MÚSICA ----
+(function() {
+  const btn  = document.getElementById('music-toggle');
+  const icon = document.getElementById('music-icon');
+  const bgm  = document.getElementById('bgm');
+  let playing = false;
+
+  bgm.addEventListener('play',  () => { playing = true;  icon.textContent = '♪'; btn.classList.remove('muted'); });
+  bgm.addEventListener('pause', () => { playing = false; icon.textContent = '♪'; btn.classList.add('muted'); });
+
+  btn.addEventListener('click', () => {
+    if (playing) {
+      bgm.pause();
+    } else {
+      bgm.volume = 0.05;
+      bgm.play().catch(() => {});
+    }
+  });
+})();
 </script>
 
 <!-- ------------------------- -->
@@ -476,6 +574,7 @@ function showSection(id) {
 <!-- ========================= -->
 <div id="countdown-widget">
   <div class="cw-glow-ring"></div>
+  <div class="cw-drag-handle" title="Arrastrá para mover">⠿</div>
   <div class="cw-inner">
     <div class="cw-header">
       <span class="cw-icon">📡</span>
@@ -494,40 +593,36 @@ function showSection(id) {
 </div>
 
 <script>
+// ---- COUNTDOWN ----
 (function() {
-  // Directos: viernes (5), sábado (6), domingo (0), lunes (1) a las 20:30 hora Argentina (UTC-3)
-  const STREAM_DAYS = [5, 6, 0, 1]; // viernes, sábado, domingo, lunes
+  const STREAM_DAYS = [5, 6, 0, 1];
   const STREAM_HOUR = 20;
   const STREAM_MIN  = 30;
   const DAY_NAMES   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
   const DAY_FULL    = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
   function getArgentinaDate() {
-    // UTC-3 fija (Argentina no usa DST)
     const now = new Date();
     const utc = now.getTime() + now.getTimezoneOffset() * 60000;
     return new Date(utc - 3 * 3600000);
   }
 
   function getNextStream() {
-    const now = getArgentinaDate();
+    const now      = getArgentinaDate();
     const todayDay = now.getDay();
     const todayH   = now.getHours();
     const todayM   = now.getMinutes();
     const todayS   = now.getSeconds();
 
-    // Buscar el próximo slot (puede ser hoy si aún no pasó la hora)
     for (let offset = 0; offset <= 7; offset++) {
       const checkDay = (todayDay + offset) % 7;
       if (STREAM_DAYS.includes(checkDay)) {
         if (offset === 0) {
-          // Hoy: ver si la hora ya pasó
           const secsUntil = (STREAM_HOUR - todayH) * 3600 + (STREAM_MIN - todayM) * 60 - todayS;
-          if (secsUntil > -7200) { // margen: hasta 2h después del inicio se considera "en vivo"
+          if (secsUntil > -10800) {
             return { day: checkDay, secsUntil: Math.max(secsUntil, 0), isToday: true, isLive: secsUntil <= 0 };
           }
         } else {
-          // Día futuro
           const secsUntil = offset * 86400 - (todayH * 3600 + todayM * 60 + todayS) + (STREAM_HOUR * 3600 + STREAM_MIN * 60);
           return { day: checkDay, secsUntil, isToday: false, isLive: false };
         }
@@ -543,12 +638,11 @@ function showSection(id) {
 
     const daysEl   = document.getElementById('cw-days-label');
     const statusEl = document.getElementById('cw-status');
-    const hEl = document.getElementById('cw-h');
-    const mEl = document.getElementById('cw-m');
-    const sEl = document.getElementById('cw-s');
-    const widget = document.getElementById('countdown-widget');
+    const hEl      = document.getElementById('cw-h');
+    const mEl      = document.getElementById('cw-m');
+    const sEl      = document.getElementById('cw-s');
+    const widget   = document.getElementById('countdown-widget');
 
-    // Marcar días activos
     daysEl.innerHTML = STREAM_DAYS.map(d =>
       `<span class="cw-day ${d === info.day ? 'active' : ''}">${DAY_NAMES[d]}</span>`
     ).join('');
@@ -556,31 +650,93 @@ function showSection(id) {
     if (info.isLive) {
       widget.classList.add('live');
       statusEl.textContent = '¡EN VIVO AHORA! 🔴';
-      hEl.textContent = '00';
-      mEl.textContent = '00';
-      sEl.textContent = '00';
+      hEl.textContent = mEl.textContent = sEl.textContent = '00';
       return;
     }
 
     widget.classList.remove('live');
-
     const total = info.secsUntil;
     const days  = Math.floor(total / 86400);
     const hrs   = Math.floor((total % 86400) / 3600);
-    const mins  = Math.floor((total % 3600) / 60);
-    const secs  = total % 60;
-
     hEl.textContent = days > 0 ? pad(days * 24 + hrs) : pad(hrs);
-    mEl.textContent = pad(mins);
-    sEl.textContent = pad(secs);
-
+    mEl.textContent = pad(Math.floor((total % 3600) / 60));
+    sEl.textContent = pad(total % 60);
     statusEl.textContent = info.isToday
-      ? `¡Hoy a las 20:30 hs!`
+      ? '¡Hoy a las 20:30 hs!'
       : `${DAY_FULL[info.day]} a las 20:30 hs`;
   }
 
   updateWidget();
   setInterval(updateWidget, 1000);
+})();
+
+// ---- DRAG (mouse + touch) ----
+(function() {
+  const widget = document.getElementById('countdown-widget');
+  const handle = widget.querySelector('.cw-drag-handle');
+  let dragging = false, startX, startY, origX, origY;
+
+  // Restaurar posición guardada
+  const saved = localStorage.getItem('cw-pos');
+  if (saved) {
+    try {
+      const { x, y } = JSON.parse(saved);
+      setPos(x, y);
+    } catch(e) {}
+  }
+
+  function setPos(x, y) {
+    const maxX = window.innerWidth  - widget.offsetWidth;
+    const maxY = window.innerHeight - widget.offsetHeight;
+    x = Math.max(0, Math.min(x, maxX));
+    y = Math.max(0, Math.min(y, maxY));
+    widget.style.right   = 'auto';
+    widget.style.top     = 'auto';
+    widget.style.left    = x + 'px';
+    widget.style.bottom  = 'auto';
+    widget.style.transform = 'none';
+    widget.style.animation = 'none';
+    widget.dataset.x = x;
+    widget.dataset.y = y;
+    widget.style.setProperty('top', y + 'px');
+  }
+
+  function onDown(cx, cy) {
+    dragging = true;
+    startX = cx; startY = cy;
+    const rect = widget.getBoundingClientRect();
+    origX = rect.left; origY = rect.top;
+    widget.classList.add('dragging');
+  }
+
+  function onMove(cx, cy) {
+    if (!dragging) return;
+    setPos(origX + (cx - startX), origY + (cy - startY));
+  }
+
+  function onUp() {
+    if (!dragging) return;
+    dragging = false;
+    widget.classList.remove('dragging');
+    localStorage.setItem('cw-pos', JSON.stringify({
+      x: parseFloat(widget.style.left),
+      y: parseFloat(widget.style.top)
+    }));
+  }
+
+  handle.addEventListener('mousedown',  e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
+  document.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+  document.addEventListener('mouseup',   onUp);
+
+  handle.addEventListener('touchstart', e => { e.preventDefault(); onDown(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+  document.addEventListener('touchmove', e => { if (dragging) { e.preventDefault(); onMove(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: false });
+  document.addEventListener('touchend',  onUp);
+
+  window.addEventListener('resize', () => {
+    if (widget.style.left) {
+      setPos(parseFloat(widget.style.left), parseFloat(widget.style.top));
+    }
+  });
 })();
 </script>
 </body>
