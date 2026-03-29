@@ -470,6 +470,119 @@ function showSection(id) {
     <span class="copyright">© 2025 Astrahop VTuber | Proyecto ASTRA</span>
   </div>
 </footer>
+
+<!-- ========================= -->
+<!--  WIDGET: COUNTDOWN DIRECTO -->
+<!-- ========================= -->
+<div id="countdown-widget">
+  <div class="cw-glow-ring"></div>
+  <div class="cw-inner">
+    <div class="cw-header">
+      <span class="cw-icon">📡</span>
+      <span class="cw-title">Próximo Directo</span>
+    </div>
+    <div class="cw-days-row" id="cw-days-label"></div>
+    <div class="cw-timer" id="cw-timer">
+      <div class="cw-unit"><span id="cw-h">00</span><small>horas</small></div>
+      <div class="cw-sep">:</div>
+      <div class="cw-unit"><span id="cw-m">00</span><small>min</small></div>
+      <div class="cw-sep">:</div>
+      <div class="cw-unit"><span id="cw-s">00</span><small>seg</small></div>
+    </div>
+    <div class="cw-status" id="cw-status">Calculando...</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Directos: viernes (5), sábado (6), domingo (0), lunes (1) a las 20:30 hora Argentina (UTC-3)
+  const STREAM_DAYS = [5, 6, 0, 1]; // viernes, sábado, domingo, lunes
+  const STREAM_HOUR = 20;
+  const STREAM_MIN  = 30;
+  const DAY_NAMES   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const DAY_FULL    = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+  function getArgentinaDate() {
+    // UTC-3 fija (Argentina no usa DST)
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utc - 3 * 3600000);
+  }
+
+  function getNextStream() {
+    const now = getArgentinaDate();
+    const todayDay = now.getDay();
+    const todayH   = now.getHours();
+    const todayM   = now.getMinutes();
+    const todayS   = now.getSeconds();
+
+    // Buscar el próximo slot (puede ser hoy si aún no pasó la hora)
+    for (let offset = 0; offset <= 7; offset++) {
+      const checkDay = (todayDay + offset) % 7;
+      if (STREAM_DAYS.includes(checkDay)) {
+        if (offset === 0) {
+          // Hoy: ver si la hora ya pasó
+          const secsUntil = (STREAM_HOUR - todayH) * 3600 + (STREAM_MIN - todayM) * 60 - todayS;
+          if (secsUntil > -7200) { // margen: hasta 2h después del inicio se considera "en vivo"
+            return { day: checkDay, secsUntil: Math.max(secsUntil, 0), isToday: true, isLive: secsUntil <= 0 };
+          }
+        } else {
+          // Día futuro
+          const secsUntil = offset * 86400 - (todayH * 3600 + todayM * 60 + todayS) + (STREAM_HOUR * 3600 + STREAM_MIN * 60);
+          return { day: checkDay, secsUntil, isToday: false, isLive: false };
+        }
+      }
+    }
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateWidget() {
+    const info = getNextStream();
+    if (!info) return;
+
+    const daysEl   = document.getElementById('cw-days-label');
+    const statusEl = document.getElementById('cw-status');
+    const hEl = document.getElementById('cw-h');
+    const mEl = document.getElementById('cw-m');
+    const sEl = document.getElementById('cw-s');
+    const widget = document.getElementById('countdown-widget');
+
+    // Marcar días activos
+    daysEl.innerHTML = STREAM_DAYS.map(d =>
+      `<span class="cw-day ${d === info.day ? 'active' : ''}">${DAY_NAMES[d]}</span>`
+    ).join('');
+
+    if (info.isLive) {
+      widget.classList.add('live');
+      statusEl.textContent = '¡EN VIVO AHORA! 🔴';
+      hEl.textContent = '00';
+      mEl.textContent = '00';
+      sEl.textContent = '00';
+      return;
+    }
+
+    widget.classList.remove('live');
+
+    const total = info.secsUntil;
+    const days  = Math.floor(total / 86400);
+    const hrs   = Math.floor((total % 86400) / 3600);
+    const mins  = Math.floor((total % 3600) / 60);
+    const secs  = total % 60;
+
+    hEl.textContent = days > 0 ? pad(days * 24 + hrs) : pad(hrs);
+    mEl.textContent = pad(mins);
+    sEl.textContent = pad(secs);
+
+    statusEl.textContent = info.isToday
+      ? `¡Hoy a las 20:30 hs!`
+      : `${DAY_FULL[info.day]} a las 20:30 hs`;
+  }
+
+  updateWidget();
+  setInterval(updateWidget, 1000);
+})();
+</script>
 </body>
 </html>
 
