@@ -418,83 +418,11 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
     ];
 
     const MAZES = [
-      [
-        '111111111',
-        '100000001',
-        '101111101',
-        '101000101',
-        '101010101',
-        '101010001',
-        '101011101',
-        '100000001',
-        '111111111'
-      ],
-      [
-        '11111111111',
-        '10000010001',
-        '10111010101',
-        '10100000101',
-        '10101111101',
-        '10101000001',
-        '10101011101',
-        '10101010001',
-        '10100010101',
-        '10111110101',
-        '10000000101',
-        '10111110001',
-        '11111111111'
-      ],
-      [
-        '1111111111111',
-        '1000000000001',
-        '1011111111101',
-        '1010000000101',
-        '1010111110101',
-        '1010100010101',
-        '1010101010101',
-        '1010101010001',
-        '1010001011111',
-        '1011101000001',
-        '1000101111101',
-        '1110100000101',
-        '1000001110001',
-        '1111111111111'
-      ],
-      [
-        '1111111111111',
-        '1000001000001',
-        '1011101011101',
-        '1010000010001',
-        '1010111110111',
-        '1010000010001',
-        '1011111011101',
-        '1000001010001',
-        '1111101010111',
-        '1000101010001',
-        '1010101011101',
-        '1010001000001',
-        '1011111111101',
-        '1000000000001',
-        '1111111111111'
-      ],
-      [
-        '111111111111111',
-        '100000000000001',
-        '101111111111101',
-        '101000000000101',
-        '101011111110101',
-        '101010000010101',
-        '101010111010101',
-        '101010101010101',
-        '101000101000101',
-        '101110101110101',
-        '100010100010001',
-        '111010111011101',
-        '100010001000001',
-        '101111101111101',
-        '100000000000001',
-        '111111111111111'
-      ]
+      ['111111111','100000001','101111101','101000101','101010101','101010001','101011101','100000001','111111111'],
+      ['11111111111','10000010001','10111010101','10100000101','10101111101','10101000001','10101011101','10101010001','10100010101','10111110101','10000000101','10111110001','11111111111'],
+      ['1111111111111','1000000000001','1011111111101','1010000000101','1010111110101','1010100010101','1010101010101','1010101010001','1010001011111','1011101000001','1000101111101','1110100000101','1000001110001','1111111111111'],
+      ['1111111111111','1000001000001','1011101011101','1010000010001','1010111110111','1010000010001','1011111011101','1000001010001','1111101010111','1000101010001','1010101011101','1010001000001','1011111111101','1000000000001','1111111111111'],
+      ['111111111111111','100000000000001','101111111111101','101000000000101','101011111110101','101010000010101','101010111010101','101010101010101','101000101000101','101110101110101','100010100010001','111010111011101','100010001000001','101111101111101','100000000000001','111111111111111']
     ];
 
     let level = 0;
@@ -517,8 +445,109 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
     const SENSITIVITY = 1.0;
     const MAX_STEP = 6;
 
+    let audioCtx = null;
+    let masterGain = null;
+    let musicGain = null;
+    let musicLoopTimer = null;
+    let musicStarted = false;
+
     function parseMaze(strings) {
       return strings.map(row => row.split('').map(c => c === '1' ? 1 : 0));
+    }
+
+    function initAudio() {
+      if (audioCtx) return;
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      audioCtx = new AudioContextClass();
+      masterGain = audioCtx.createGain();
+      musicGain = audioCtx.createGain();
+      masterGain.gain.value = 0.24;
+      musicGain.gain.value = 0.10;
+      musicGain.connect(masterGain);
+      masterGain.connect(audioCtx.destination);
+    }
+
+    function resumeAudio() {
+      if (!audioCtx) initAudio();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      if (audioCtx && !musicStarted) startBackgroundMusic();
+    }
+
+    function playTone(freq, start, duration, type = 'sine', volume = 0.2, endFreq = null, destination = null) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, start);
+      if (endFreq !== null) {
+        osc.frequency.exponentialRampToValueAtTime(Math.max(0.001, endFreq), start + duration);
+      }
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+      osc.connect(gain);
+      gain.connect(destination || masterGain);
+      osc.start(start);
+      osc.stop(start + duration + 0.04);
+    }
+
+    function playLossSound() {
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      playTone(280, now, 0.20, 'sawtooth', 0.16, 180);
+      playTone(180, now + 0.10, 0.35, 'square', 0.14, 70);
+      playTone(90, now + 0.18, 0.55, 'triangle', 0.12, 40);
+    }
+
+    function playWinLevelSound() {
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      playTone(523.25, now, 0.16, 'triangle', 0.12);
+      playTone(659.25, now + 0.12, 0.16, 'triangle', 0.12);
+      playTone(783.99, now + 0.24, 0.22, 'triangle', 0.12);
+      playTone(1046.50, now + 0.38, 0.28, 'sine', 0.11);
+    }
+
+    function schedulePad(freq, when, dur, volume) {
+      playTone(freq, when, dur, 'sine', volume, null, musicGain);
+      playTone(freq * 1.5, when + 0.05, dur * 0.92, 'triangle', volume * 0.65, null, musicGain);
+      playTone(freq * 2, when + 0.08, dur * 0.75, 'sine', volume * 0.35, null, musicGain);
+    }
+
+    function schedulePulse(freq, when, dur, volume) {
+      playTone(freq, when, dur, 'triangle', volume, null, musicGain);
+    }
+
+    function startBackgroundMusic() {
+      if (!audioCtx || musicStarted) return;
+      musicStarted = true;
+
+      const scheduleLoop = () => {
+        if (!audioCtx || !musicStarted) return;
+        const now = audioCtx.currentTime + 0.05;
+        const loopLen = 8;
+        const chords = [130.81, 155.56, 174.61, 146.83];
+        chords.forEach((root, i) => {
+          const t = now + i * 2;
+          schedulePad(root, t, 2.1, 0.030);
+        });
+        const pulseNotes = [261.63, 293.66, 329.63, 293.66, 349.23, 329.63, 293.66, 261.63];
+        pulseNotes.forEach((note, i) => {
+          schedulePulse(note, now + i * 0.5, 0.16, 0.018);
+        });
+        musicLoopTimer = setTimeout(scheduleLoop, loopLen * 1000);
+      };
+
+      scheduleLoop();
+    }
+
+    function stopBackgroundMusic() {
+      musicStarted = false;
+      if (musicLoopTimer) {
+        clearTimeout(musicLoopTimer);
+        musicLoopTimer = null;
+      }
     }
 
     function setupLevel(lvl) {
@@ -691,6 +720,7 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
     }
 
     function startGame() {
+      resumeAudio();
       hideAllOverlays();
       setupLevel(0);
       resetMouseAnchor();
@@ -702,6 +732,8 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
     function onDeath() {
       playing = false;
       cancelAnimationFrame(animFrameId);
+      resumeAudio();
+      playLossSound();
       const messages = [
         'El Dominio Eterno te ha atrapado. Volvés al inicio... de todo.',
         '¡Recapturado! La Onda de Conformidad te consume. De vuelta al Nivel 1.',
@@ -730,6 +762,8 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
     function onLevelClear() {
       playing = false;
       cancelAnimationFrame(animFrameId);
+      resumeAudio();
+      playWinLevelSound();
       unlockCard(level);
       const clearTitles = ['¡Sector despejado!', '¡Zona liberada!', '¡Ruta habilitada!', '¡Área asegurada!', '¡Misión cumplida!'];
       const clearSubs = [
@@ -788,7 +822,7 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
+        .replace(/\"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
 
@@ -841,6 +875,7 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
     document.addEventListener('keydown', e => {
       if (e.code === 'Space' && (playing || paused)) {
         e.preventDefault();
+        resumeAudio();
         setPaused(!paused);
       }
     });
@@ -856,6 +891,7 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
 
     const wrap = document.getElementById('maze-wrap');
     wrap.addEventListener('touchstart', e => {
+      resumeAudio();
       lastMouseX = e.touches[0].clientX;
       lastMouseY = e.touches[0].clientY;
     }, { passive: true });
@@ -866,12 +902,12 @@ Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
       applyMouseDelta(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: false });
 
-    document.getElementById('btn-start').addEventListener('click', startGame);
-    document.getElementById('btn-retry').addEventListener('click', onRetry);
-    document.getElementById('btn-next').addEventListener('click', onNextLevel);
-    document.getElementById('btn-resume').addEventListener('click', () => setPaused(false));
-    document.getElementById('btn-back').addEventListener('click', () => { window.location.href = 'index.html'; });
-    document.getElementById('btn-reload').addEventListener('click', () => { window.location.reload(); });
+    document.getElementById('btn-start').addEventListener('click', () => { resumeAudio(); startGame(); });
+    document.getElementById('btn-retry').addEventListener('click', () => { resumeAudio(); onRetry(); });
+    document.getElementById('btn-next').addEventListener('click', () => { resumeAudio(); onNextLevel(); });
+    document.getElementById('btn-resume').addEventListener('click', () => { resumeAudio(); setPaused(false); });
+    document.getElementById('btn-back').addEventListener('click', () => { stopBackgroundMusic(); window.location.href = 'index.html'; });
+    document.getElementById('btn-reload').addEventListener('click', () => { stopBackgroundMusic(); window.location.reload(); });
 
     (function setupKonami() {
       const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
