@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASTRA - Laberinto del Dominio</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,700;0,900;1,900&family=Comfortaa:wght@700&family=Yusei+Magic&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #5a0010;
+      --bg2: #8b0020;
+      --accent: #ff4d6d;
+      --accent2: #ff8fa3;
+      --card-bg: rgba(60,0,15,0.80);
+      --card-border: rgba(255,120,150,0.35);
+      --glow: 0 0 18px rgba(255,80,110,0.55);
+      --maze-bg: #f8f2f4;
+      --maze-wall: #2a0008;
+      --maze-path: #fdf6f8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0005 0%, #4a0012 25%, #7d0020 55%, #b52030 80%, #cc3a3a 100%);
+      background-size: 300% 300%;
+      animation: ondaSuave 22s ease-in-out infinite;
+      font-family: 'Comfortaa', cursive;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    @keyframes ondaSuave {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 30px;
+      background: rgba(20,0,6,0.55);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,120,150,0.2);
+      position: relative;
+      z-index: 10;
+    }
+    .header-title {
+      font-family: 'Yusei Magic', sans-serif;
+      font-size: 1.3rem;
+      text-shadow: 0 0 12px rgba(255,100,130,0.9), 2px 2px 0 rgba(80,0,20,0.5);
+      letter-spacing: 2px;
+    }
+    .back-btn {
+      font-family: 'Yusei Magic', sans-serif;
+      background: rgba(100,0,25,0.55);
+      border: 1.5px solid rgba(255,120,150,0.45);
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      text-shadow: 0 0 8px rgba(255,150,170,0.8);
+    }
+    .back-btn:hover {
+      background: rgba(200,30,60,0.7);
+      box-shadow: 0 4px 18px rgba(255,80,110,0.5);
+      transform: translateY(-2px);
+    }
+    #app {
+      display: flex;
+      gap: 24px;
+      padding: 24px 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+    #game-col {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .level-bar { display: flex; gap: 8px; align-items: center; }
+    .level-pip {
+      width: 28px; height: 8px; border-radius: 4px;
+      background: rgba(100,0,20,0.5);
+      border: 1px solid rgba(255,120,150,0.3);
+      transition: all 0.4s ease;
+    }
+    .level-pip.done { background: var(--accent); box-shadow: 0 0 10px rgba(255,80,110,0.7); }
+    .level-pip.current {
+      background: rgba(255,150,170,0.4);
+      border-color: rgba(255,160,180,0.8);
+      animation: pip-pulse 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes pip-pulse {
+      0% { box-shadow: 0 0 4px rgba(255,100,130,0.4); }
+      100% { box-shadow: 0 0 14px rgba(255,100,130,0.9); }
+    }
+    #level-label {
+      font-family: 'Yusei Magic', sans-serif;
+      font-size: 0.78rem;
+      color: var(--accent2);
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(255,100,130,0.6);
+    }
+    #maze-wrap {
+      position: relative;
+      border-radius: 20px;
+      border: 2px solid rgba(255,120,150,0.4);
+      box-shadow: var(--glow), 0 8px 32px rgba(0,0,0,0.5);
+      overflow: hidden;
+      cursor: none;
+    }
+    #maze-canvas { display: block; background: var(--maze-bg); }
+    .overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(10,0,4,0.85);
+      backdrop-filter: blur(4px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      border-radius: 18px;
+      z-index: 20;
+      animation: ov-in 0.3s ease;
+      padding: 20px;
+      text-align: center;
+    }
+    .overlay.visible { display: flex; }
+    @keyframes ov-in {
+      from { opacity: 0; transform: scale(0.94); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .overlay-title {
+      font-family: 'Yusei Magic', sans-serif;
+      font-size: 1.6rem;
+      text-align: center;
+      text-shadow: 0 0 16px rgba(255,80,110,0.9), 2px 2px 0 rgba(80,0,20,0.5);
+    }
+    .overlay-sub {
+      font-size: 0.9rem;
+      color: rgba(255,180,200,0.8);
+      text-align: center;
+      max-width: 260px;
+      line-height: 1.5;
+    }
+    .ov-btn {
+      font-family: 'Yusei Magic', sans-serif;
+      background: rgba(200,20,50,0.7);
+      border: 2px solid rgba(255,120,150,0.6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.22s;
+      text-shadow: 0 0 10px rgba(255,150,170,0.7);
+      box-shadow: 0 4px 20px rgba(200,20,50,0.45);
+    }
+    .ov-btn:hover {
+      transform: scale(1.06) translateY(-2px);
+      background: rgba(225,40,70,0.85);
+      box-shadow: 0 8px 28px rgba(220,40,70,0.7);
+    }
+    .ov-btn.retry {
+      background: rgba(100,0,20,0.7);
+      border-color: rgba(255,80,110,0.5);
+      font-size: 0.88rem;
+      padding: 10px 26px;
+    }
+    .death-emoji { font-size: 2.8rem; animation: death-bounce 0.5s ease; }
+    @keyframes death-bounce {
+      0% { transform: scale(0) rotate(-20deg); }
+      60% { transform: scale(1.2) rotate(5deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+    #lore-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+    #lore-col h3 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.78rem;
+      color: rgba(80,220,80,0.7);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0,180,0,0.25);
+    }
+    #cards-container { display: flex; flex-direction: column; gap: 12px; }
+    .lore-card {
+      background: rgba(4, 12, 4, 0.92);
+      border: 1px solid rgba(80, 200, 80, 0.25);
+      border-radius: 4px;
+      padding: 16px 18px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 14px rgba(0,180,0,0.12), inset 0 0 30px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      animation: card-arrive 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .lore-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.18) 2px, rgba(0, 0, 0, 0.18) 4px);
+      pointer-events: none;
+      border-radius: 4px;
+    }
+    .lore-card::before {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(0,255,80,0.18), transparent);
+      top: -3px;
+      animation: scan-beam 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scan-beam { 0% { top: -3px; } 100% { top: 100%; } }
+    @keyframes card-arrive {
+      from { opacity: 0; transform: translateX(40px) scale(0.9); filter: brightness(3); }
+      to { opacity: 1; transform: translateX(0) scale(1); filter: brightness(1); }
+    }
+    @keyframes card-flicker {
+      0%,95%,100% { opacity: 1; }
+      96% { opacity: 0.7; }
+      98% { opacity: 0.5; }
+      99% { opacity: 1; }
+    }
+    .lore-card { animation: card-arrive 0.4s cubic-bezier(0.34,1.56,0.64,1), card-flicker 8s infinite; }
+    .lore-card:hover {
+      border-color: rgba(80, 220, 80, 0.55);
+      box-shadow: 0 0 22px rgba(0,200,0,0.25), inset 0 0 30px rgba(0,0,0,0.5);
+    }
+    .lore-card.selected {
+      border-color: rgba(80,255,80,0.7);
+      box-shadow: 0 0 24px rgba(255,80,110,0.55), inset 0 1px 0 rgba(255,140,160,0.2);
+      background: rgba(80,0,20,0.85);
+    }
+    .card-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.65rem; color: rgba(60, 200, 60, 0.7);
+      background: rgba(0,30,0,0.6); border: 1px solid rgba(0,180,0,0.3);
+      border-radius: 2px; padding: 2px 8px; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase;
+    }
+    .card-title {
+      font-size: 0.88rem; font-weight: bold; margin-bottom: 10px; color: rgba(180, 255, 180, 0.9);
+      letter-spacing: 1px; text-transform: uppercase; position: relative;
+    }
+    .card-title .g-r, .card-title .g-b {
+      position: absolute; top: 0; left: 0; pointer-events: none;
+    }
+    .card-title .g-r {
+      color: rgba(255,50,50,0.55); clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
+      animation: glitch-r 5s infinite;
+    }
+    .card-title .g-b {
+      color: rgba(50,200,255,0.45); clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+      animation: glitch-b 5s infinite 0.15s;
+    }
+    @keyframes glitch-r {
+      0%,90%,100% { transform: translate(0); opacity: 0; }
+      91% { transform: translate(-3px, 1px); opacity: 1; }
+      93% { transform: translate(2px, -1px); opacity: 1; }
+      95% { transform: translate(-1px, 2px); opacity: 0.6; }
+      97% { transform: translate(0); opacity: 0; }
+    }
+    @keyframes glitch-b {
+      0%,88%,100% { transform: translate(0); opacity: 0; }
+      89% { transform: translate(3px, -1px); opacity: 1; }
+      92% { transform: translate(-2px, 1px); opacity: 1; }
+      94% { transform: translate(1px, -2px); opacity: 0.5; }
+      96% { transform: translate(0); opacity: 0; }
+    }
+    .card-text {
+      font-size: 0.78rem; color: rgba(160, 230, 160, 0.82); line-height: 1.65; white-space: pre-wrap; position: relative;
+    }
+    #lore-empty {
+      color: rgba(255,150,170,0.4); font-size: 0.8rem; text-align: center; padding: 30px 0; font-style: italic;
+    }
+    @media (max-width: 800px) {
+      #app { flex-direction: column; padding: 16px; align-items: center; }
+      #lore-col { width: 100%; max-width: 480px; }
+    }
+    @media (max-width: 480px) {
+      #maze-wrap { border-radius: 14px; }
+      .overlay-title { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="header-title">LABERINTO DEL DOMINIO</span>
+    <a href="index.html" class="back-btn">Volver a ASTRA</a>
+  </header>
+
+  <div id="app">
+    <div id="game-col">
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;">
+        <div class="level-bar" id="level-bar"></div>
+        <span id="level-label">NIVEL 1 / 5</span>
+      </div>
+
+      <div id="maze-wrap">
+        <canvas id="maze-canvas"></canvas>
+
+        <div class="overlay visible" id="ov-start">
+          <div style="font-size:2.5rem;">🐇</div>
+          <div class="overlay-title">Laberinto<br>del Dominio</div>
+          <div class="overlay-sub">Guiá al conejo con el mouse. No toques las paredes o perderás todo el progreso.</div>
+          <button class="ov-btn" id="btn-start">Iniciar misión</button>
+        </div>
+
+        <div class="overlay" id="ov-death">
+          <div class="death-emoji">💀</div>
+          <div class="overlay-title">Capturado por<br>el Dominio</div>
+          <div class="overlay-sub" id="death-msg">El Dominio Eterno te ha atrapado. Volvés al inicio... de todo.</div>
+          <button class="ov-btn retry" id="btn-retry">Reintentar desde el Nivel 1 😔</button>
+        </div>
+
+        <div class="overlay" id="ov-clear">
+          <div style="font-size:2rem;">✨</div>
+          <div class="overlay-title" id="clear-title">¡Nivel Superado!</div>
+          <div class="overlay-sub" id="clear-sub">Fragmento de datos recuperado.</div>
+          <button class="ov-btn" id="btn-next">Siguiente nivel →</button>
+        </div>
+
+        <div class="overlay" id="ov-pause">
+          <div style="font-size:2rem;">⏸</div>
+          <div class="overlay-title">En Pausa</div>
+          <div class="overlay-sub">El tiempo se ha detenido.<br>Podés salir sin perder el nivel.</div>
+          <button class="ov-btn" id="btn-resume">Continuar [Space]</button>
+        </div>
+
+        <div class="overlay" id="ov-win">
+          <div style="font-size:2rem; animation: stars-spin 1.5s ease-out;">✦ 🐇 ✦</div>
+          <div class="overlay-title" style="font-size:1.4rem;">¡Resistencia<br>Completada!</div>
+          <div class="overlay-sub">El conejo escapó del Dominio. Revisá los archivos desbloqueados →</div>
+          <button class="ov-btn" id="btn-back">Volver a ASTRA →</button>
+          <button class="ov-btn retry" id="btn-reload">Jugar de nuevo</button>
+        </div>
+      </div>
+
+      <div style="font-size:0.72rem; color:rgba(255,150,170,0.45); text-align:center; font-family:Comfortaa,cursive; line-height:1.8;">
+        Mové el mouse para guiar al conejo 🐇<br>
+        <span style="color:rgba(255,120,150,0.5);">[ Espacio ] para pausar</span>
+      </div>
+    </div>
+
+    <div id="lore-col">
+      <h3>◈ ARCHIVOS RECUPERADOS</h3>
+      <div id="lore-empty">Superá niveles para desbloquear fragmentos del lore...</div>
+      <div id="cards-container"></div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('maze-canvas');
+    const ctx = canvas.getContext('2d');
+    const CELL = 36;
+    const RABBIT_R = Math.floor(CELL / 2 - 4);
+
+    const LORE = [
+      {
+        level: 1,
+        badge: 'Notas del Cronarca',
+        title: 'La verdad',
+        text: `Muchos me describen como líder de un imperio galáctico obsesionado con controlar todas las líneas de tiempo.
+
+Controlar es una palabra conveniente cuando se quiere insinuar una gran tiranía. El Ascenso Multiversal no consiste en someter realidades para mi beneficio. Consiste en integrarlas bajo un marco estable para que compartan nuestra utopía.
+
+No exigimos lealtad ideológica. No exigimos culto. No exigimos adhesión emocional. La única condición para formar parte del Dominio es no intentar destruir la utopía que elimina el sufrimiento estructural.`
+      },
+      {
+        level: 2,
+        badge: 'Archivo -002',
+        title: 'Dogma',
+        text: `Se habla de Adhesión de Dogma Imperial como si hubiese una doctrina mística que implantar. No existe tal dogma.
+
+El Proyecto L.I. estaba diseñado para reducir agresión sistémica en entornos complejos. La Onda de Conformidad no elimina pensamiento; elimina escaladas destructivas.`
+      },
+      {
+        level: 3,
+        badge: 'Archivo -003',
+        title: 'Sacrificio',
+        text: `Los rebeldes no murieron por mi mano. Fueron desconectados.
+
+La desconexión implica perder acceso a la Fuente Central: inmortalidad, restauración física, infraestructura pública y regulación conductual suave. No es ejecución. Es retirada de protección.`
+      },
+      {
+        level: 4,
+        badge: 'Archivo -004',
+        title: 'Agentes de la Libre Voluntad',
+        text: `Es irónico que ahora dependan de infraestructura, protocolos y plataformas reguladas para transmitir su mensaje contra la regulación.
+
+Sus rebeliones y juegos dependen de mí y solo de mí. ¿Creen que me asustan?`
+      },
+      {
+        level: 5,
+        badge: 'Archivo ERROR',
+        title: 'EL PARAÍSO',
+        text: `Si pudieras darles el paraíso a todos, ¿no lo harías?`
+      }
+    ];
+
+    const MAZES = [
+      [
+        '111111111',
+        '100000001',
+        '101111101',
+        '101000101',
+        '101010101',
+        '101010001',
+        '101011101',
+        '100000001',
+        '111111111'
+      ],
+      [
+        '11111111111',
+        '10000010001',
+        '10111010101',
+        '10100000101',
+        '10101111101',
+        '10101000001',
+        '10101011101',
+        '10101010001',
+        '10100010101',
+        '10111110101',
+        '10000000101',
+        '10111110001',
+        '11111111111'
+      ],
+      [
+        '1111111111111',
+        '1000000000001',
+        '1011111111101',
+        '1010000000101',
+        '1010111110101',
+        '1010100010101',
+        '1010101010101',
+        '1010101010001',
+        '1010001011111',
+        '1011101000001',
+        '1000101111101',
+        '1110100000101',
+        '1000001110001',
+        '1111111111111'
+      ],
+      [
+        '1111111111111',
+        '1000001000001',
+        '1011101011101',
+        '1010000010001',
+        '1010111110111',
+        '1010000010001',
+        '1011111011101',
+        '1000001010001',
+        '1111101010111',
+        '1000101010001',
+        '1010101011101',
+        '1010001000001',
+        '1011111111101',
+        '1000000000001',
+        '1111111111111'
+      ],
+      [
+        '111111111111111',
+        '100000000000001',
+        '101111111111101',
+        '101000000000101',
+        '101011111110101',
+        '101010000010101',
+        '101010111010101',
+        '101010101010101',
+        '101000101000101',
+        '101110101110101',
+        '100010100010001',
+        '111010111011101',
+        '100010001000001',
+        '101111101111101',
+        '100000000000001',
+        '111111111111111'
+      ]
+    ];
+
+    let level = 0;
+    let playing = false;
+    let paused = false;
+    let rabbit = { x: 0, y: 0 };
+    let grid = [];
+    let cols = 0;
+    let rows = 0;
+    let startCell = { col: 1, row: 1 };
+    let exitCell = { col: 0, row: 0 };
+    let unlockedCards = [];
+    let selectedCard = -1;
+    let noclip = false;
+    let animFrameId = null;
+    let lastMouseX = null;
+    let lastMouseY = null;
+    let pendingDX = 0;
+    let pendingDY = 0;
+    const SENSITIVITY = 1.0;
+    const MAX_STEP = 6;
+
+    function parseMaze(strings) {
+      return strings.map(row => row.split('').map(c => c === '1' ? 1 : 0));
+    }
+
+    function setupLevel(lvl) {
+      level = lvl;
+      grid = parseMaze(MAZES[lvl]);
+      rows = grid.length;
+      cols = grid[0].length;
+      canvas.width = cols * CELL;
+      canvas.height = rows * CELL;
+      startCell = { col: 1, row: 1 };
+      exitCell = { col: cols - 2, row: rows - 2 };
+      rabbit.x = startCell.col * CELL + CELL / 2;
+      rabbit.y = startCell.row * CELL + CELL / 2;
+      updateLevelUI();
+    }
+
+    function circleHitsWall(cx, cy, r) {
+      const left = cx - r;
+      const right = cx + r;
+      const top = cy - r;
+      const bottom = cy + r;
+      const c0 = Math.floor(left / CELL);
+      const c1 = Math.floor(right / CELL);
+      const r0 = Math.floor(top / CELL);
+      const r1 = Math.floor(bottom / CELL);
+
+      for (let row = r0; row <= r1; row++) {
+        for (let col = c0; col <= c1; col++) {
+          if (row < 0 || row >= rows || col < 0 || col >= cols) return true;
+          if (grid[row][col] !== 1) continue;
+          const wx0 = col * CELL;
+          const wx1 = wx0 + CELL;
+          const wy0 = row * CELL;
+          const wy1 = wy0 + CELL;
+          const nearX = Math.max(wx0, Math.min(cx, wx1));
+          const nearY = Math.max(wy0, Math.min(cy, wy1));
+          const dx = cx - nearX;
+          const dy = cy - nearY;
+          if (dx * dx + dy * dy < r * r) return true;
+        }
+      }
+      return false;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fdf4f6';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * CELL;
+          const y = r * CELL;
+          if (grid[r][c] === 1) {
+            ctx.fillStyle = '#1e0006';
+            ctx.fillRect(x, y, CELL, CELL);
+            ctx.fillStyle = 'rgba(255,80,110,0.07)';
+            ctx.fillRect(x, y, CELL, 2);
+            ctx.fillRect(x, y, 2, CELL);
+          } else {
+            const isExit = c === exitCell.col && r === exitCell.row;
+            if (isExit) {
+              const g = ctx.createRadialGradient(x + CELL/2, y + CELL/2, 2, x + CELL/2, y + CELL/2, CELL * 0.85);
+              g.addColorStop(0, 'rgba(255,140,160,0.4)');
+              g.addColorStop(1, '#fdf4f6');
+              ctx.fillStyle = g;
+              ctx.fillRect(x, y, CELL, CELL);
+              ctx.font = `${Math.round(CELL * 0.68)}px serif`;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText('✨', exitCell.col * CELL + CELL/2, exitCell.row * CELL + CELL/2);
+            }
+            ctx.strokeStyle = 'rgba(180,0,30,0.05)';
+            ctx.lineWidth = 0.5;
+            ctx.strokeRect(x, y, CELL, CELL);
+          }
+        }
+      }
+
+      const grd = ctx.createRadialGradient(rabbit.x, rabbit.y, 1, rabbit.x, rabbit.y, CELL * 0.6);
+      grd.addColorStop(0, 'rgba(255,80,110,0.20)');
+      grd.addColorStop(1, 'rgba(255,80,110,0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(rabbit.x, rabbit.y, CELL * 0.6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.font = `${Math.round(CELL * 0.72)}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🐇', rabbit.x, rabbit.y);
+
+      if (noclip) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,80,110,0.7)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.arc(rabbit.x, rabbit.y, RABBIT_R + 4, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    function applyMouseDelta(newX, newY) {
+      if (lastMouseX === null) {
+        lastMouseX = newX;
+        lastMouseY = newY;
+        return;
+      }
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      pendingDX += (newX - lastMouseX) * scaleX * SENSITIVITY;
+      pendingDY += (newY - lastMouseY) * scaleY * SENSITIVITY;
+      lastMouseX = newX;
+      lastMouseY = newY;
+    }
+
+    function resetMouseAnchor() {
+      lastMouseX = null;
+      lastMouseY = null;
+      pendingDX = 0;
+      pendingDY = 0;
+    }
+
+    function moveRabbit() {
+      if (!playing || paused) return;
+      const len = Math.hypot(pendingDX, pendingDY);
+      let dx = pendingDX;
+      let dy = pendingDY;
+      if (len > MAX_STEP) {
+        dx = dx / len * MAX_STEP;
+        dy = dy / len * MAX_STEP;
+      }
+      pendingDX = 0;
+      pendingDY = 0;
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) return;
+
+      const nx = rabbit.x + dx;
+      const ny = rabbit.y + dy;
+      if (!noclip && circleHitsWall(nx, ny, RABBIT_R)) {
+        onDeath();
+        return;
+      }
+      rabbit.x = nx;
+      rabbit.y = ny;
+
+      const ex = exitCell.col * CELL + CELL / 2;
+      const ey = exitCell.row * CELL + CELL / 2;
+      if (Math.hypot(rabbit.x - ex, rabbit.y - ey) < CELL * 0.42) {
+        onLevelClear();
+      }
+    }
+
+    function gameLoop() {
+      moveRabbit();
+      draw();
+      if (playing) animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function showOverlay(id) {
+      document.getElementById(id).classList.add('visible');
+    }
+
+    function hideAllOverlays() {
+      ['ov-start','ov-death','ov-clear','ov-pause','ov-win'].forEach(id => {
+        document.getElementById(id).classList.remove('visible');
+      });
+    }
+
+    function startGame() {
+      hideAllOverlays();
+      setupLevel(0);
+      resetMouseAnchor();
+      playing = true;
+      paused = false;
+      animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function onDeath() {
+      playing = false;
+      cancelAnimationFrame(animFrameId);
+      const messages = [
+        'El Dominio Eterno te ha atrapado. Volvés al inicio... de todo.',
+        '¡Recapturado! La Onda de Conformidad te consume. De vuelta al Nivel 1.',
+        'El Cronoarca Supremo sonríe. Volvés a empezar desde cero.',
+        'Fallaste la misión. Todo el progreso fue borrado por el Dominio.',
+        'La pared te traicionó. Volvés al Nivel 1. Sin excepciones.'
+      ];
+      document.getElementById('death-msg').textContent = messages[Math.floor(Math.random() * messages.length)];
+      showOverlay('ov-death');
+    }
+
+    function onRetry() {
+      unlockedCards = [];
+      selectedCard = -1;
+      document.getElementById('cards-container').innerHTML = '';
+      document.getElementById('lore-empty').style.display = 'block';
+      document.querySelector('#lore-col h3').textContent = '◈ ARCHIVOS RECUPERADOS';
+      hideAllOverlays();
+      setupLevel(0);
+      resetMouseAnchor();
+      playing = true;
+      paused = false;
+      animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function onLevelClear() {
+      playing = false;
+      cancelAnimationFrame(animFrameId);
+      unlockCard(level);
+      const clearTitles = ['¡Sector despejado!', '¡Zona liberada!', '¡Ruta habilitada!', '¡Área asegurada!', '¡Misión cumplida!'];
+      const clearSubs = [
+        'Fragmento de datos del Proyecto ASTRA recuperado.',
+        'El Dominio no pudo contenerte. Nuevo archivo desbloqueado.',
+        'Señal de resistencia captada con éxito.',
+        'Transmisión encriptada descifrada. Archivo añadido.',
+        'Último fragmento recuperado. La Resistencia ha triunfado.'
+      ];
+      document.getElementById('clear-title').textContent = clearTitles[level];
+      document.getElementById('clear-sub').textContent = clearSubs[level];
+      if (level >= MAZES.length - 1) {
+        setTimeout(() => {
+          hideAllOverlays();
+          showOverlay('ov-win');
+        }, 300);
+      } else {
+        showOverlay('ov-clear');
+      }
+    }
+
+    function onNextLevel() {
+      hideAllOverlays();
+      setupLevel(level + 1);
+      resetMouseAnchor();
+      playing = true;
+      paused = false;
+      animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function setPaused(val) {
+      paused = val;
+      const overlay = document.getElementById('ov-pause');
+      if (paused) {
+        overlay.classList.add('visible');
+        resetMouseAnchor();
+      } else {
+        overlay.classList.remove('visible');
+        resetMouseAnchor();
+      }
+    }
+
+    function updateLevelUI() {
+      const bar = document.getElementById('level-bar');
+      bar.innerHTML = '';
+      for (let i = 0; i < MAZES.length; i++) {
+        const pip = document.createElement('div');
+        pip.className = 'level-pip ' + (i < level ? 'done' : i === level ? 'current' : '');
+        bar.appendChild(pip);
+      }
+      document.getElementById('level-label').textContent = `NIVEL ${level + 1} / ${MAZES.length}`;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function unlockCard(lvl) {
+      if (unlockedCards.includes(lvl)) return;
+      unlockedCards.push(lvl);
+      const data = LORE[lvl];
+      const empty = document.getElementById('lore-empty');
+      empty.style.display = 'none';
+      const card = document.createElement('div');
+      card.className = 'lore-card';
+      card.dataset.idx = String(lvl);
+      card.innerHTML = `
+        <div class="card-badge">${escapeHtml(data.badge)}</div>
+        <div class="card-title">
+          <span class="g-r" aria-hidden="true">${escapeHtml(data.title)}</span>
+          <span class="g-b" aria-hidden="true">${escapeHtml(data.title)}</span>
+          ${escapeHtml(data.title)}
+        </div>
+        <div class="card-text">${escapeHtml(data.text)}</div>
+      `;
+      card.addEventListener('click', () => selectCard(lvl, card));
+      setTimeout(() => triggerGlitchBurst(card), 100);
+      document.getElementById('cards-container').appendChild(card);
+      document.querySelector('#lore-col h3').textContent = 'TRANSMISIONES INTERCEPTADAS';
+    }
+
+    function selectCard(lvl, cardEl) {
+      document.querySelectorAll('.lore-card').forEach(c => c.classList.remove('selected'));
+      if (selectedCard === lvl) {
+        selectedCard = -1;
+        return;
+      }
+      selectedCard = lvl;
+      cardEl.classList.add('selected');
+    }
+
+    function triggerGlitchBurst(card) {
+      let flashes = 0;
+      const id = setInterval(() => {
+        card.style.filter = flashes % 2 === 0 ? 'brightness(1.8) hue-rotate(90deg) saturate(2)' : 'brightness(1)';
+        flashes++;
+        if (flashes > 8) {
+          clearInterval(id);
+          card.style.filter = '';
+        }
+      }, 60);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' && (playing || paused)) {
+        e.preventDefault();
+        setPaused(!paused);
+      }
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!playing || paused) {
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        return;
+      }
+      applyMouseDelta(e.clientX, e.clientY);
+    });
+
+    const wrap = document.getElementById('maze-wrap');
+    wrap.addEventListener('touchstart', e => {
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+    }, { passive: true });
+
+    wrap.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if (!playing || paused) return;
+      applyMouseDelta(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    document.getElementById('btn-start').addEventListener('click', startGame);
+    document.getElementById('btn-retry').addEventListener('click', onRetry);
+    document.getElementById('btn-next').addEventListener('click', onNextLevel);
+    document.getElementById('btn-resume').addEventListener('click', () => setPaused(false));
+    document.getElementById('btn-back').addEventListener('click', () => { window.location.href = 'index.html'; });
+    document.getElementById('btn-reload').addEventListener('click', () => { window.location.reload(); });
+
+    (function setupKonami() {
+      const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      let pos = 0;
+      document.addEventListener('keydown', e => {
+        if (e.key === KONAMI[pos]) {
+          pos++;
+          if (pos === KONAMI.length) {
+            pos = 0;
+            noclip = !noclip;
+            showKonamiToast(noclip);
+          }
+        } else {
+          pos = e.key === KONAMI[0] ? 1 : 0;
+        }
+      });
+    })();
+
+    function showKonamiToast(active) {
+      let toast = document.getElementById('konami-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'konami-toast';
+        toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(20,0,8,0.92);border:1.5px solid rgba(255,120,150,0.6);color:#fff;font-family:Yusei Magic,sans-serif;font-size:0.85rem;padding:10px 22px;border-radius:30px;z-index:9999;pointer-events:none;text-shadow:0 0 10px rgba(255,100,130,0.9);box-shadow:0 0 22px rgba(255,60,90,0.45);transition:opacity 0.4s ease;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = active ? 'NOCLIP ACTIVADO — el conejo es libre' : 'NOCLIP DESACTIVADO — las paredes vuelven';
+      toast.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+    }
+
+    setupLevel(0);
+    draw();
+  </script>
+</body>
+</html>
