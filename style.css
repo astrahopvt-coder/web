@@ -1,11 +1,11 @@
-/* ----------------------------- /
-/ FUENTES                        /
-/ ----------------------------- */
+/* ----------------------------- */
+/* FUENTES                        */
+/* ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Yusei+Magic&display=swap');
 
-/* ----------------------------- /
-/ PALETA Y ESTILO GENERAL       /
-/ ----------------------------- */
+/* ----------------------------- */
+/* PALETA Y ESTILO GENERAL       */
+/* ----------------------------- */
 :root {
   --bg1: #5a0010;
   --bg2: #8b0020;
@@ -22,29 +22,23 @@
   --glow2: 0 0 28px rgba(255, 100, 130, 0.85);
 }
 
-/* ----------------------------- /
-/ FONDO OPTIMIZADO              /
-/ ----------------------------- */
+/* ----------------------------- */
+/* FONDO                         */
+/* ----------------------------- */
 body {
   margin: 0;
-  background: linear-gradient(135deg, #1a0005 0%, #4a0012 25%, #7d0020 55%, #b52030 80%, #cc3a3a 100%);
-  background-size: cover;
-  min-height: 100vh;
-  font-family: 'Comfortaa', cursive;
-  position: relative;
-}
-
-/* La animación se mueve a un pseudo-elemento para evitar repaints del body */
-body::after {
-  content: '';
-  position: fixed;
-  inset: -50%;
-  z-index: -1;
-  background: inherit;
+  background: linear-gradient(
+    135deg,
+    #1a0005 0%,
+    #4a0012 25%,
+    #7d0020 55%,
+    #b52030 80%,
+    #cc3a3a 100%
+  );
   background-size: 300% 300%;
   animation: ondaSuave 22s ease-in-out infinite;
-  pointer-events: none;
-  will-change: transform;
+  min-height: 100vh;
+  font-family: 'Comfortaa', cursive;
 }
 
 @keyframes ondaSuave {
@@ -72,17 +66,16 @@ body::before {
   pointer-events: none;
   z-index: 0;
   animation: floatStars 8s ease-in-out infinite alternate;
-  will-change: transform;
 }
 
 @keyframes floatStars {
-  0%   { transform: translate3d(0, 0px, 0) rotate(0deg); }
-  100% { transform: translate3d(0, -15px, 0) rotate(5deg); }
+  0%   { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-15px) rotate(5deg); }
 }
 
-/* ----------------------------- /
-/ TIPOGRAFÍA GLOBAL             /
-/ ----------------------------- */
+/* ----------------------------- */
+/* TIPOGRAFÍA GLOBAL             */
+/* ----------------------------- */
 body, p, li, input, textarea, select,
 .donador-name, .copyright,
 table td {
@@ -105,6 +98,7 @@ table th,
   color: #fff;
   font-weight: normal;
   font-style: normal;
+  /* Yusei Magic has no bold variant — simulate weight with stroke */
   -webkit-text-stroke: 0.6px currentColor;
   paint-order: stroke fill;
   text-shadow:
@@ -113,9 +107,9 @@ table th,
     2px 2px 0px rgba(80, 0, 20, 0.6);
 }
 
-/* ----------------------------- /
-/ CABECERA Y MENÚ               /
-/ ----------------------------- */
+/* ----------------------------- */
+/* CABECERA Y MENÚ               */
+/* ----------------------------- */
 header {
   display: flex;
   flex-direction: column;
@@ -151,12 +145,10 @@ h1 {
   font-family: 'Yusei Magic', sans-serif !important;
   font-weight: normal !important;
   font-style: normal !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  transition: all 0.25s ease;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   text-shadow: 0 0 10px rgba(255, 150, 170, 0.9), 2px 2px 0 rgba(80, 0, 20, 0.5);
   box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
-  contain: layout style paint;
 }
 
 .nav button:hover,
@@ -168,9 +160,9 @@ h1 {
   color: #fff !important;
 }
 
-/* ----------------------------- /
-/ SECCIONES                     /
-/ ----------------------------- */
+/* ----------------------------- */
+/* SECCIONES                     */
+/* ----------------------------- */
 section {
   display: none;
   padding: 40px;
@@ -179,29 +171,29 @@ section {
   animation: fade 0.4s ease;
   position: relative;
   z-index: 5;
-  contain: layout style paint;
 }
 
 @keyframes fade {
-  from { opacity: 0; transform: translate3d(0, 8px, 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .visible { display: block; }
 
-/* ----------------------------- /
-/ TARJETAS Y BLOQUES            /
-/ ----------------------------- */
+/* ----------------------------- */
+/* TARJETAS Y BLOQUES            */
+/* ----------------------------- */
 .card {
   background: var(--card-bg);
   border: 1.5px solid var(--card-border);
   padding: 25px;
   border-radius: 24px;
-  box-shadow: var(--glow), inset 0 1px 0 rgba(255, 120, 150, 0.12);
+  box-shadow:
+    var(--glow),
+    inset 0 1px 0 rgba(255, 120, 150, 0.12);
   margin-bottom: 25px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  contain: layout style paint;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 /* Botones */
@@ -217,7 +209,7 @@ section {
   font-family: 'Yusei Magic', sans-serif !important;
   box-shadow: 0 4px 15px rgba(180, 0, 30, 0.5);
   border: 1.5px solid rgba(255, 120, 150, 0.5);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: all 0.2s ease;
   text-shadow: 0 0 8px rgba(255,150,170,0.7), 1px 1px 0 rgba(80,0,20,0.4);
 }
 
@@ -255,7 +247,7 @@ video:not(.logo), audio {
   image-rendering: auto;
   filter: drop-shadow(0 0 20px rgba(255, 120, 150, 0.8)) drop-shadow(0 0 40px rgba(180, 0, 30, 0.5));
   margin-bottom: 10px;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .logo:hover {
@@ -293,13 +285,17 @@ video:not(.logo), audio {
 .social-icons i {
   font-size: 45px;
   color: #fff;
-  text-shadow: 0 0 10px rgba(255, 150, 175, 0.9), 0 0 22px rgba(220, 50, 80, 0.6);
-  transition: transform 0.25s ease, text-shadow 0.25s ease;
+  text-shadow:
+    0 0 10px rgba(255, 150, 175, 0.9),
+    0 0 22px rgba(220, 50, 80, 0.6);
+  transition: 0.25s ease;
 }
 
 .social-icons i:hover {
   transform: scale(1.2) rotate(-5deg);
-  text-shadow: 0 0 20px rgba(255, 180, 200, 1), 0 0 38px rgba(255, 60, 100, 1);
+  text-shadow:
+    0 0 20px rgba(255, 180, 200, 1),
+    0 0 38px rgba(255, 60, 100, 1);
 }
 
 /* Estilo del título "Mis redes" */
@@ -310,9 +306,9 @@ video:not(.logo), audio {
   margin-bottom: 20px;
 }
 
-/* ----------------------------- /
-/ LISTAS PATROS/APORTADORES     /
-/ ----------------------------- */
+/* ----------------------------- */
+/* LISTAS PATROS/APORTADORES     */
+/* ----------------------------- */
 .lista-patro li,
 .lista-aportadores li {
   margin: 5px 0;
@@ -324,17 +320,15 @@ video:not(.logo), audio {
   font-weight: 700;
   color: #fff !important;
   font-family: 'Comfortaa', cursive;
-  contain: layout style paint;
 }
 
-/* ----------------------------- /
-/ GALERÍA DE FANARTS            /
-/ ----------------------------- */
+/* ----------------------------- */
+/* GALERÍA DE FANARTS            */
+/* ----------------------------- */
 .galeria {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 15px;
-  contain: layout style paint;
 }
 
 .galeria img {
@@ -342,8 +336,7 @@ video:not(.logo), audio {
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(180, 0, 30, 0.5);
   border: 1.5px solid rgba(255, 120, 150, 0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .galeria img:hover {
@@ -355,7 +348,6 @@ video:not(.logo), audio {
 .kofi-card {
   background: rgba(40, 0, 10, 0.85) !important;
   border: 1.5px solid rgba(255, 120, 150, 0.4) !important;
-  contain: layout style paint;
 }
 
 .kofi-card h2 {
@@ -373,12 +365,11 @@ video:not(.logo), audio {
   font-size: 1.1rem;
   color: #fff;
   box-shadow: 0 4px 15px rgba(180, 0, 30, 0.4);
-  contain: layout style paint;
 }
 
-/* ----------------------------- /
-/ STREAM EMBED                  /
-/ ----------------------------- */
+/* ----------------------------- */
+/* STREAM EMBED                  */
+/* ----------------------------- */
 .stream-container {
   position: relative;
   width: 100%;
@@ -388,7 +379,6 @@ video:not(.logo), audio {
   border-radius: 20px;
   box-shadow: 0 8px 30px rgba(180, 0, 30, 0.6);
   border: 1.5px solid rgba(255, 120, 150, 0.4);
-  contain: layout style paint;
 }
 
 .stream-container iframe {
@@ -414,9 +404,8 @@ video:not(.logo), audio {
   border-radius: 22px;
   padding: 12px;
   box-shadow: 0 6px 20px rgba(150, 0, 30, 0.4);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: 0.25s ease;
   overflow: hidden;
-  contain: layout style paint;
 }
 
 .patro-card:hover {
@@ -433,9 +422,9 @@ video:not(.logo), audio {
   background: rgba(80, 0, 20, 0.5);
 }
 
-/* ----------------------------- /
-/ CARRUSEL DE DONADORES         /
-/ ----------------------------- */
+/* ----------------------------- */
+/* CARRUSEL DE DONADORES         */
+/* ----------------------------- */
 .donadores-carrusel {
   background: rgba(60, 0, 15, 0.72) !important;
   border: 1.5px solid rgba(255, 120, 150, 0.35) !important;
@@ -445,9 +434,7 @@ video:not(.logo), audio {
   padding: 25px 20px 35px;
   overflow: visible !important;
   position: relative;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  contain: layout style paint;
+  backdrop-filter: blur(14px) !important;
 }
 
 .donadores-carrusel h2 {
@@ -467,12 +454,11 @@ video:not(.logo), audio {
   gap: 28px;
   padding: 10px 0;
   animation: carruselScroll 60s linear infinite;
-  will-change: transform;
 }
 
 @keyframes carruselScroll {
-  0%   { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-700%, 0, 0); }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-700%); }
 }
 
 .carrusel-wrapper:hover .carrusel {
@@ -484,12 +470,11 @@ video:not(.logo), audio {
   background: rgba(100, 0, 25, 0.65);
   border: 1.5px solid rgba(255, 120, 150, 0.35);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-radius: 20px;
   padding: 12px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: 0.25s ease;
 }
 
 .donador-slide:hover {
@@ -520,69 +505,93 @@ video:not(.logo), audio {
   text-shadow: 0 0 6px rgba(220, 50, 80, 0.5);
 }
 
-/* ============================== /
-/   OPTIMIZACIÓN MÓVILES 768px   /
-/ ============================== */
+/* ============================== */
+/*   OPTIMIZACIÓN MÓVILES 768px   */
+/* ============================== */
 @media (max-width: 768px) {
-  body::after { background-size: 200% 200%; animation-duration: 26s; }
+  body {
+    background-size: 200% 200%;
+    animation-duration: 26s;
+  }
+
   .logo { width: 260px; margin-top: 5px; }
+
   .nav { flex-wrap: wrap; gap: 10px; }
   .nav button { font-size: 0.9rem !important; padding: 8px 16px; }
+
   section { padding: 25px; }
+
   .galeria { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+
   .stream-container { padding-bottom: 60%; }
+
   .social-icons i { font-size: 30px; }
   .social-icons { flex-wrap: wrap; gap: 15px; }
+
   .card { padding: 18px; border-radius: 18px; }
+
   .donador-slide { min-width: 150px; padding: 10px; }
   .donador-avatar { width: 70px; height: 70px; }
+
   .astra-model-image {
     float: none;
     display: block;
     width: 80%;
     margin: 15px auto 25px auto;
   }
+
   .donadores-carrusel {
     overflow: visible !important;
     padding-bottom: 30px;
   }
+
   .carrusel-wrapper {
     overflow: hidden;
     border-radius: 16px;
   }
 }
 
-/* ============================== /
-/   OPTIMIZACIÓN MÓVILES 480px   /
-/ ============================== */
+/* ============================== */
+/*   OPTIMIZACIÓN MÓVILES 480px   */
+/* ============================== */
 @media (max-width: 480px) {
   body::before { display: none; }
+
   .social-icons i { font-size: 22px; }
   .social-icons { flex-wrap: wrap; gap: 15px; }
-  body::after { background-size: 240% 240%; animation-duration: 32s; }
+
+  body { background-size: 240% 240%; animation-duration: 32s; }
+
   .logo { width: 210px; }
+
   .nav button { font-size: 0.85rem !important; padding: 6px 14px; }
+
   p, li { font-size: 0.95rem; line-height: 1.45; }
+
   h2, h3 { font-size: 1.4rem; }
+
   .donador-slide { min-width: 130px; padding: 8px; }
   .donador-avatar { width: 60px; height: 60px; }
+
   .galeria { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+
   .stream-container { padding-bottom: 68%; }
+
   section { padding: 18px; }
+
   .footer-links { flex-direction: column; gap: 10px; }
   .footer-links a, .copyright { font-size: 0.8rem; }
   footer { padding: 20px 10px; }
 }
 
-/* ----------------------------- /
-/ PIE DE PÁGINA (FOOTER)        /
-/ ----------------------------- */
+/* ----------------------------- */
+/* PIE DE PÁGINA (FOOTER)        */
+/* ----------------------------- */
 footer {
   margin-top: 50px;
   padding: 30px 20px;
   background: rgba(30, 0, 8, 0.6);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   text-align: center;
   border-top: 1px solid rgba(255, 120, 150, 0.25);
   position: relative;
@@ -606,7 +615,7 @@ footer {
   font-family: 'Yusei Magic', sans-serif !important;
   font-weight: normal;
   letter-spacing: 1px;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
+  transition: all 0.2s;
   text-shadow: 0 0 8px rgba(255, 120, 150, 0.7);
 }
 
@@ -624,14 +633,13 @@ footer {
   font-family: 'Comfortaa', cursive !important;
 }
 
-/* ----------------------------- /
-/ SECCIÓN DONACIONES            /
-/ ----------------------------- */
+/* ----------------------------- */
+/* SECCIÓN DONACIONES            */
+/* ----------------------------- */
 .support-philosophy-card {
   border: 2px solid rgba(255, 120, 150, 0.55) !important;
   box-shadow: var(--glow2);
   animation: pulseGlow 4s infinite alternate;
-  contain: layout style paint;
 }
 
 @keyframes pulseGlow {
@@ -653,7 +661,7 @@ footer {
   color: #fff !important;
   border: 2px solid rgba(255, 120, 150, 0.6);
   box-shadow: 0 6px 25px rgba(200, 20, 50, 0.55);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
   text-shadow: 0 0 10px rgba(255,150,170,0.7), 1px 1px 0 rgba(80,0,20,0.5);
 }
 
@@ -671,7 +679,6 @@ footer {
   padding: 10px;
   border: 1.5px dashed rgba(255, 120, 150, 0.3);
   border-radius: 16px;
-  contain: layout style paint;
 }
 
 .beneficios-grid div {
@@ -679,7 +686,6 @@ footer {
   background: rgba(100, 0, 20, 0.45);
   border-left: 3px solid rgba(255, 120, 150, 0.6);
   border-radius: 12px;
-  contain: layout style paint;
 }
 
 .beneficios-grid h3 {
@@ -699,7 +705,6 @@ table {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
-  contain: layout style paint;
 }
 
 table thead tr {
@@ -738,7 +743,7 @@ table tr:hover {
   color: #fff !important;
   border: 2px solid rgba(160, 110, 255, 0.55);
   box-shadow: 0 4px 20px rgba(100, 50, 200, 0.4);
-  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .streamloots-button:hover {
@@ -764,9 +769,9 @@ table tr:hover {
   margin: 0 0 15px 25px;
 }
 
-/* ================================ /
-/  WIDGET COUNTDOWN PRÓXIMO DIRECTO /
-/ ================================ */
+/* ================================ */
+/*  WIDGET COUNTDOWN PRÓXIMO DIRECTO */
+/* ================================ */
 #countdown-widget {
   position: fixed;
   right: 18px;
@@ -777,25 +782,28 @@ table tr:hover {
   background: rgba(40, 0, 12, 0.82);
   border: 1.5px solid rgba(255, 120, 150, 0.45);
   border-radius: 22px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 0 22px rgba(255, 60, 90, 0.35), inset 0 1px 0 rgba(255, 120, 150, 0.15);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 0 22px rgba(255, 60, 90, 0.35),
+    inset 0 1px 0 rgba(255, 120, 150, 0.15);
   overflow: hidden;
   animation: cw-float 6s ease-in-out infinite alternate;
-  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.1s linear;
-  will-change: transform;
-  contain: layout style paint;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 #countdown-widget.live {
   border-color: rgba(255, 80, 80, 0.9) !important;
-  box-shadow: 0 0 30px rgba(255, 50, 50, 0.7), 0 0 60px rgba(200, 0, 30, 0.35), inset 0 1px 0 rgba(255, 120, 150, 0.2);
+  box-shadow:
+    0 0 30px rgba(255, 50, 50, 0.7),
+    0 0 60px rgba(200, 0, 30, 0.35),
+    inset 0 1px 0 rgba(255, 120, 150, 0.2);
   animation: cw-float 6s ease-in-out infinite alternate, cw-live-pulse 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes cw-float {
-  0%   { transform: translate3d(0, -50%, 0); }
-  100% { transform: translate3d(-4px, -50%, 0); }
+  0%   { transform: translateY(-50%) translateX(0px); }
+  100% { transform: translateY(-50%) translateX(-4px); }
 }
 
 @keyframes cw-live-pulse {
@@ -807,10 +815,16 @@ table tr:hover {
   position: absolute;
   inset: -1px;
   border-radius: 23px;
-  background: conic-gradient(from 0deg, transparent 0%, rgba(255, 80, 110, 0.18) 25%, transparent 50%, rgba(255, 120, 150, 0.12) 75%, transparent 100%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255, 80, 110, 0.18) 25%,
+    transparent 50%,
+    rgba(255, 120, 150, 0.12) 75%,
+    transparent 100%
+  );
   animation: cw-ring-spin 8s linear infinite;
   pointer-events: none;
-  will-change: transform;
 }
 
 @keyframes cw-ring-spin {
@@ -834,7 +848,6 @@ table tr:hover {
 .cw-icon {
   font-size: 1rem;
   animation: cw-icon-pulse 2s ease-in-out infinite alternate;
-  will-change: filter;
 }
 
 @keyframes cw-icon-pulse {
@@ -869,7 +882,7 @@ table tr:hover {
   background: rgba(100, 0, 20, 0.5);
   border: 1px solid rgba(255, 120, 150, 0.2);
   color: rgba(255, 180, 200, 0.55);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .cw-day.active {
@@ -902,9 +915,10 @@ table tr:hover {
   font-size: 1.55rem;
   color: #fff;
   line-height: 1;
-  text-shadow: 0 0 12px rgba(255, 80, 110, 0.9), 0 0 24px rgba(255, 60, 90, 0.5);
+  text-shadow:
+    0 0 12px rgba(255, 80, 110, 0.9),
+    0 0 24px rgba(255, 60, 90, 0.5);
   animation: cw-digit-glow 3s ease-in-out infinite alternate;
-  will-change: text-shadow;
 }
 
 @keyframes cw-digit-glow {
@@ -929,7 +943,6 @@ table tr:hover {
   line-height: 1;
   margin-bottom: 12px;
   animation: cw-sep-blink 1s step-start infinite;
-  will-change: opacity;
 }
 
 @keyframes cw-sep-blink {
@@ -970,9 +983,11 @@ table tr:hover {
     animation: none;
     padding: 0;
   }
+
   #countdown-widget.live {
     animation: cw-live-pulse 1.5s ease-in-out infinite alternate;
   }
+
   .cw-inner {
     display: flex;
     align-items: center;
@@ -981,10 +996,12 @@ table tr:hover {
     flex-wrap: wrap;
     justify-content: center;
   }
+
   .cw-header { margin-bottom: 0; }
   .cw-days-row { display: none; }
   .cw-timer { margin-bottom: 0; }
   .cw-unit span { font-size: 1.3rem; }
+
   .cw-status {
     border-top: none;
     padding-top: 0;
@@ -993,9 +1010,9 @@ table tr:hover {
   }
 }
 
-/* ================================ /
-/  DRAG HANDLE DEL COUNTDOWN       /
-/ ================================ */
+/* ================================ */
+/*  DRAG HANDLE DEL COUNTDOWN       */
+/* ================================ */
 .cw-drag-handle {
   display: flex;
   justify-content: center;
@@ -1017,7 +1034,9 @@ table tr:hover {
 
 #countdown-widget.dragging {
   cursor: grabbing;
-  box-shadow: 0 0 35px rgba(255, 80, 110, 0.6), 0 12px 40px rgba(100, 0, 20, 0.5);
+  box-shadow:
+    0 0 35px rgba(255, 80, 110, 0.6),
+    0 12px 40px rgba(100, 0, 20, 0.5);
   transition: box-shadow 0.1s;
 }
 
@@ -1025,9 +1044,9 @@ table tr:hover {
   cursor: grabbing;
 }
 
-/* ================================ /
-/  BOTÓN PAUSA/PLAY MÚSICA         /
-/ ================================ */
+/* ================================ */
+/*  BOTÓN PAUSA/PLAY MÚSICA         */
+/* ================================ */
 #music-toggle {
   position: fixed;
   bottom: 22px;
@@ -1038,8 +1057,8 @@ table tr:hover {
   border-radius: 50%;
   background: rgba(40, 0, 12, 0.82);
   border: 1.5px solid rgba(255, 120, 150, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1061,7 +1080,6 @@ table tr:hover {
   display: inline-block;
   animation: music-pulse 2s ease-in-out infinite alternate;
   transition: opacity 0.2s;
-  will-change: transform, text-shadow;
 }
 
 #music-toggle.muted #music-icon {
@@ -1075,9 +1093,9 @@ table tr:hover {
   100% { transform: scale(1.15); text-shadow: 0 0 18px rgba(255, 140, 160, 1); }
 }
 
-/* ================================ /
-/  LIGHTBOX GALERÍA FANARTS        /
-/ ================================ */
+/* ================================ */
+/*  LIGHTBOX GALERÍA FANARTS        */
+/* ================================ */
 #lightbox {
   display: none;
   position: fixed;
@@ -1115,7 +1133,6 @@ table tr:hover {
   max-width: 92vw;
   max-height: 92vh;
   animation: lb-pop-in 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: transform;
 }
 
 @keyframes lb-pop-in {
@@ -1128,7 +1145,9 @@ table tr:hover {
   max-height: 85vh;
   border-radius: 18px;
   border: 2px solid rgba(255, 120, 150, 0.45);
-  box-shadow: 0 0 40px rgba(255, 60, 90, 0.4), 0 20px 60px rgba(0, 0, 0, 0.7);
+  box-shadow:
+    0 0 40px rgba(255, 60, 90, 0.4),
+    0 20px 60px rgba(0, 0, 0, 0.7);
   object-fit: contain;
   transition: opacity 0.15s ease;
   display: block;
@@ -1146,9 +1165,8 @@ table tr:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -1177,26 +1195,15 @@ table tr:hover {
   border-color: rgba(255, 160, 180, 0.8);
 }
 
+/* Galería: cursor pointer en imágenes */
+.galeria img {
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
   #lb-prev, #lb-next { width: 36px; height: 36px; font-size: 0.9rem; }
   #lb-img { max-width: 88vw; }
   #lb-close { top: -14px; right: -10px; width: 32px; height: 32px; }
   #music-toggle { bottom: 14px; right: 14px; width: 40px; height: 40px; }
   #music-toggle #music-icon { font-size: 1.1rem; }
-}
-
-/* ================================ /
-/  ACCESIBILIDAD Y REDUCCIÓN MOV   /
-/ ================================ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  .carrusel { animation: none; }
-  body::after, body::before { animation: none; }
-  #countdown-widget { animation: none; }
-  #countdown-widget.live { animation: none; }
-  .cw-icon, .cw-digit-glow, .cw-sep-blink, .music-pulse, .pulseGlow { animation: none; }
 }
