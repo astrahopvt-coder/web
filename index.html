@@ -287,16 +287,16 @@ document.addEventListener("click", () => {
   <div class="card donadores-carrusel">
     <h2>💛 Astros Leyenda — Gracias por su apoyo</h2>
     <div class="carrusel-wrapper">
-      <div class="carrusel">
-            <div class="donador-slide">
-                <img src="https://ui-avatars.com/api/?name=Loading&background=random&color=fff" class="donador-avatar" alt="Cargando">
-                <div class="donador-name">Sincronizando...</div>
-            </div>
+      <div class="carrusel" id="carrusel-donadores">
+        <div class="donador-slide">
+          <img src="https://ui-avatars.com/api/?name=Loading&background=random&color=fff" class="donador-avatar" alt="Cargando">
+          <div class="donador-name">Sincronizando...</div>
         </div>
-    </div>
-</div>
-        
       </div>
+    </div>
+    <div class="carrusel-nav">
+      <button class="carrusel-btn" id="carrusel-prev" aria-label="Anterior">‹</button>
+      <button class="carrusel-btn" id="carrusel-next" aria-label="Siguiente">›</button>
     </div>
   </div>
 
@@ -841,28 +841,23 @@ function showSection(id) {
         if (!carrusel) return;
 
         try {
-            // Fetch del JSON generado por tu GitHub Action
-            const response = await fetch('donadores.json');
+            const response = await fetch(`donadores.json?t=${Date.now()}`);
             if (!response.ok) throw new Error('No se pudo cargar el historial de donaciones.');
-            
+
             const donadores = await response.json();
-            carrusel.innerHTML = ''; // Limpiar el mensaje de "Sincronizando..."
-            
+            carrusel.innerHTML = '';
+
             if (donadores.length === 0) {
                 carrusel.innerHTML = '<div class="donador-slide"><div class="donador-name">Aún no hay Astros Leyenda</div></div>';
                 return;
             }
 
-            // Duplicamos la lista para que la animación CSS de translateX(-700%) 
-            // se vea como un bucle infinito suave sin cortar el scroll.
-            const donadoresLoop = [...donadores, ...donadores];
-
-            donadoresLoop.forEach(donador => {
+            donadores.forEach(donador => {
                 const slide = document.createElement('div');
-                slide.className = 'donador-slide'; // Usamos tu clase existente
-                
+                slide.className = 'donador-slide';
+
                 slide.innerHTML = `
-                    <img src="${donador.avatar}" alt="${donador.username}" class="donador-avatar" 
+                    <img src="${donador.avatar}" alt="${donador.username}" class="donador-avatar"
                          onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(donador.username)}&background=random&color=fff'">
                     <div class="donador-name">${donador.username}</div>
                 `;
@@ -875,8 +870,25 @@ function showSection(id) {
         }
     }
 
-    // Ejecutar cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', cargarAstrosLeyenda);
+    function setupCarruselNav() {
+        const carrusel = document.getElementById('carrusel-donadores');
+        const prevBtn = document.getElementById('carrusel-prev');
+        const nextBtn = document.getElementById('carrusel-next');
+        if (!carrusel || !prevBtn || !nextBtn) return;
+
+        const scrollAmount = 200;
+        prevBtn.addEventListener('click', () => {
+            carrusel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+            carrusel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarAstrosLeyenda();
+        setupCarruselNav();
+    });
 </script>
 </body>
 </html>
