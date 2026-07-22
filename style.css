@@ -444,25 +444,55 @@ video:not(.logo), audio {
 
 .carrusel-wrapper {
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   border-radius: 16px;
   margin-top: 20px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.carrusel-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .carrusel {
   display: flex;
   gap: 28px;
-  padding: 10px 0;
-  animation: carruselScroll 60s linear infinite;
+  padding: 10px 4px;
+  scroll-snap-type: x mandatory;
 }
 
-@keyframes carruselScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-700%); }
+.carrusel-nav {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
 }
 
-.carrusel-wrapper:hover .carrusel {
-  animation-play-state: paused;
+.carrusel-btn {
+  background: rgba(200, 30, 60, 0.65);
+  border: 1.5px solid rgba(255, 120, 150, 0.5);
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
+}
+
+.carrusel-btn:hover {
+  background: rgba(220, 50, 80, 0.85);
+  transform: scale(1.1);
+}
+
+.carrusel-btn:active {
+  transform: scale(0.95);
 }
 
 .donador-slide {
@@ -475,6 +505,8 @@ video:not(.logo), audio {
   text-align: center;
   box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
   transition: 0.25s ease;
+  scroll-snap-align: start;
+  flex-shrink: 0;
 }
 
 .donador-slide:hover {
