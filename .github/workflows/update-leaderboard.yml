@@ -1,0 +1,38 @@
+name: Actualizar Leaderboard de Donaciones
+
+on:
+  schedule:
+    # Se ejecuta automáticamente todos los días a la medianoche (UTC)
+    - cron: '0 0 * * *'
+  # Permite ejecutar la acción manualmente desde el panel de GitHub para hacer pruebas
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # OBLIGATORIO: Permite a GitHub Actions hacer commits en tu repo
+
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Ejecutar el script de actualización
+        env:
+          STREAMLABS_TOKEN: ${{ secrets.STREAMLABS_TOKEN }}
+        run: node scripts/update-leaderboard.js
+
+      - name: Guardar cambios y subir a GitHub
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add donadores.json
+          
+          # Solo hace commit si hubo cambios en donadores.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: actualizar donadores.json [skip ci]" && git push)
