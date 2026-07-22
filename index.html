@@ -890,6 +890,92 @@ function showSection(id) {
         setupCarruselNav();
     });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.querySelector('.carrusel-wrapper');
+    
+    if (!wrapper) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeftStart;
+
+    // Mouse events
+    wrapper.addEventListener('mousedown', (e) => {
+        isDown = true;
+        wrapper.style.cursor = 'grabbing';
+        startX = e.pageX - wrapper.offsetLeft;
+        scrollLeftStart = wrapper.scrollLeft;
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+        if (isDown) {
+            isDown = false;
+            wrapper.style.cursor = 'grab';
+        }
+    });
+
+    wrapper.addEventListener('mouseup', () => {
+        isDown = false;
+        wrapper.style.cursor = 'grab';
+    });
+
+    wrapper.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - wrapper.offsetLeft;
+        const walk = (x - startX) * 1.5; // 1.5 = velocidad del scroll
+        wrapper.scrollLeft = scrollLeftStart - walk;
+    });
+
+    // Touch events para móviles
+    let touchStartX;
+    let touchScrollLeft;
+
+    wrapper.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].pageX - wrapper.offsetLeft;
+        touchScrollLeft = wrapper.scrollLeft;
+    });
+
+    wrapper.addEventListener('touchmove', (e) => {
+        const x = e.touches[0].pageX - wrapper.offsetLeft;
+        const walk = (x - touchStartX) * 1.5;
+        wrapper.scrollLeft = touchScrollLeft - walk;
+    });
+
+    // Cursor inicial
+    wrapper.style.cursor = 'grab';
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.querySelector('.carrusel-wrapper');
+    const carrusel = document.querySelector('.donadores-carrusel');
+    
+    if (!wrapper || !carrusel) return;
+
+    const checkEdges = () => {
+        const scrollLeft = wrapper.scrollLeft;
+        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+        
+        if (scrollLeft <= 5) {
+            carrusel.classList.add('at-start');
+        } else {
+            carrusel.classList.remove('at-start');
+        }
+        
+        if (scrollLeft >= maxScroll - 5) {
+            carrusel.classList.add('at-end');
+        } else {
+            carrusel.classList.remove('at-end');
+        }
+    };
+
+    wrapper.addEventListener('scroll', checkEdges);
+    window.addEventListener('resize', checkEdges);
+    checkEdges(); // Verificar al cargar
+});
+</script>
 </body>
 </html>
 
