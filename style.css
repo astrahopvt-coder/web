@@ -1239,3 +1239,59 @@ table tr:hover {
   #music-toggle { bottom: 14px; right: 14px; width: 40px; height: 40px; }
   #music-toggle #music-icon { font-size: 1.1rem; }
 }
+/* === EFECTO FADE EN BORDES DEL CARRUSEL === */
+.donadores-carrusel {
+    position: relative;
+}
+
+.carrusel-wrapper {
+    position: relative;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 8%,
+        black 92%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 8%,
+        black 92%,
+        transparent 100%
+    );
+}
+
+/* Opcional: sombras decorativas en los bordes */
+.donadores-carrusel::before,
+.donadores-carrusel::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 80%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.donadores-carrusel::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(60, 0, 15, 0.9), transparent);
+}
+
+.donadores-carrusel::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(60, 0, 15, 0.9), transparent);
+}
+
+/* Ocultar sombras cuando no hay más contenido */
+.donadores-carrusel.at-start::before {
+    opacity: 0;
+}
+
+.donadores-carrusel.at-end::after {
+    opacity: 0;
+}
