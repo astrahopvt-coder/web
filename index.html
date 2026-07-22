@@ -62,15 +62,8 @@ document.addEventListener("click", () => {
       <stop offset="100%" stop-color="#ff4060" stop-opacity="0"/>
     </radialGradient>
     <style>
-      .hd { animation: fh 7s ease-in-out infinite alternate; }
-      .hd2 { animation: fh 10s ease-in-out infinite alternate-reverse; }
-      .hd3 { animation: fh 8s ease-in-out 1.2s infinite alternate; }
       .sp { animation: fs 5s ease-in-out infinite alternate; }
       .sp2 { animation: fs 6s ease-in-out 0.8s infinite alternate-reverse; }
-      @keyframes fh {
-        0%   { opacity: 0.12; transform: translateY(0); }
-        100% { opacity: 0.22; transform: translateY(-18px); }
-      }
       @keyframes fs {
         0%   { opacity: 0.15; transform: scale(0.85) rotate(0deg); }
         100% { opacity: 0.3; transform: scale(1.15) rotate(18deg); }
@@ -81,18 +74,6 @@ document.addEventListener("click", () => {
   <rect width="1600" height="900" fill="url(#bgDeep)"/>
   <rect width="1600" height="900" fill="url(#bgGlowL)"/>
   <rect width="1600" height="900" fill="url(#bgGlowR)"/>
-
-  <!-- Corazón grande central -->
-  <path class="hd" d="M800,555 C800,555 575,398 575,265 C575,172 658,120 720,142 C762,158 793,184 800,205 C807,184 838,158 880,142 C942,120 1025,172 1025,265 C1025,398 800,555 800,555 Z" fill="rgba(255,80,110,0.14)"/>
-
-  <!-- Corazón mediano izquierda -->
-  <path class="hd2" d="M260,330 C260,330 178,260 178,195 C178,148 208,122 232,129 C248,134 258,146 265,156 C272,146 282,134 298,129 C322,122 352,148 352,195 C352,260 260,330 260,330 Z" fill="rgba(255,80,110,0.12)"/>
-
-  <!-- Corazón pequeño derecha -->
-  <path class="hd3" d="M1360,195 C1360,195 1308,152 1308,112 C1308,84 1326,70 1338,74 C1347,77 1354,84 1360,91 C1366,84 1373,77 1382,74 C1394,70 1412,84 1412,112 C1412,152 1360,195 1360,195 Z" fill="rgba(255,100,130,0.16)"/>
-
-  <!-- Corazón abajo izquierda -->
-  <path class="hd" d="M190,710 C190,710 150,675 150,645 C150,624 163,613 173,616 C180,619 186,625 190,631 C194,625 200,619 207,616 C217,613 230,624 230,645 C230,675 190,710 190,710 Z" fill="rgba(255,80,110,0.1)"/>
 
   <!-- Estrella 4 puntas grande derecha -->
   <path class="sp" d="M1288,548 L1294,586 L1332,580 L1294,574 L1288,536 L1282,574 L1244,580 L1282,586 Z" fill="rgba(255,120,150,0.22)"/>
@@ -105,12 +86,6 @@ document.addEventListener("click", () => {
 
   <!-- Estrella pequeña arriba derecha -->
   <path class="sp2" d="M1490,115 L1494,138 L1518,142 L1494,146 L1490,169 L1486,146 L1462,142 L1486,138 Z" fill="rgba(255,100,130,0.18)"/>
-
-  <!-- Pequeños corazones flotantes -->
-  <text x="95" y="195" font-size="18" fill="rgba(255,100,130,0.18)" class="hd2">♡</text>
-  <text x="610" y="825" font-size="14" fill="rgba(255,100,130,0.15)" class="hd3">♡</text>
-  <text x="1455" y="395" font-size="16" fill="rgba(255,100,130,0.16)" class="hd">♡</text>
-  <text x="910" y="95"  font-size="20" fill="rgba(255,80,110,0.14)"  class="hd2">♡</text>
 </svg>
 </div>
 <div id="portal-transition"></div>
@@ -121,11 +96,12 @@ document.addEventListener("click", () => {
   <div class="nav">
     <button class="active" onclick="showSection('inicio')">Inicio</button>
     <button onclick="showSection('sobre')">Sobre mí</button>
+    <button onclick="showSection('juegos')">Juegos</button>
     <button onclick="showSection('patrocinadores')">Patrocinadores</button>
     <button onclick="showSection('fanart')">Fanarts</button>
     <button onclick="showSection('donaciones')">Donaciones</button>
     <button onclick="window.open('https://shop.astrahopvt.online', '_blank')">Tienda</button>
-    <button onclick="window.open('https://m.twitch.tv/mikuescanon/home', '_blank')">Recomendado</button>
+    <button onclick="abrirRecomendado()">Recomendado</button>
   </div>
 </header>
 
@@ -199,6 +175,21 @@ document.addEventListener("click", () => {
 <!-- ------------------------- -->
 <section id="sobre">
   <div class="card">
+    <h2>Preguntas Frecuentes</h2>
+
+    <h3>¿Qué tipo de contenido hago?</h3>
+    <p>Varía entre streams, lore, narrativa y caos interdimensional. Juego y hago esencialmente lo que me pidan, pero lo mas comun son juegos multijugador famosos como minecraft, fortnite, peak, pokemmo, y un largo etcetera. </p>
+
+    <h3>¿De dónde viene el nombre ASTRA?</h3>
+    <p>
+      ASTRA proviene del latín, significando "estrella" o "cuerpo celeste". Para el Dominio Eterno, el Proyecto ASTRA simbolizaba el destino: ser los **Faros de la Dominación** y guiar la conquista multiversal. Sin embargo, mi fallo de Adhesión me convirtió en la **estrella caída**, la que rompió su órbita para guiar a la libre voluntad.
+    </p>
+
+    <h3>¿Cuándo streameo?</h3>
+    <p>Revisa el panel de horarios o mis redes para actualizaciones. Pero estaré siempre de <strong>viernes a lunes, a las 7:30 pm hora de Chile</strong> <span id="faq-local-time"></span>.</p>
+  </div>
+
+  <div class="card">
     <img 
       src="img/astra-model.webp" 
       alt="Modelo VTuber de Astrahop" 
@@ -236,22 +227,61 @@ document.addEventListener("click", () => {
     <p>
       Ahora, como <strong>Astrahop</strong>, uso esta plataforma de <em>streaming</em> como mi faro. Cada espectador es un <strong>Potencial Agente de la Libre Voluntad</strong>, y cada transmisión es una oportunidad para <strong>Psico-Reclutar</strong> a la humanidad antes del inminente <strong>Ascenso Multiversal</strong> del Dominio Eterno.
     </p>
-    <a href="juego.html" class="main-support-button">Descubre la verdad</a>
-  <div class="card">
-    <h2>Preguntas Frecuentes</h2>
-
-    <h3>¿Qué tipo de contenido hago?</h3>
-    <p>Varía entre streams, lore, narrativa y caos interdimensional. Juego y hago esencialmente lo que me pidan, pero lo mas comun son juegos multijugador famosos como minecraft, fortnite, peak, pokemmo, y un largo etcetera. </p>
-
-    <h3>¿De dónde viene el nombre ASTRA?</h3>
-    <p>
-      ASTRA proviene del latín, significando "estrella" o "cuerpo celeste". Para el Dominio Eterno, el Proyecto ASTRA simbolizaba el destino: ser los **Faros de la Dominación** y guiar la conquista multiversal. Sin embargo, mi fallo de Adhesión me convirtió en la **estrella caída**, la que rompió su órbita para guiar a la libre voluntad.
-    </p>
-
-    <h3>¿Cuándo streameo?</h3>
-    <p>Revisa el panel de horarios o mis redes para actualizaciones. Pero estaré siempre de <strong>viernes a lunes, a las 7:30 pm hora de Chile</strong> <span id="faq-local-time"></span>.</p>
   </div>
 </section>
+
+<!-- ------------------------- -->
+<!--  SECCIÓN: JUEGOS          -->
+<!-- ------------------------- -->
+<section id="juegos">
+  <div class="card">
+    <h2>🎮 Juegos</h2>
+    <p>Explora los juegos y experiencias interactivas del Proyecto ASTRA. Nuevas cajas se irán sumando acá.</p>
+
+    <div class="juegos-grid">
+      <a href="juego.html" class="juego-card">
+        <img src="juego1.webp" alt="Descubre la verdad">
+        <div class="juego-card-title">Descubre la verdad</div>
+      </a>
+
+      <!-- Para agregar otro juego, copiá el bloque de arriba y cambiá:
+           href="juego2.html", src="juego2.webp" y el texto del título -->
+    </div>
+  </div>
+</section>
+
+<style>
+  .juegos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .juego-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 80, 110, 0.08);
+    border: 1px solid rgba(255, 80, 110, 0.25);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .juego-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 80, 110, 0.5);
+  }
+  .juego-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+  .juego-card-title {
+    padding: 12px 14px;
+    font-weight: 700;
+  }
+</style>
   
 <section id="patrocinadores">
   <div class="card donadores-carrusel">
@@ -308,14 +338,6 @@ document.addEventListener("click", () => {
 
       <a href="https://x.la/l/jFv7tEO1" class="patro-card" target="_blank">
         <img src="patrocinadores/patro2.jpg" alt="Patrocinador 2">
-      </a>
-
-      <a href="https://x.la/l/2PCz0sNA" class="patro-card" target="_blank">
-        <img src="patrocinadores/patro3.jpg" alt="Patrocinador 3">
-      </a>
-
-      <a href="https://x.la/l/6icx3HNY" class="patro-card" target="_blank">
-        <img src="patrocinadores/patro4.jpg" alt="Patrocinador 4">
       </a>
 
       <a href="https://x.la/l/eBdG1yIg" class="patro-card" target="_blank">
@@ -535,6 +557,30 @@ document.addEventListener('keydown', (e) => {
 
         <h3 style="color: var(--accent); margin-top: 30px;">🛍️ Tienda &amp; Comisiones</h3>
         <div id="kofi-shop-embed" data-shop-id="J3J01E4Y9Q" data-shop-currency="$" data-shop-theme="default" data-shop-soldout="show"></div>
+        <script>
+        (function() {
+          const container = document.getElementById('kofi-shop-embed');
+          if (!container) return;
+
+          function hidePoweredBy() {
+            container.querySelectorAll('a, div, span, p').forEach(el => {
+              if (el.children.length === 0 && /powered\s+by/i.test(el.textContent)) {
+                let target = el;
+                // Sube hasta el contenedor "badge" (evita esconder de más)
+                if (target.parentElement && target.parentElement.children.length <= 2) {
+                  target = target.parentElement;
+                }
+                target.style.display = 'none';
+              }
+            });
+          }
+
+          // El widget se inyecta de forma asíncrona, así que observamos cambios en el DOM
+          const observer = new MutationObserver(hidePoweredBy);
+          observer.observe(container, { childList: true, subtree: true });
+          hidePoweredBy();
+        })();
+        </script>
 
         <h3 style="color: var(--accent2); margin-top: 30px;">💸 Donar aquí mismo</h3>
         <iframe id='kofiframe' src='https://ko-fi.com/astrahopvt/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;border-radius:12px;' height='712' title='astrahopvt'></iframe>
@@ -546,6 +592,20 @@ document.addEventListener('keydown', (e) => {
     margin-top: 12px;
   }
 </style>
+
+<!-- Botón "Recomendado" con lista al azar -->
+<script>
+// Agrega o quita links de esta lista cuando quieras — el botón elige uno al azar cada vez que se hace clic.
+const LINKS_RECOMENDADOS = [
+  'https://m.twitch.tv/mikuescanon/home',
+  'https://www.tiktok.com/@gyakuro_vt?_r=1&_t=ZS-98EgjkfquW5',
+];
+
+function abrirRecomendado() {
+  const link = LINKS_RECOMENDADOS[Math.floor(Math.random() * LINKS_RECOMENDADOS.length)];
+  window.open(link, '_blank');
+}
+</script>
 
 <!-- Cambio de secciones -->
 <script>
