@@ -288,39 +288,17 @@ document.addEventListener("click", () => {
     <h2>💛 Astros Leyenda — Gracias por su apoyo</h2>
     <div class="carrusel-wrapper">
       <div class="carrusel">
-        <div class="donador-slide"><img data-avatar="DarkFoxVT" class="donador-avatar"><div class="donador-name">DarkFoxVT</div></div>
-        <div class="donador-slide"><img data-avatar="GalletaGames722" class="donador-avatar"><div class="donador-name">GalletaGames722</div></div>
-        <div class="donador-slide"><img data-avatar="MAX ASURA" class="donador-avatar"><div class="donador-name">[MAX ASURA]</div></div>
-        <div class="donador-slide"><img data-avatar="Gødsito_fun 2.0" class="donador-avatar"><div class="donador-name">✞♦‼Gødsito_fun‼♦✞ 2.0</div></div>
-        <div class="donador-slide"><img data-avatar="Ainz A9525 MX" class="donador-avatar"><div class="donador-name">▼ Ainz ⚔ A9525 MX ⚔</div></div>
-        <div class="donador-slide"><img data-avatar="badass el Ciego-man" class="donador-avatar"><div class="donador-name">badass el Ciego-man</div></div>
-        <div class="donador-slide"><img data-avatar="CoronelJ_D" class="donador-avatar"><div class="donador-name">CoronelJ_D 🗡</div></div>
-        <div class="donador-slide"><img data-avatar="Eldeyxd" class="donador-avatar"><div class="donador-name">Eldeyxd</div></div>
-        <div class="donador-slide"><img data-avatar="Galex Marloz" class="donador-avatar"><div class="donador-name">Galex Marloz</div></div>
-        <div class="donador-slide"><img data-avatar="Zero Temper" class="donador-avatar"><div class="donador-name">Zero Temper</div></div>
-        <div class="donador-slide"><img data-avatar="Golem Cuyano" class="donador-avatar"><div class="donador-name">Golem Cuyano</div></div>
-        <div class="donador-slide"><img data-avatar="Hover" class="donador-avatar"><div class="donador-name">Hover</div></div>
-        <div class="donador-slide"><img data-avatar="Ikuoro" class="donador-avatar"><div class="donador-name">Ikuoro</div></div>
-        <div class="donador-slide"><img data-avatar="lav_playy" class="donador-avatar"><div class="donador-name">lav_playy</div></div>
-        <div class="donador-slide"><img data-avatar="Lerna_vt" class="donador-avatar"><div class="donador-name">Lerna_vt</div></div>
-        <div class="donador-slide"><img data-avatar="Lirith" class="donador-avatar"><div class="donador-name">Lirith | Busco editor/clipero</div></div>
-        <div class="donador-slide"><img data-avatar="Lucifer0236p" class="donador-avatar"><div class="donador-name">Lucifer0236p</div></div>
-        <div class="donador-slide"><img data-avatar="Mahito_XD" class="donador-avatar"><div class="donador-name">Mahito_XD</div></div>
-        <div class="donador-slide"><img data-avatar="MatiGrowl" class="donador-avatar"><div class="donador-name">MatiGrowl</div></div>
-        <div class="donador-slide"><img data-avatar="MeilyVT" class="donador-avatar"><div class="donador-name">MeilyVT 🌙</div></div>
-        <div class="donador-slide"><img data-avatar="MIKUECANON" class="donador-avatar"><div class="donador-name">MIKUECANON</div></div>
-        <div class="donador-slide"><img data-avatar="Nando564ewrw" class="donador-avatar"><div class="donador-name">Nando564ewrw</div></div>
-        <div class="donador-slide"><img data-avatar="Natsuru_vt" class="donador-avatar"><div class="donador-name">Natsuru_vt</div></div>
-        <div class="donador-slide"><img data-avatar="NicoZZ" class="donador-avatar"><div class="donador-name">NicoZZ 🖤💙</div></div>
-        <div class="donador-slide"><img data-avatar="Nox" class="donador-avatar"><div class="donador-name">Nox</div></div>
-        <div class="donador-slide"><img data-avatar="PrekumGaming" class="donador-avatar"><div class="donador-name">PrekumGaming</div></div>
-        <div class="donador-slide"><img data-avatar="Robotin" class="donador-avatar"><div class="donador-name">Robotin</div></div>
-        <div class="donador-slide"><img data-avatar="Robrod" class="donador-avatar"><div class="donador-name">Robrod</div></div>
-        <div class="donador-slide"><img data-avatar="StarNight" class="donador-avatar"><div class="donador-name">Star☆Night</div></div>
-        <div class="donador-slide"><img data-avatar="TheNinja" class="donador-avatar"><div class="donador-name">TheNinja</div></div>
-        <div class="donador-slide"><img data-avatar="Tortuga AsesinaDioses" class="donador-avatar"><div class="donador-name">Tortuga AsesinaDioses</div></div>
-        <div class="donador-slide"><img data-avatar="yuto_neta" class="donador-avatar"><div class="donador-name">yuto_neta</div></div>
-        <div class="donador-slide"><img data-avatar="xfroxedeg" class="donador-avatar"><div class="donador-name">xfroxedeg</div></div>
+        <!-- 🌟 SECCIÓN DE ASTROS LEYENDA (CARRUSEL DINÁMICO) 🌟 -->
+<div class="donadores-carrusel">
+    <h2>💛 Astros Leyenda — Gracias por su apoyo</h2>
+        <div class="carrusel" id="carrusel-donadores">
+            <div class="donador-slide">
+                <img src="https://ui-avatars.com/api/?name=Loading&background=random&color=fff" class="donador-avatar" alt="Cargando">
+                <div class="donador-name">Sincronizando...</div>
+            </div>
+        </div>
+    </div>
+</div>
         
       </div>
     </div>
@@ -860,6 +838,49 @@ function showSection(id) {
     }
   });
 })();
+</script>
+<script>
+    async function cargarAstrosLeyenda() {
+        const carrusel = document.getElementById('carrusel-donadores');
+        if (!carrusel) return;
+
+        try {
+            // Fetch del JSON generado por tu GitHub Action
+            const response = await fetch('donadores.json');
+            if (!response.ok) throw new Error('No se pudo cargar el historial de donaciones.');
+            
+            const donadores = await response.json();
+            carrusel.innerHTML = ''; // Limpiar el mensaje de "Sincronizando..."
+            
+            if (donadores.length === 0) {
+                carrusel.innerHTML = '<div class="donador-slide"><div class="donador-name">Aún no hay Astros Leyenda</div></div>';
+                return;
+            }
+
+            // Duplicamos la lista para que la animación CSS de translateX(-700%) 
+            // se vea como un bucle infinito suave sin cortar el scroll.
+            const donadoresLoop = [...donadores, ...donadores];
+
+            donadoresLoop.forEach(donador => {
+                const slide = document.createElement('div');
+                slide.className = 'donador-slide'; // Usamos tu clase existente
+                
+                slide.innerHTML = `
+                    <img src="${donador.avatar}" alt="${donador.username}" class="donador-avatar" 
+                         onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(donador.username)}&background=random&color=fff'">
+                    <div class="donador-name">${donador.username}</div>
+                `;
+                carrusel.appendChild(slide);
+            });
+
+        } catch (error) {
+            console.error('Error al cargar los Astros Leyenda:', error);
+            carrusel.innerHTML = '<div class="donador-slide"><div class="donador-name">Error de conexión</div></div>';
+        }
+    }
+
+    // Ejecutar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', cargarAstrosLeyenda);
 </script>
 </body>
 </html>
