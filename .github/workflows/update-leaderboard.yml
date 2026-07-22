@@ -1,38 +1,45 @@
-name: Actualizar Leaderboard de Donaciones
+name: Actualizar Leaderboard Diario
 
 on:
   schedule:
-    # Se ejecuta automáticamente todos los días a la medianoche (UTC)
+    # Se ejecuta todos los días a las 00:00 UTC
     - cron: '0 0 * * *'
-  # Permite ejecutar la acción manualmente desde el panel de GitHub para hacer pruebas
+  # Permite ejecutar el proceso manualmente desde GitHub cuando quieras probarlo
   workflow_dispatch:
 
 jobs:
-  update-data:
+  build:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write # OBLIGATORIO: Permite a GitHub Actions hacer commits en tu repo
-
     steps:
-      - name: Descargar el repositorio
+      # 1. Copia el código de tu repositorio en la máquina virtual
+      - name: Checkout del código
         uses: actions/checkout@v4
 
+      # 2. Configura el entorno de Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Ejecutar el script de actualización
+      # 3. Instala dependencias (si tienes package.json)
+      - name: Instalando dependencias
+        run: npm ci || npm install
+
+      # 4. Ejecuta tu script inyectando las variables de entorno
+      - name: Ejecutar script de Leaderboard
         env:
           STREAMLABS_TOKEN: ${{ secrets.STREAMLABS_TOKEN }}
-        run: node scripts/update-leaderboard.js
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+        run: node script.js # ⚠️ Reemplaza 'script.js' por el nombre real de tu archivo
 
-      - name: Guardar cambios y subir a GitHub
+      # 5. Guarda y sube las modificaciones de 'donadores.json' al repositorio
+      - name: Guardar donadores.json actualizado
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add donadores.json
-          
-          # Solo hace commit si hubo cambios en donadores.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: actualizar donadores.json [skip ci]" && git push)
+          git status
+          git diff-index --quiet HEAD || git commit -m "bot: actualizar donadores.json [skip ci]"
+          git push
