@@ -15,6 +15,9 @@
 
   <!-- Tu CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Ko-fi Shop -->
+  <script defer src="https://cdn.ko-fi.tools/v2/js/shop.js"></script>
 </head>
 <body>
 <audio id="bgm" autoplay loop>
@@ -246,7 +249,7 @@ document.addEventListener("click", () => {
     </p>
 
     <h3>¿Cuándo streameo?</h3>
-    <p>Revisa el panel de horarios o mis redes para actualizaciones. Pero estare siempre de viernes a martes, de 8:30 pm hora chile.</p>
+    <p>Revisa el panel de horarios o mis redes para actualizaciones. Pero estaré siempre de <strong>viernes a lunes, a las 7:30 pm hora de Chile</strong> <span id="faq-local-time"></span>.</p>
   </div>
 </section>
   
@@ -492,7 +495,7 @@ document.addEventListener('keydown', (e) => {
     </div>
 
     <div class="card">
-        <h2>⚡️ Interacciones de Caos (Bits, PDC y Streamloots)</h2>
+        <h2>⚡️ Interacciones de Caos (Bits y PDC)</h2>
         
         <h3 style="color: var(--accent); margin-top: 10px;">Bits: ¡Influencia Instantánea!</h3>
 |    <table>
@@ -518,14 +521,6 @@ document.addEventListener('keydown', (e) => {
             </tbody>
         </table>
 
-        <h3 style="color: var(--accent); margin-top: 30px;">🃏 Cajas de Botín Temporal (Streamloots)</h3>
-        <p>
-            ¡Compra cofres y haz que pasen cosas! Desde cambiar mi voz hasta forzarme a cantar, los cofres de Streamloots contienen cartas que activan el **caos garantizado** en el stream. 8Aunque sean un refrito de lo que esta en puntos del canal) :v
-        </p>
-        <a href="https://www.streamloots.com/astrahopvt" target="_blank" class="streamloots-button">
-            ¡Ver Cofres de Caos!
-        </a>
-
         <h3 style="color: var(--accent); margin-top: 30px;">Puntos de Canal (PDC):</h3>
         <p>
             Hay más de 50 formas de gastar tus Puntos de Canal. ¡Estos van desde cambiar mi vestimenta hasta quitarme un brazo!
@@ -534,11 +529,23 @@ document.addEventListener('keydown', (e) => {
         </p>
     </div>
 
-    <div class="card kofi-card">
-        <h2>☕ Donación Directa (Ko-fi)</h2>
-        <iframe id='kofiframe' src='https://ko-fi.com/astrahopvt/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='astrahopvt'></iframe>
-    </div>  
+    <div class="card kofi-card kofi-hub-card">
+        <h2>☕ Todo lo de Ko-fi, en un solo lugar</h2>
+        <p>Ya sea una donación puntual, un ítem de la tienda o una comisión personalizada, todo suma para mantener viva la Resistencia.</p>
+
+        <h3 style="color: var(--accent); margin-top: 30px;">🛍️ Tienda &amp; Comisiones</h3>
+        <div id="kofi-shop-embed" data-shop-id="J3J01E4Y9Q" data-shop-currency="$" data-shop-theme="default" data-shop-soldout="show"></div>
+
+        <h3 style="color: var(--accent2); margin-top: 30px;">💸 Donar aquí mismo</h3>
+        <iframe id='kofiframe' src='https://ko-fi.com/astrahopvt/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;border-radius:12px;' height='712' title='astrahopvt'></iframe>
+    </div>
 </section>
+
+<style>
+  #kofi-shop-embed {
+    margin-top: 12px;
+  }
+</style>
 
 <!-- Cambio de secciones -->
 <script>
@@ -595,45 +602,83 @@ function showSection(id) {
 <script>
 // ---- COUNTDOWN ----
 (function() {
-  const STREAM_DAYS = [5, 6, 0, 1];
-  const STREAM_HOUR = 20;
+  const STREAM_DAYS = [5, 6, 0, 1]; // Vie, Sáb, Dom, Lun
+  const STREAM_HOUR = 19;
   const STREAM_MIN  = 30;
+  const CHILE_TZ    = 'America/Santiago';
   const DAY_NAMES   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
   const DAY_FULL    = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const WEEKDAY_MAP = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 };
 
-  function getArgentinaDate() {
-    const now = new Date();
-    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-    return new Date(utc - 3 * 3600000);
+  // Obtiene año/mes/día/hora/min/seg/día-de-semana actuales en la zona horaria de Chile
+  // (esto se ajusta automáticamente al horario de verano/invierno chileno)
+  function getChileParts(date) {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: CHILE_TZ,
+      weekday: 'short',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    });
+    const map = {};
+    fmt.formatToParts(date).forEach(p => { map[p.type] = p.value; });
+    return {
+      year: parseInt(map.year, 10),
+      month: parseInt(map.month, 10),
+      day: parseInt(map.day, 10),
+      hour: map.hour === '24' ? 0 : parseInt(map.hour, 10),
+      minute: parseInt(map.minute, 10),
+      second: parseInt(map.second, 10),
+      weekday: WEEKDAY_MAP[map.weekday]
+    };
   }
 
-  function getNextStream() {
-    const now      = getArgentinaDate();
-    const todayDay = now.getDay();
-    const todayH   = now.getHours();
-    const todayM   = now.getMinutes();
-    const todayS   = now.getSeconds();
+  // Diferencia (ms) entre la hora de reloj de Chile y UTC en un instante dado
+  function getChileOffsetMs(date) {
+    const utcClock   = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const chileClock = new Date(date.toLocaleString('en-US', { timeZone: CHILE_TZ }));
+    return chileClock.getTime() - utcClock.getTime();
+  }
+
+  // Devuelve el instante real (timestamp) del próximo stream
+  function getNextStreamInstant() {
+    const now      = new Date();
+    const chileNow = getChileParts(now);
+    const offsetMs = getChileOffsetMs(now);
 
     for (let offset = 0; offset <= 7; offset++) {
-      const checkDay = (todayDay + offset) % 7;
-      if (STREAM_DAYS.includes(checkDay)) {
-        if (offset === 0) {
-          const secsUntil = (STREAM_HOUR - todayH) * 3600 + (STREAM_MIN - todayM) * 60 - todayS;
-          if (secsUntil > -10800) {
-            return { day: checkDay, secsUntil: Math.max(secsUntil, 0), isToday: true, isLive: secsUntil <= 0 };
-          }
-        } else {
-          const secsUntil = offset * 86400 - (todayH * 3600 + todayM * 60 + todayS) + (STREAM_HOUR * 3600 + STREAM_MIN * 60);
-          return { day: checkDay, secsUntil, isToday: false, isLive: false };
+      const checkDay = (chileNow.weekday + offset) % 7;
+      if (!STREAM_DAYS.includes(checkDay)) continue;
+
+      // Timestamp "falso UTC" que representa la hora de pared chilena de ese día
+      const fakeUTC     = Date.UTC(chileNow.year, chileNow.month - 1, chileNow.day + offset, STREAM_HOUR, STREAM_MIN, 0);
+      const realInstant = fakeUTC - offsetMs;
+
+      if (offset === 0) {
+        // margen de 3hs para mostrar "EN VIVO" un rato después de empezar
+        if (realInstant - now.getTime() > -10800000) {
+          return { instant: realInstant, day: checkDay, isToday: true };
         }
+      } else {
+        return { instant: realInstant, day: checkDay, isToday: false };
       }
     }
+    return null;
   }
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
+  function localTimeLabel(instant) {
+    const d = new Date(instant);
+    const time = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    const tzName = Intl.DateTimeFormat(undefined, { timeZoneName: 'short' })
+      .formatToParts(d)
+      .find(p => p.type === 'timeZoneName');
+    return tzName ? `${time} ${tzName.value}` : time;
+  }
+
   function updateWidget() {
-    const info = getNextStream();
+    const info = getNextStreamInstant();
     if (!info) return;
 
     const daysEl   = document.getElementById('cw-days-label');
@@ -647,7 +692,9 @@ function showSection(id) {
       `<span class="cw-day ${d === info.day ? 'active' : ''}">${DAY_NAMES[d]}</span>`
     ).join('');
 
-    if (info.isLive) {
+    const secsUntil = Math.round((info.instant - Date.now()) / 1000);
+
+    if (secsUntil <= 0) {
       widget.classList.add('live');
       statusEl.textContent = '¡EN VIVO AHORA! 🔴';
       hEl.textContent = mEl.textContent = sEl.textContent = '00';
@@ -655,18 +702,33 @@ function showSection(id) {
     }
 
     widget.classList.remove('live');
-    const total = info.secsUntil;
+    const total = secsUntil;
     const days  = Math.floor(total / 86400);
     const hrs   = Math.floor((total % 86400) / 3600);
     hEl.textContent = days > 0 ? pad(days * 24 + hrs) : pad(hrs);
     mEl.textContent = pad(Math.floor((total % 3600) / 60));
     sEl.textContent = pad(total % 60);
+
+    const localLabel = localTimeLabel(info.instant);
     statusEl.textContent = info.isToday
-      ? '¡Hoy a las 20:30 hs!'
-      : `${DAY_FULL[info.day]} a las 20:30 hs`;
+      ? `¡Hoy a las 19:30 hs (Chile) · ${localLabel} tu hora!`
+      : `${DAY_FULL[info.day]} a las 19:30 hs (Chile) · ${localLabel} tu hora`;
+  }
+
+  // Muestra en la FAQ la hora local equivalente a las 19:30 de Chile
+  function updateFaqLocalTime() {
+    const el = document.getElementById('faq-local-time');
+    if (!el) return;
+    const now      = new Date();
+    const offsetMs = getChileOffsetMs(now);
+    const cp       = getChileParts(now);
+    const fakeUTC  = Date.UTC(cp.year, cp.month - 1, cp.day, STREAM_HOUR, STREAM_MIN, 0);
+    const instant  = fakeUTC - offsetMs;
+    el.textContent = `(${localTimeLabel(instant)} en tu horario)`;
   }
 
   updateWidget();
+  updateFaqLocalTime();
   setInterval(updateWidget, 1000);
 })();
 
