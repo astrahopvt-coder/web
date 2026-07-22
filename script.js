@@ -25,8 +25,9 @@ async function getTwitchAppToken() {
   return data.access_token;
 }
 
+// 1. Cambiado count=10 por count=100 (límite máximo permitido por Twitch)
 async function getBitsLeaderboard(userAccessToken) {
-  const url = `https://api.twitch.tv/helix/bits/leaderboard?period=all&count=10`;
+  const url = `https://api.twitch.tv/helix/bits/leaderboard?period=all&count=100`;
   const response = await fetch(url, {
     headers: {
       'Client-ID': TWITCH_CLIENT_ID,
@@ -43,25 +44,36 @@ async function getBitsLeaderboard(userAccessToken) {
 
 async function getTwitchAvatars(usernames, appAccessToken) {
   if (usernames.length === 0) return {};
-  const queryParams = usernames.map(name => `login=${encodeURIComponent(name.toLowerCase())}`).join('&');
-  const url = `https://api.twitch.tv/helix/users?${queryParams}`;
-  const response = await fetch(url, {
-    headers: {
-      'Client-ID': TWITCH_CLIENT_ID,
-      'Authorization': `Bearer ${appAccessToken}`
-    }
-  });
-  if (!response.ok) {
-    console.warn(`⚠️ No se pudieron obtener avatares de Twitch (${response.status}). Se usarán fallbacks.`);
-    return {};
-  }
-  const data = await response.json();
+  
+  // Dividimos en bloques de 100 por seguridad en caso de que en el futuro consultes más datos
+  const chunkSize = 100;
   const avatarMap = {};
-  if (data.data) {
-    data.data.forEach(user => {
-      avatarMap[user.login.toLowerCase()] = user.profile_image_url;
+
+  for (let i = 0; i < usernames.length; i += chunkSize) {
+    const chunk = usernames.slice(i, i + chunkSize);
+    const queryParams = chunk.map(name => `login=${encodeURIComponent(name.toLowerCase())}`).join('&');
+    const url = `https://api.twitch.tv/helix/users?${queryParams}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'Client-ID': TWITCH_CLIENT_ID,
+        'Authorization': `Bearer ${appAccessToken}`
+      }
     });
+
+    if (!response.ok) {
+      console.warn(`⚠️ No se pudieron obtener avatares de Twitch (${response.status}). Se usarán fallbacks.`);
+      continue;
+    }
+
+    const data = await response.json();
+    if (data.data) {
+      data.data.forEach(user => {
+        avatarMap[user.login.toLowerCase()] = user.profile_image_url;
+      });
+    }
   }
+
   return avatarMap;
 }
 
@@ -95,7 +107,7 @@ async function fetchBitsLeaderboard() {
     });
 
     await fs.writeFile('donadores.json', JSON.stringify(leaderboardFinal, null, 2));
-    console.log('✅ donadores.json generado exitosamente con el Bits Leaderboard.');
+    console.log(`✅ donadores.json generado exitosamente con ${leaderboardFinal.length} donadores.`);
   } catch (error) {
     console.error('❌ Error en el proceso:', error.message);
     process.exit(1);
