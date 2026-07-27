@@ -294,6 +294,10 @@ document.addEventListener("click", () => {
         </div>
       </div>
     </div>
+    <div class="carrusel-nav">
+      <button class="carrusel-btn" id="carrusel-prev" aria-label="Anterior">‹</button>
+      <button class="carrusel-btn" id="carrusel-next" aria-label="Siguiente">›</button>
+    </div>
   </div>
 
   <div class="card">
@@ -569,7 +573,6 @@ document.addEventListener('keydown', (e) => {
 const LINKS_RECOMENDADOS = [
   'https://m.twitch.tv/mikuescanon/home',
   'https://www.tiktok.com/@gyakuro_vt?_r=1&_t=ZS-98EgjkfquW5',
-  'https://www.twitch.tv/lerna_vtuber',
 ];
 
 function abrirRecomendado() {
@@ -887,91 +890,71 @@ function showSection(id) {
         setupCarruselNav();
     });
 </script>
+
+<!-- ========================= -->
+<!--  POPUP: AVISO EXTENSIÓN FIREFOX -->
+<!-- ========================= -->
+<div id="astra-firefox-popup">
+  <button class="astra-popup-close" id="astra-firefox-popup-close" aria-label="Cerrar">&times;</button>
+  <h4>¡Instala Astra-hub!</h4>
+  <p>Detectamos que usas Firefox. Instala Astra-hub para mejorar tu experiencia de navegación en el sitio y no perderte notificaciones de directos y novedades.</p>
+  <a class="astra-popup-btn"
+     href="https://addons.mozilla.org/firefox/downloads/file/4917915/astra_hub-1.1.0.xpi"
+     target="_blank" rel="noopener">
+    Instalar para Firefox
+  </a>
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const wrapper = document.querySelector('.carrusel-wrapper');
-    
-    if (!wrapper) return;
+(function () {
+  // Cambia esto si el link del .xpi cambia más adelante
+  var FIREFOX_XPI_URL = "https://addons.mozilla.org/firefox/downloads/file/4917915/astra_hub-1.1.0.xpi";
+  var DISMISS_KEY = "astra-firefox-popup-dismissed";
+  var DISMISS_DAYS = 7; // días que se oculta tras cerrarlo
 
-    let isDown = false;
-    let startX;
-    let scrollLeftStart;
+  var popup = document.getElementById("astra-firefox-popup");
+  var closeBtn = document.getElementById("astra-firefox-popup-close");
+  if (!popup || !closeBtn) return;
 
-    // Mouse events
-    wrapper.addEventListener('mousedown', (e) => {
-        isDown = true;
-        wrapper.style.cursor = 'grabbing';
-        startX = e.pageX - wrapper.offsetLeft;
-        scrollLeftStart = wrapper.scrollLeft;
-    });
+  function isFirefox() {
+    return /firefox/i.test(navigator.userAgent) && !/seamonkey/i.test(navigator.userAgent);
+  }
 
-    wrapper.addEventListener('mouseleave', () => {
-        if (isDown) {
-            isDown = false;
-            wrapper.style.cursor = 'grab';
-        }
-    });
+  function isInstalled() {
+    return document.documentElement.hasAttribute("data-astra-notifier-installed");
+  }
 
-    wrapper.addEventListener('mouseup', () => {
-        isDown = false;
-        wrapper.style.cursor = 'grab';
-    });
+  function wasDismissedRecently() {
+    var raw = localStorage.getItem(DISMISS_KEY);
+    if (!raw) return false;
+    var dismissedAt = parseInt(raw, 10);
+    if (isNaN(dismissedAt)) return false;
+    var elapsedDays = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
+    return elapsedDays < DISMISS_DAYS;
+  }
 
-    wrapper.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - wrapper.offsetLeft;
-        const walk = (x - startX) * 1.5; // 1.5 = velocidad del scroll
-        wrapper.scrollLeft = scrollLeftStart - walk;
-    });
+  function showPopup() {
+    if (!isFirefox() || isInstalled() || wasDismissedRecently()) return;
+    popup.classList.add("astra-visible");
+  }
 
-    // Touch events para móviles
-    let touchStartX;
-    let touchScrollLeft;
+  function hidePopup() {
+    popup.classList.remove("astra-visible");
+  }
 
-    wrapper.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].pageX - wrapper.offsetLeft;
-        touchScrollLeft = wrapper.scrollLeft;
-    });
+  closeBtn.addEventListener("click", function () {
+    localStorage.setItem(DISMISS_KEY, Date.now().toString());
+    hidePopup();
+  });
 
-    wrapper.addEventListener('touchmove', (e) => {
-        const x = e.touches[0].pageX - wrapper.offsetLeft;
-        const walk = (x - touchStartX) * 1.5;
-        wrapper.scrollLeft = touchScrollLeft - walk;
-    });
+  // Si la extensión avisa que se instaló mientras el popup está visible, lo ocultamos
+  window.addEventListener("astra-notifier-installed", hidePopup);
 
-    // Cursor inicial
-    wrapper.style.cursor = 'grab';
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const wrapper = document.querySelector('.carrusel-wrapper');
-    const carrusel = document.querySelector('.donadores-carrusel');
-    
-    if (!wrapper || !carrusel) return;
-
-    const checkEdges = () => {
-        const scrollLeft = wrapper.scrollLeft;
-        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-        
-        if (scrollLeft <= 5) {
-            carrusel.classList.add('at-start');
-        } else {
-            carrusel.classList.remove('at-start');
-        }
-        
-        if (scrollLeft >= maxScroll - 5) {
-            carrusel.classList.add('at-end');
-        } else {
-            carrusel.classList.remove('at-end');
-        }
-    };
-
-    wrapper.addEventListener('scroll', checkEdges);
-    window.addEventListener('resize', checkEdges);
-    checkEdges(); // Verificar al cargar
-});
+  // Mostrar tras un pequeño delay para que no aparezca de golpe al cargar
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(showPopup, 1500);
+  });
+})();
 </script>
 </body>
 </html>
