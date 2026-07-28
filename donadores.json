@@ -22,7 +22,7 @@
   {
     "username": "terry7bogard",
     "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-300x300.png",
-    "total_donated": 2000
+    "total_donated": 2100
   },
   {
     "username": "xFrozedEG",
@@ -35,14 +35,14 @@
     "total_donated": 1880
   },
   {
+    "username": "coronelj_d",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a79150a3-e0f4-4924-b1e3-5708263fa35a-profile_image-300x300.png",
+    "total_donated": 1224
+  },
+  {
     "username": "eljuanman_actias",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/5f16b010-7af7-413c-8b4b-2e625cc04c2b-profile_image-300x300.png",
     "total_donated": 1200
-  },
-  {
-    "username": "coronelj_d",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a79150a3-e0f4-4924-b1e3-5708263fa35a-profile_image-300x300.png",
-    "total_donated": 1195
   },
   {
     "username": "galexmarloz",
@@ -130,6 +130,11 @@
     "total_donated": 132
   },
   {
+    "username": "el_infiltrao",
+    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebe4cd89-b4f4-4cd9-adac-2f30151b4209-profile_image-300x300.png",
+    "total_donated": 121
+  },
+  {
     "username": "artorias655",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/5f75fece-e0aa-4ce9-832a-6209b36fc887-profile_image-300x300.jpeg",
     "total_donated": 112
@@ -138,6 +143,11 @@
     "username": "Ainz_Music",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a8ea616d-0661-451d-beec-762a24f59947-profile_image-300x300.jpeg",
     "total_donated": 111
+  },
+  {
+    "username": "principe_kodiakfox",
+    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
+    "total_donated": 105
   },
   {
     "username": "SerGioPerez1118",
@@ -160,6 +170,11 @@
     "total_donated": 75
   },
   {
+    "username": "Chap_GPT",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/418f3741-3bd1-4a40-bb9a-527917913bd3-profile_image-300x300.png",
+    "total_donated": 68
+  },
+  {
     "username": "darki717",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/3e4fdac1-d19e-443a-aded-1253057d9f21-profile_image-300x300.png",
     "total_donated": 65
@@ -167,11 +182,6 @@
   {
     "username": "ricardoazullda",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/1245ed02-ea1d-424a-b1e1-a1e300aae778-profile_image-300x300.jpeg",
-    "total_donated": 64
-  },
-  {
-    "username": "Chap_GPT",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/418f3741-3bd1-4a40-bb9a-527917913bd3-profile_image-300x300.png",
     "total_donated": 64
   },
   {
@@ -215,14 +225,14 @@
     "total_donated": 45
   },
   {
-    "username": "principe_kodiakfox",
-    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
-    "total_donated": 45
-  },
-  {
     "username": "matiascarmona",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/79ae4c49-d6f3-40e3-a17b-7c5b98dfe668-profile_image-300x300.jpeg",
     "total_donated": 40
+  },
+  {
+    "username": "pataderechadehoney",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/d09afea7-aa0c-42df-9092-0da77e4a1123-profile_image-300x300.png",
+    "total_donated": 36
   },
   {
     "username": "noxkiim",
@@ -247,11 +257,6 @@
   {
     "username": "GBL_ALE",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/1a6971f2-5c7f-491b-83e2-bbea3710784e-profile_image-300x300.jpeg",
-    "total_donated": 21
-  },
-  {
-    "username": "pataderechadehoney",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/d09afea7-aa0c-42df-9092-0da77e4a1123-profile_image-300x300.png",
     "total_donated": 21
   },
   {
@@ -492,11 +497,6 @@
   {
     "username": "amor478",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2aa08b88-2f0d-4463-86d5-719ac6981313-profile_image-300x300.jpeg",
-    "total_donated": 1
-  },
-  {
-    "username": "Elstitch11",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/7df611a9-fee3-49e6-934b-99d49689d7f6-profile_image-300x300.png",
     "total_donated": 1
   }
 ]
