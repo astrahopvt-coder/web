@@ -97,7 +97,7 @@ document.addEventListener("click", () => {
   </div>
 </header>
 
-<section id="inicio" class="visible">
+<section id="inicio" class="visible" tabindex="-1">
   <div class="card">
     <h2>Bienvenid@ a mi universo</h2>
     <p>Gracias por estar aquí. Esto es lo que armé con lo que tenía: streams, historias sueltas, y las ganas de que te quedes un rato.</p>
@@ -149,7 +149,7 @@ document.addEventListener("click", () => {
 </div>
 </section>
 
-<section id="sobre">
+<section id="sobre" tabindex="-1">
   <div class="card">
     <h2>Preguntas Frecuentes</h2>
 
@@ -205,7 +205,7 @@ document.addEventListener("click", () => {
   </div>
 </section>
 
-<section id="juegos">
+<section id="juegos" tabindex="-1">
   <div class="card">
     <h2>🎮 Juegos</h2>
     <p>Juegos y cositas interactivas que voy armando. Se van sumando más con el tiempo.</p>
@@ -216,43 +216,11 @@ document.addEventListener("click", () => {
         <div class="juego-card-title">Descubre la verdad</div>
       </a>
 
-      </div>
+    </div>
   </div>
 </section>
 
-<style>
-  .juegos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 18px;
-    margin-top: 18px;
-  }
-  .juego-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    border-radius: 14px;
-    overflow: hidden;
-    background: rgba(255, 80, 110, 0.08);
-    border: 1px solid rgba(255, 80, 110, 0.25);
-    transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-  .juego-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 80, 110, 0.5);
-  }
-  .juego-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .juego-card-title {
-    padding: 12px 14px;
-    font-weight: 700;
-  }
-</style>
-  
-<section id="patrocinadores">
+<section id="patrocinadores" tabindex="-1">
   <div class="card donadores-carrusel">
     <h2>💛 Astros Leyenda — Gracias por su apoyo</h2>
     <div class="carrusel-wrapper" id="carrusel-wrapper">
@@ -286,7 +254,7 @@ document.addEventListener("click", () => {
     </div>
   </div>
 </section>
-<section id="fanart">
+<section id="fanart" tabindex="-1">
   <div class="card">
     <h2>Galería de Fanarts</h2>
     <p>Gracias por cada obra creada. ¡Eres parte del proyecto!</p>
@@ -299,17 +267,25 @@ document.addEventListener("click", () => {
 const totalImgs = 50;
 const gallery = document.getElementById("fanart-gallery");
 const fanartSrcs = [];
+let fanartsCargados = false;
 
-for (let i = 1; i <= totalImgs; i++) {
-  const img = new Image();
-  img.src = `fanarts/${i}.jpg`;
-  img.style.cursor = 'pointer';
-  img.onload = () => {
-    const idx = fanartSrcs.push(img.src) - 1;
-    img.dataset.idx = idx;
-    img.addEventListener('click', () => openLightbox(parseInt(img.dataset.idx)));
-    gallery.appendChild(img);
-  };
+function cargarFanarts() {
+  if (fanartsCargados) return;
+  fanartsCargados = true;
+
+  for (let i = 1; i <= totalImgs; i++) {
+    const img = new Image();
+    img.src = `fanarts/${i}.jpg`;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.style.cursor = 'pointer';
+    img.onload = () => {
+      const idx = fanartSrcs.push(img.src) - 1;
+      img.dataset.idx = idx;
+      img.addEventListener('click', () => openLightbox(parseInt(img.dataset.idx)));
+      gallery.appendChild(img);
+    };
+  }
 }
 </script>
 
@@ -395,7 +371,7 @@ document.addEventListener('keydown', (e) => {
 })();
 </script>
 
-<section id="donaciones">
+<section id="donaciones" tabindex="-1">
     
     <div class="card support-philosophy-card">
       <h2>🫂 Lo que de verdad me sostiene</h2>
@@ -512,12 +488,6 @@ document.addEventListener('keydown', (e) => {
     </div>
 </section>
 
-<style>
-  #kofi-shop-embed {
-    margin-top: 12px;
-  }
-</style>
-
 <script>
 const LINKS_RECOMENDADOS = [
   'https://m.twitch.tv/mikuescanon/home',
@@ -536,11 +506,24 @@ const SECCIONES_VALIDAS = ['inicio', 'sobre', 'juegos', 'patrocinadores', 'fanar
 function activarSeccion(id) {
   document.querySelectorAll("section").forEach(s => s.classList.remove("visible"));
   const target = document.getElementById(id);
-  if (target) target.classList.add("visible");
+  if (target) {
+    target.classList.add("visible");
+    target.focus({ preventScroll: true });
+  }
 
-  document.querySelectorAll(".nav button[data-section]").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".nav button[data-section]").forEach(b => {
+    b.classList.remove("active");
+    b.removeAttribute("aria-current");
+  });
   const navBtn = document.querySelector(`.nav button[data-section="${id}"]`);
-  if (navBtn) navBtn.classList.add("active");
+  if (navBtn) {
+    navBtn.classList.add("active");
+    navBtn.setAttribute("aria-current", "page");
+  }
+
+  if (id === 'fanart' && typeof cargarFanarts === 'function') {
+    cargarFanarts();
+  }
 }
 
 function showSection(id) {
