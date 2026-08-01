@@ -1,11 +1,5 @@
-/* ----------------------------- */
-/* FUENTES                        */
-/* ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Yusei+Magic&display=swap');
 
-/* ----------------------------- */
-/* PALETA Y ESTILO GENERAL       */
-/* ----------------------------- */
 :root {
   --bg1: #5a0010;
   --bg2: #8b0020;
@@ -22,9 +16,6 @@
   --glow2: 0 0 28px rgba(255, 100, 130, 0.85);
 }
 
-/* ----------------------------- */
-/* FONDO                         */
-/* ----------------------------- */
 body {
   margin: 0;
   background: linear-gradient(
@@ -52,7 +43,6 @@ body {
   100% { filter: brightness(1.1) saturate(1.1); }
 }
 
-/* Estrellas de fondo flotantes */
 body::before {
   content: '✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧';
   position: fixed;
@@ -73,9 +63,6 @@ body::before {
   100% { transform: translateY(-15px) rotate(5deg); }
 }
 
-/* ----------------------------- */
-/* TIPOGRAFÍA GLOBAL             */
-/* ----------------------------- */
 body, p, li, input, textarea, select,
 .donador-name, .copyright,
 table td {
@@ -84,7 +71,6 @@ table td {
   color: var(--text) !important;
 }
 
-/* Yusei Magic para títulos, nav, botones CTA */
 h1, h2, h3, h4, h5, h6,
 .nav button,
 .btn-link,
@@ -98,8 +84,7 @@ table th,
   color: #fff;
   font-weight: normal;
   font-style: normal;
-  /* Yusei Magic has no bold variant — simulate weight with stroke */
-  -webkit-text-stroke: 0.6px currentColor;
+    -webkit-text-stroke: 0.6px currentColor;
   paint-order: stroke fill;
   text-shadow:
     0 0 10px rgba(255, 120, 150, 0.8),
@@ -107,9 +92,6 @@ table th,
     2px 2px 0px rgba(80, 0, 20, 0.6);
 }
 
-/* ----------------------------- */
-/* CABECERA Y MENÚ               */
-/* ----------------------------- */
 header {
   display: flex;
   flex-direction: column;
@@ -160,9 +142,6 @@ h1 {
   color: #fff !important;
 }
 
-/* ----------------------------- */
-/* SECCIONES                     */
-/* ----------------------------- */
 section {
   display: none;
   padding: 40px;
@@ -180,9 +159,6 @@ section {
 
 .visible { display: block; }
 
-/* ----------------------------- */
-/* TARJETAS Y BLOQUES            */
-/* ----------------------------- */
 .card {
   background: var(--card-bg);
   border: 1.5px solid var(--card-border);
@@ -196,7 +172,6 @@ section {
   -webkit-backdrop-filter: blur(14px);
 }
 
-/* Botones */
 .btn-link {
   display: block;
   padding: 12px 18px;
@@ -219,14 +194,12 @@ section {
   box-shadow: 0 8px 25px rgba(200, 30, 60, 0.7);
 }
 
-/* Media */
 video:not(.logo), audio {
   width: 100%;
   border-radius: 18px;
   margin-top: 10px;
 }
 
-/* --- TRANSICIÓN LIGERA --- */
 #portal-transition {
   position: fixed;
   inset: 0;
@@ -255,7 +228,6 @@ video:not(.logo), audio {
   transform: scale(1.05);
 }
 
-/* ===== FONDO DE CIRCUITO/DECO ===== */
 .circuit-bg {
   position: fixed;
   inset: 0;
@@ -272,7 +244,6 @@ video:not(.logo), audio {
   display: block;
 }
 
-/* === ICONOS DE REDES SOCIALES === */
 .social-icons {
   display: flex;
   gap: 25px;
@@ -298,7 +269,6 @@ video:not(.logo), audio {
     0 0 38px rgba(255, 60, 100, 1);
 }
 
-/* Estilo del título "Mis redes" */
 #inicio h3 {
   text-align: center;
   font-family: 'Yusei Magic', sans-serif;
@@ -306,9 +276,6 @@ video:not(.logo), audio {
   margin-bottom: 20px;
 }
 
-/* ----------------------------- */
-/* LISTAS PATROS/APORTADORES     */
-/* ----------------------------- */
 .lista-patro li,
 .lista-aportadores li {
   margin: 5px 0;
@@ -322,9 +289,6 @@ video:not(.logo), audio {
   font-family: 'Comfortaa', cursive;
 }
 
-/* ----------------------------- */
-/* GALERÍA DE FANARTS            */
-/* ----------------------------- */
 .galeria {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -344,7 +308,6 @@ video:not(.logo), audio {
   box-shadow: 0 10px 30px rgba(220, 50, 80, 0.7);
 }
 
-/* --- TARJETA KO-FI --- */
 .kofi-card {
   background: rgba(40, 0, 10, 0.85) !important;
   border: 1.5px solid rgba(255, 120, 150, 0.4) !important;
@@ -367,9 +330,6 @@ video:not(.logo), audio {
   box-shadow: 0 4px 15px rgba(180, 0, 30, 0.4);
 }
 
-/* ----------------------------- */
-/* STREAM EMBED                  */
-/* ----------------------------- */
 .stream-container {
   position: relative;
   width: 100%;
@@ -389,7 +349,6 @@ video:not(.logo), audio {
   border-radius: 18px;
 }
 
-/* === TARJETAS DE PATROCINADORES === */
 .patro-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -422,9 +381,6 @@ video:not(.logo), audio {
   background: rgba(80, 0, 20, 0.5);
 }
 
-/* ----------------------------- */
-/* CARRUSEL DE DONADORES         */
-/* ----------------------------- */
 .donadores-carrusel {
   background: rgba(60, 0, 15, 0.72) !important;
   border: 1.5px solid rgba(255, 120, 150, 0.35) !important;
@@ -450,49 +406,23 @@ video:not(.logo), audio {
   margin-top: 20px;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
 }
 
 .carrusel-wrapper::-webkit-scrollbar {
   display: none;
 }
 
+.carrusel-wrapper.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
 .carrusel {
   display: flex;
   gap: 28px;
   padding: 10px 4px;
-  scroll-snap-type: x mandatory;
-}
-
-.carrusel-nav {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 14px;
-}
-
-.carrusel-btn {
-  background: rgba(200, 30, 60, 0.65);
-  border: 1.5px solid rgba(255, 120, 150, 0.5);
-  color: #fff;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
-}
-
-.carrusel-btn:hover {
-  background: rgba(220, 50, 80, 0.85);
-  transform: scale(1.1);
-}
-
-.carrusel-btn:active {
-  transform: scale(0.95);
 }
 
 .donador-slide {
@@ -505,7 +435,6 @@ video:not(.logo), audio {
   text-align: center;
   box-shadow: 0 4px 15px rgba(150, 0, 30, 0.4);
   transition: 0.25s ease;
-  scroll-snap-align: start;
   flex-shrink: 0;
 }
 
@@ -537,9 +466,6 @@ video:not(.logo), audio {
   text-shadow: 0 0 6px rgba(220, 50, 80, 0.5);
 }
 
-/* ============================== */
-/*   OPTIMIZACIÓN MÓVILES 768px   */
-/* ============================== */
 @media (max-width: 768px) {
   body {
     background-size: 200% 200%;
@@ -583,9 +509,6 @@ video:not(.logo), audio {
   }
 }
 
-/* ============================== */
-/*   OPTIMIZACIÓN MÓVILES 480px   */
-/* ============================== */
 @media (max-width: 480px) {
   body::before { display: none; }
 
@@ -616,9 +539,6 @@ video:not(.logo), audio {
   footer { padding: 20px 10px; }
 }
 
-/* ----------------------------- */
-/* PIE DE PÁGINA (FOOTER)        */
-/* ----------------------------- */
 footer {
   margin-top: 50px;
   padding: 30px 20px;
@@ -665,9 +585,6 @@ footer {
   font-family: 'Comfortaa', cursive !important;
 }
 
-/* ----------------------------- */
-/* SECCIÓN DONACIONES            */
-/* ----------------------------- */
 .support-philosophy-card {
   border: 2px solid rgba(255, 120, 150, 0.55) !important;
   box-shadow: var(--glow2);
@@ -727,7 +644,6 @@ footer {
   text-shadow: 0 0 8px rgba(255, 100, 130, 0.6) !important;
 }
 
-/* Tablas */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -760,7 +676,6 @@ table tr:hover {
   background-color: rgba(180, 20, 40, 0.25);
 }
 
-/* BOTÓN STREAMLOOTS */
 .streamloots-button {
   display: block;
   width: 70%;
@@ -790,7 +705,6 @@ table tr:hover {
   .streamloots-button { width: 90%; }
 }
 
-/* Imagen del modelo VTuber */
 .astra-model-image {
   width: 300px;
   height: auto;
@@ -801,9 +715,6 @@ table tr:hover {
   margin: 0 0 15px 25px;
 }
 
-/* ================================ */
-/*  WIDGET COUNTDOWN PRÓXIMO DIRECTO */
-/* ================================ */
 #countdown-widget {
   position: fixed;
   right: 18px;
@@ -1042,9 +953,6 @@ table tr:hover {
   }
 }
 
-/* ================================ */
-/*  DRAG HANDLE DEL COUNTDOWN       */
-/* ================================ */
 .cw-drag-handle {
   display: flex;
   justify-content: center;
@@ -1076,9 +984,6 @@ table tr:hover {
   cursor: grabbing;
 }
 
-/* ================================ */
-/*  BOTÓN PAUSA/PLAY MÚSICA         */
-/* ================================ */
 #music-toggle {
   position: fixed;
   bottom: 22px;
@@ -1125,9 +1030,6 @@ table tr:hover {
   100% { transform: scale(1.15); text-shadow: 0 0 18px rgba(255, 140, 160, 1); }
 }
 
-/* ================================ */
-/*  LIGHTBOX GALERÍA FANARTS        */
-/* ================================ */
 #lightbox {
   display: none;
   position: fixed;
@@ -1227,7 +1129,6 @@ table tr:hover {
   border-color: rgba(255, 160, 180, 0.8);
 }
 
-/* Galería: cursor pointer en imágenes */
 .galeria img {
   cursor: pointer;
 }
@@ -1240,9 +1141,6 @@ table tr:hover {
   #music-toggle #music-icon { font-size: 1.1rem; }
 }
 
-/* ----------------------------- */
-/* POPUP AVISO EXTENSIÓN FIREFOX */
-/* ----------------------------- */
 #astra-firefox-popup {
   position: fixed;
   bottom: 24px;
