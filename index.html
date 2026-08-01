@@ -285,7 +285,6 @@ function cargarFanarts() {
   for (let i = 1; i <= totalImgs; i++) {
     const img = new Image();
     img.src = `fanarts/${i}.jpg`;
-    img.loading = 'lazy';
     img.decoding = 'async';
     img.style.cursor = 'pointer';
     img.onload = () => {
@@ -293,6 +292,9 @@ function cargarFanarts() {
       img.dataset.idx = idx;
       img.addEventListener('click', () => openLightbox(parseInt(img.dataset.idx)));
       gallery.appendChild(img);
+    };
+    img.onerror = () => {
+      // Imagen no encontrada, la ignoramos
     };
   }
 }
