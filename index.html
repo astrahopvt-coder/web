@@ -36,10 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.querySelector(".logo");
+  if (logo) logo.play().catch(() => {});
+});
+
 document.addEventListener("click", () => {
   const bgm = document.getElementById("bgm");
-  bgm.volume = 0.05;
-  bgm.play().catch(() => {});
+  if (bgm) {
+    bgm.volume = 0.05;
+    bgm.play().catch(() => {});
+  }
+  const logo = document.querySelector(".logo");
+  if (logo) logo.play().catch(() => {});
 }, { once: true });
 </script>
 <div class="circuit-bg">
