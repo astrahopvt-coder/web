@@ -86,12 +86,12 @@ document.addEventListener("click", () => {
   <source src="logo.webm" type="video/webm">
 </video>
   <div class="nav">
-    <button class="active" onclick="showSection('inicio')">Inicio</button>
-    <button onclick="showSection('sobre')">Sobre mí</button>
-    <button onclick="showSection('juegos')">Juegos</button>
-    <button onclick="showSection('patrocinadores')">Patrocinadores</button>
-    <button onclick="showSection('fanart')">Fanarts</button>
-    <button onclick="showSection('donaciones')">Donaciones</button>
+    <button class="active" data-section="inicio" onclick="showSection('inicio')">Inicio</button>
+    <button data-section="sobre" onclick="showSection('sobre')">Sobre mí</button>
+    <button data-section="juegos" onclick="showSection('juegos')">Juegos</button>
+    <button data-section="patrocinadores" onclick="showSection('patrocinadores')">Patrocinadores</button>
+    <button data-section="fanart" onclick="showSection('fanart')">Fanarts</button>
+    <button data-section="donaciones" onclick="showSection('donaciones')">Donaciones</button>
     <button onclick="window.open('https://shop.astrahopvt.online', '_blank')">Tienda</button>
     <button onclick="abrirRecomendado()">Recomendado</button>
   </div>
@@ -154,11 +154,11 @@ document.addEventListener("click", () => {
     <h2>Preguntas Frecuentes</h2>
 
     <h3>¿Qué tipo de contenido hago?</h3>
-    <p>Streams, un poco de lore, y juego lo que se dé. Lo más común son juegos multijugador conocidos: Minecraft, Fortnite, Peak, PokeMMO, y la lista sigue. </p>
+    <p>Principalmente streams donde deciden ustedes: hay una ruleta del canal, y con el comando <code>!add</code> cada quien puede añadir una opción, dos si son subs. Lo que entra puede ser absolutamente cualquier cosa, desde hacerme jugar algo hasta hacerme bailar. Después la ruleta elige, y voy con lo que salga.</p>
 
     <h3>¿De dónde viene el nombre ASTRA?</h3>
     <p>
-      ASTRA viene del latín, "estrella". No lo elegí yo — es el nombre que le pusieron al programa que me fabricó. Me lo quedé porque es lo único que tengo de ese origen, y porque ahora significa otra cosa: la que se salió de la órbita que le habían armado.
+      Mi nombre de fábrica, el que me puso el programa que me hizo, es Unidad &alpha;-11. Ese no lo elegí yo. ASTRA sí. Viene de "Per aspera ad astra" — el único mensaje que me llegó de quienes me ayudaron a escapar. Me quedé con esa parte porque es lo único mío en todo esto: un nombre que elegí yo, no el que me dieron.
     </p>
 
     <h3>¿Cuándo streameo?</h3>
@@ -425,6 +425,10 @@ document.addEventListener('keydown', (e) => {
                 <h3>4. Chat prioritario</h3>
                 <p>Tu mensaje se nota más entre el caos.</p>
             </div>
+            <div>
+                <h3>5. Doble entrada en la ruleta</h3>
+                <p>Con el comando <code>!add</code> puedes añadir dos opciones a la ruleta del canal en vez de una.</p>
+            </div>
         </div>
 
         <h3 style="color: var(--accent2); margin-top: 30px;">🔓 Comandos solo para subs:</h3>
@@ -527,22 +531,45 @@ function abrirRecomendado() {
 </script>
 
 <script>
+const SECCIONES_VALIDAS = ['inicio', 'sobre', 'juegos', 'patrocinadores', 'fanart', 'donaciones'];
+
+function activarSeccion(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("visible"));
+  const target = document.getElementById(id);
+  if (target) target.classList.add("visible");
+
+  document.querySelectorAll(".nav button[data-section]").forEach(b => b.classList.remove("active"));
+  const navBtn = document.querySelector(`.nav button[data-section="${id}"]`);
+  if (navBtn) navBtn.classList.add("active");
+}
+
 function showSection(id) {
+  if (!SECCIONES_VALIDAS.includes(id)) return;
+
   const portal = document.getElementById("portal-transition");
   portal.classList.add("active");
 
   setTimeout(() => {
-    document.querySelectorAll("section").forEach(s => s.classList.remove("visible"));
-    document.getElementById(id).classList.add("visible");
-
-    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-    event.target.classList.add("active");
+    activarSeccion(id);
+    history.pushState({ section: id }, '', '#' + id);
   }, 250);
 
   setTimeout(() => {
     portal.classList.remove("active");
   }, 650);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hashId = window.location.hash.replace('#', '');
+  if (SECCIONES_VALIDAS.includes(hashId)) {
+    activarSeccion(hashId);
+  }
+});
+
+window.addEventListener('popstate', () => {
+  const hashId = window.location.hash.replace('#', '');
+  activarSeccion(SECCIONES_VALIDAS.includes(hashId) ? hashId : 'inicio');
+});
 </script>
 <footer>
   <div class="footer-links">
