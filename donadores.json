@@ -15,14 +15,14 @@
     "total_donated": 8998
   },
   {
+    "username": "terry7bogard",
+    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-300x300.png",
+    "total_donated": 3600
+  },
+  {
     "username": "nando543rwa",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a200e564-cff4-49f2-971b-f959bee52852-profile_image-300x300.jpeg",
     "total_donated": 3279
-  },
-  {
-    "username": "terry7bogard",
-    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-300x300.png",
-    "total_donated": 3100
   },
   {
     "username": "xFrozedEG",
@@ -91,8 +91,13 @@
   },
   {
     "username": "AkaiShizu_Torami",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/249bd94d-1d0f-4c3e-9c91-3c7568011151-profile_image-300x300.jpeg",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/5c58c849-6f59-4934-826c-c7ec92a78cbf-profile_image-300x300.jpeg",
     "total_donated": 272
+  },
+  {
+    "username": "AtorieUmisora",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/4d9e7171-7c9a-473d-9694-50d0740ed0fe-profile_image-300x300.png",
+    "total_donated": 219
   },
   {
     "username": "neodtaiyo1",
@@ -101,8 +106,8 @@
   },
   {
     "username": "el_infiltrao",
-    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebe4cd89-b4f4-4cd9-adac-2f30151b4209-profile_image-300x300.png",
-    "total_donated": 201
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/b7d72fad-22d2-4ef7-a4ca-bc2e6bd719f0-profile_image-300x300.jpeg",
+    "total_donated": 211
   },
   {
     "username": "Hover23_",
@@ -177,7 +182,7 @@
   {
     "username": "Chap_GPT",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/418f3741-3bd1-4a40-bb9a-527917913bd3-profile_image-300x300.png",
-    "total_donated": 73
+    "total_donated": 75
   },
   {
     "username": "darki717",
@@ -406,7 +411,7 @@
   },
   {
     "username": "Meisho_Dotto",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/d5efaf4e-8c06-4df8-9b87-e4110653fb2b-profile_image-300x300.jpeg",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/bf988a70-b2cf-417b-a1a0-1b72a7accd61-profile_image-300x300.jpeg",
     "total_donated": 3
   },
   {
@@ -492,11 +497,6 @@
   {
     "username": "kempachigood",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/58a6dfc4-47bb-4825-9540-130f15c9ba4e-profile_image-300x300.jpeg",
-    "total_donated": 1
-  },
-  {
-    "username": "amor478",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2aa08b88-2f0d-4463-86d5-719ac6981313-profile_image-300x300.jpeg",
     "total_donated": 1
   }
 ]
