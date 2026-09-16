@@ -38,17 +38,22 @@ jobs:
           TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
           TWITCH_REFRESH_TOKEN: ${{ secrets.TWITCH_REFRESH_TOKEN }}
           BROADCASTER_LOGIN: ${{ vars.BROADCASTER_LOGIN || '' }}
+          # StreamElements (opcional): histórico EXACTO de meses y regalos.
+          # Channel ID y JWT de https://streamelements.com/dashboard/account/channels
+          SE_CHANNEL_ID: ${{ secrets.SE_CHANNEL_ID }}
+          SE_JWT: ${{ secrets.SE_JWT }}
         run: node script.js
 
-      # 5. Guarda y sube las modificaciones de 'donadores.json' al repositorio
+      # 5. Guarda y sube 'donadores.json' Y 'subs-state.json' (el estado guarda los
+      #    meses acumulados y los regalos históricos: sin commitearlo se perderían).
       #    IMPORTANTE: el commit NO lleva [skip ci] — sin él, el push no dispara
       #    el workflow de Pages y la web pública se quedaría con el JSON viejo.
-      - name: Guardar donadores.json actualizado
+      - name: Guardar donadores.json y estado actualizados
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add donadores.json
-          git diff-index --quiet HEAD || git commit -m "bot: actualizar donadores.json"
+          git add donadores.json subs-state.json
+          git diff-index --quiet HEAD || git commit -m "bot: actualizar leaderboard y estado de subs"
           git push
 
       # 6. Si algo falló, dice qué secrets faltan (sin mostrar sus valores)
