@@ -321,7 +321,7 @@
         <div class="overlay visible" id="ov-start">
           <div style="font-size:2.5rem;">🐇</div>
           <div class="overlay-title">Laberinto<br>del Dominio</div>
-          <div class="overlay-sub">Guiá al conejo con el mouse. Evitá las paredes, pinchos y puertas cerradas.</div>
+          <div class="overlay-sub">Guiá al conejo con el mouse. Evitá las paredes, el fuego y las puertas cerradas.</div>
           <button class="ov-btn" id="btn-start">Iniciar misión</button>
         </div>
 
@@ -590,7 +590,7 @@
             ctx.fillRect(x, y, CELL, 2);
             ctx.fillRect(x, y, 2, CELL);
           } 
-          else if (cell === 2) { // 🔥 PINCHO CON FONDO BLANCO
+          else if (cell === 2) { // 🔥 FUEGO CON FONDO BLANCO
             // Fondo blanco
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(x, y, CELL, CELL);
@@ -763,7 +763,7 @@
       playLossSound();
       const messages = [
         'El Dominio Eterno te ha atrapado. Volvés al inicio... de todo.',
-        '¡Recapturado! Pinchos o puerta cerrada te detuvieron.',
+        '¡Recapturado! El fuego o una puerta cerrada te detuvieron.',
         'El Cronoarca Supremo sonríe. Volvés a empezar desde cero.',
         'Fallaste la misión. Todo el progreso fue borrado.'
       ];

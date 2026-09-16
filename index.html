@@ -6,12 +6,32 @@
 
   <title>ASTRA • VTuber</title>
   <meta name="description" content="Astrahop: fabricada por algo que ya ganó en otro tiempo, escapada a este ciberespacio. Streams, lore, y las ganas de que te quedes un rato." />
-  <link rel="icon" type="image/x-icon" href="favicon.ico">  
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20260915">
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,900&family=Comfortaa:wght@700&family=Yusei+Magic&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://www.astrahopvt.online/">
+  <meta name="theme-color" content="#800020">
+
+  <!-- Open Graph (Discord, WhatsApp, Facebook, etc.) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ASTRA • VTuber">
+  <meta property="og:title" content="ASTRA • VTuber">
+  <meta property="og:description" content="Streams de viernes a lunes a las 7:30 pm (GMT-4). Lore, juegos y la galería de fanarts del Proyecto ASTRA.">
+  <meta property="og:url" content="https://www.astrahopvt.online/">
+  <meta property="og:image" content="https://www.astrahopvt.online/img/astra-model.webp">
+  <meta property="og:image:width" content="746">
+  <meta property="og:image:height" content="1072">
+  <meta property="og:locale" content="es_LA">
+
+  <!-- Twitter/X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ASTRA • VTuber">
+  <meta name="twitter:description" content="Streams de viernes a lunes a las 7:30 pm (GMT-4). Lore, juegos y la galería de fanarts del Proyecto ASTRA.">
+  <meta name="twitter:image" content="https://www.astrahopvt.online/img/astra-model.webp">
+
+  <link rel="stylesheet" href="style.css?v=20260915">
 
   <script defer src="https://cdn.ko-fi.tools/v2/js/shop.js"></script>
 </head>
@@ -19,22 +39,6 @@
 <audio id="bgm" autoplay loop>
   <source src="tu-musica.mp3" type="audio/mpeg">
 </audio>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const defaultAvatar = "donador/default.png";
-
-  document.querySelectorAll(".donador-avatar").forEach(img => {
-    const name = img.dataset.avatar;
-    const customURL = `donador/${name}.png`;
-
-    fetch(customURL, { method: "HEAD" })
-      .then(res => {
-        img.src = res.ok ? customURL : defaultAvatar;
-      })
-      .catch(() => img.src = defaultAvatar);
-  });
-});
-</script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const logo = document.querySelector(".logo");
@@ -114,14 +118,7 @@ document.addEventListener("click", () => {
     <div class="card">
     <h2>Stream en directo</h2>
 
-    <div class="stream-container">
-      <iframe
-        src="https://player.twitch.tv/?channel=astrahopvt&parent=www.astrahopvt.online"
-        frameborder="0"
-        allowfullscreen="true"
-        scrolling="no">
-     </iframe>
-    </div>
+    <div class="stream-container" id="stream-container"></div>
   </div>
 <div class="card">
   <h3>Mis redes</h3>
@@ -171,7 +168,7 @@ document.addEventListener("click", () => {
     </p>
 
     <h3>¿Cuándo streameo?</h3>
-    <p>Revisa el panel de horarios o mis redes para actualizaciones. Pero estaré siempre de <strong>viernes a lunes, a las 7:30 pm hora de Chile</strong> <span id="faq-local-time"></span>.</p>
+    <p>Revisa el panel de horarios o mis redes para actualizaciones. Pero estaré siempre de <strong>viernes a lunes, a las 7:30 pm (GMT-4)</strong> <span id="faq-local-time"></span>.</p>
   </div>
 
   <div class="card">
@@ -249,15 +246,15 @@ document.addEventListener("click", () => {
     <div class="patro-grid">
 
       <a href="https://x.la/l/QYLZChiO" class="patro-card" target="_blank">
-        <img src="patrocinadores/patro1.jpg" alt="Patrocinador 1">
+        <img src="patrocinadores/patro1.webp" alt="Patrocinador 1">
       </a>
 
       <a href="https://x.la/l/jFv7tEO1" class="patro-card" target="_blank">
-        <img src="patrocinadores/patro2.jpg" alt="Patrocinador 2">
+        <img src="patrocinadores/patro2.webp" alt="Patrocinador 2">
       </a>
 
       <a href="https://x.la/l/eBdG1yIg" class="patro-card" target="_blank">
-        <img src="patrocinadores/patro5.jpg" alt="Patrocinador 5">
+        <img src="patrocinadores/patro5.webp" alt="Patrocinador 5">
       </a>
 
     </div>
@@ -268,35 +265,165 @@ document.addEventListener("click", () => {
     <h2>Galería de Fanarts</h2>
     <p>Gracias por cada obra creada. ¡Eres parte del proyecto!</p>
 
+    <div class="fanart-toolbar" id="fanart-toolbar" hidden>
+      <div class="fanart-filter">
+        <label for="fanart-autor-select">Artista:</label>
+        <select id="fanart-autor-select" onchange="cambiarAutor(this.value)"></select>
+      </div>
+      <span id="fanart-contador"></span>
+    </div>
+
     <div id="fanart-gallery" class="galeria"></div>
+    <div id="fanart-paginacion" class="paginacion" hidden></div>
   </div>
 </section>
 
 <script>
-const totalImgs = 50;
-const gallery = document.getElementById("fanart-gallery");
-const fanartSrcs = [];
+// La galería descubre sola los fanarts (1.webp, 2.webp, ...) y toma autor/descripción
+// opcionales de fanarts.json. Para añadir un fanart: sube N.webp y listo.
+const FANARTS_POR_PAGINA = 12;
+const MAX_HUECOS = 3; // números webp inexistentes seguidos que tolera antes de parar
+const fanartSrcs = [];   // [{ num, src }] en orden ascendente
+const fanartMeta  = {};  // num -> { autor, descripcion }
+let fanartVisibles = []; // índices (sobre fanartSrcs) visibles según página y filtro
 let fanartsCargados = false;
+let fanartPagina = 1;
+let fanartTotalPaginas = 1;
+let fanartAutorFiltro = '';
+
+const gallery = document.getElementById("fanart-gallery");
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 function cargarFanarts() {
   if (fanartsCargados) return;
   fanartsCargados = true;
 
-  for (let i = 1; i <= totalImgs; i++) {
-    const img = new Image();
-    img.src = `fanarts/${i}.jpg`;
+  fetch('fanarts.json', { cache: 'no-cache' })
+    .then(res => (res.ok ? res.json() : {}))
+    .then(meta => {
+      Object.entries(meta).forEach(([archivo, datos]) => {
+        const num = parseInt(archivo, 10);
+        if (!isNaN(num) && datos) fanartMeta[num] = datos;
+      });
+      descubrirFanarts(1, 0);
+    })
+    .catch(() => descubrirFanarts(1, 0));
+}
+
+function descubrirFanarts(num, huecos) {
+  if (huecos >= MAX_HUECOS) return finalizarFanarts();
+  const img = new Image();
+  img.decoding = 'async';
+  img.onload = () => {
+    fanartSrcs.push({ num, src: `fanarts/${num}.webp` });
+    descubrirFanarts(num + 1, 0);
+  };
+  img.onerror = () => descubrirFanarts(num + 1, huecos + 1);
+  img.src = `fanarts/${num}.webp`;
+}
+
+function finalizarFanarts() {
+  poblarAutores();
+  mostrarPagina(1);
+  const toolbar = document.getElementById('fanart-toolbar');
+  if (toolbar) toolbar.hidden = false;
+}
+
+function autorDe(num) {
+  return (fanartMeta[num] || {}).autor || 'Anónimo';
+}
+
+function poblarAutores() {
+  const select = document.getElementById('fanart-autor-select');
+  if (!select) return;
+  const autores = [...new Set(fanartSrcs.map(x => autorDe(x.num)))]
+    .sort((a, b) => a.localeCompare(b, 'es'));
+  select.innerHTML = '<option value="">Todos los artistas</option>' +
+    autores.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
+}
+
+function cambiarAutor(nombre) {
+  fanartAutorFiltro = nombre || '';
+  mostrarPagina(1);
+}
+
+function listaFiltrada() {
+  return fanartSrcs
+    .map((item, i) => ({ ...item, idx: i }))
+    .filter(item => !fanartAutorFiltro || autorDe(item.num) === fanartAutorFiltro);
+}
+
+function mostrarPagina(p) {
+  const lista = listaFiltrada();
+  fanartTotalPaginas = Math.max(1, Math.ceil(lista.length / FANARTS_POR_PAGINA));
+  fanartPagina = Math.min(Math.max(1, p), fanartTotalPaginas);
+
+  fanartVisibles = lista
+    .slice((fanartPagina - 1) * FANARTS_POR_PAGINA, fanartPagina * FANARTS_POR_PAGINA)
+    .map(x => x.idx);
+
+  gallery.innerHTML = '';
+  fanartVisibles.forEach((idxGlobal, pos) => {
+    const item = fanartSrcs[idxGlobal];
+    const meta = fanartMeta[item.num] || {};
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = meta.autor ? `Fanart de ${meta.autor}` : `Fanart ${item.num}`;
+    img.title = meta.autor ? `Por ${meta.autor}` : '';
+    img.loading = 'lazy';
     img.decoding = 'async';
     img.style.cursor = 'pointer';
-    img.onload = () => {
-      const idx = fanartSrcs.push(img.src) - 1;
-      img.dataset.idx = idx;
-      img.addEventListener('click', () => openLightbox(parseInt(img.dataset.idx)));
-      gallery.appendChild(img);
-    };
-    img.onerror = () => {
-      // Imagen no encontrada, la ignoramos
-    };
+    img.addEventListener('click', () => openLightbox(pos));
+    gallery.appendChild(img);
+  });
+
+  const contador = document.getElementById('fanart-contador');
+  if (contador) contador.textContent = `${lista.length} obras · página ${fanartPagina} de ${fanartTotalPaginas}`;
+  renderPaginacion();
+}
+
+function numerosDePagina() {
+  const total = fanartTotalPaginas, cur = fanartPagina;
+  if (total <= 9) return Array.from({ length: total }, (_, i) => i + 1);
+  const nums = [...new Set([1, 2, total - 1, total, cur - 1, cur, cur + 1])]
+    .filter(n => n >= 1 && n <= total)
+    .sort((a, b) => a - b);
+  const out = [];
+  let prev = 0;
+  for (const n of nums) {
+    if (n - prev > 1) out.push('...');
+    out.push(n);
+    prev = n;
   }
+  return out;
+}
+
+function renderPaginacion() {
+  const pag = document.getElementById('fanart-paginacion');
+  if (!pag) return;
+  if (fanartTotalPaginas <= 1) { pag.hidden = true; pag.innerHTML = ''; return; }
+  pag.hidden = false;
+  let html = `<button type="button" class="pag-btn" ${fanartPagina === 1 ? 'disabled' : ''} onclick="irAPagina(${fanartPagina - 1})" aria-label="Página anterior">‹</button>`;
+  html += numerosDePagina().map(n =>
+    n === '...'
+      ? '<span class="pag-ellipsis">…</span>'
+      : `<button type="button" class="pag-btn ${n === fanartPagina ? 'current' : ''}" onclick="irAPagina(${n})">${n}</button>`
+  ).join('');
+  html += `<button type="button" class="pag-btn" ${fanartPagina === fanartTotalPaginas ? 'disabled' : ''} onclick="irAPagina(${fanartPagina + 1})" aria-label="Página siguiente">›</button>`;
+  pag.innerHTML = html;
+}
+
+function irAPagina(p) {
+  mostrarPagina(p);
+  gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 </script>
 
@@ -305,7 +432,10 @@ function cargarFanarts() {
   <div id="lb-container">
     <button id="lb-close" aria-label="Cerrar">✕</button>
     <button id="lb-prev" aria-label="Anterior">❮</button>
-    <img id="lb-img" src="" alt="Fanart ampliado">
+    <div id="lb-stage">
+      <img id="lb-img" src="" alt="Fanart ampliado">
+      <div id="lb-caption"></div>
+    </div>
     <button id="lb-next" aria-label="Siguiente">❯</button>
   </div>
 </div>
@@ -315,11 +445,31 @@ function cargarFanarts() {
 </button>
 
 <script>
-let lbIndex = 0;
+let lbIndex = 0; // posición dentro de la lista filtrada actual
 
-function openLightbox(idx) {
-  lbIndex = idx;
-  document.getElementById('lb-img').src = fanartSrcs[lbIndex];
+function lbMetaActual() {
+  const item = fanartSrcs[fanartVisibles[lbIndex]];
+  if (!item) return null;
+  return { item, meta: fanartMeta[item.num] || {} };
+}
+
+function lbMostrar() {
+  const data = lbMetaActual();
+  if (!data) return;
+  const img = document.getElementById('lb-img');
+  const caption = document.getElementById('lb-caption');
+  img.src = data.item.src;
+  const partes = [`Fanart #${data.item.num}`];
+  if (data.meta.autor) partes.push(`por ${data.meta.autor}`);
+  if (data.meta.descripcion) partes.push(data.meta.descripcion);
+  caption.textContent = partes.join(' — ');
+  caption.style.display = partes.length > 1 ? 'block' : 'none';
+  img.alt = caption.textContent;
+}
+
+function openLightbox(pos) {
+  lbIndex = pos;
+  lbMostrar();
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -330,11 +480,11 @@ function closeLightbox() {
 }
 
 function lbNav(dir) {
-  lbIndex = (lbIndex + dir + fanartSrcs.length) % fanartSrcs.length;
+  lbIndex = (lbIndex + dir + fanartVisibles.length) % fanartVisibles.length;
   const img = document.getElementById('lb-img');
   img.style.opacity = '0';
   setTimeout(() => {
-    img.src = fanartSrcs[lbIndex];
+    lbMostrar();
     img.style.opacity = '1';
   }, 150);
 }
@@ -422,7 +572,7 @@ document.addEventListener('keydown', (e) => {
         <p>
             <code>!tts</code> lee tu mensaje en voz de computadora, <code>!sr</code> cambia la música de fondo con un link de YouTube, y el resto me tira objetos 3D encima:
             <br>
-            <code>!tts</code> | <code>!sr</code> | <code>!pelota</code> | <code>!rosa</code> | <code>!pico</code>
+            <code>!pelota</code> | <code>!rosa</code> | <code>!pico</code>
         </p>
         
         <a href="https://www.twitch.tv/subs/astrahopvt" target="_blank" class="main-support-button">
@@ -500,6 +650,26 @@ document.addEventListener('keydown', (e) => {
 </section>
 
 <script>
+function montarStream() {
+  const container = document.getElementById('stream-container');
+  if (!container || container.querySelector('iframe')) return;
+  container.innerHTML = `
+    <iframe
+      src="https://player.twitch.tv/?channel=astrahopvt&parent=${encodeURIComponent(window.location.hostname)}"
+      frameborder="0"
+      allowfullscreen="true"
+      scrolling="no">
+    </iframe>`;
+}
+
+function desmontarStream() {
+  const container = document.getElementById('stream-container');
+  if (!container || !container.querySelector('iframe')) return;
+  container.innerHTML = '';
+}
+</script>
+
+<script>
 const LINKS_RECOMENDADOS = [
   'https://m.twitch.tv/mikuescanon/home',
   'https://www.tiktok.com/@gyakuro_vt?_r=1&_t=ZS-98EgjkfquW5',
@@ -535,6 +705,13 @@ function activarSeccion(id) {
   if (id === 'fanart' && typeof cargarFanarts === 'function') {
     cargarFanarts();
   }
+
+  // El stream solo vive en la sección de inicio: se carga al entrar y se descarga al salir.
+  if (id === 'inicio') {
+    montarStream();
+  } else {
+    desmontarStream();
+  }
 }
 
 function showSection(id) {
@@ -557,6 +734,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const hashId = window.location.hash.replace('#', '');
   if (SECCIONES_VALIDAS.includes(hashId)) {
     activarSeccion(hashId);
+  } else {
+    montarStream();
   }
 });
 
@@ -597,56 +776,42 @@ window.addEventListener('popstate', () => {
   const STREAM_DAYS = [5, 6, 0, 1];
   const STREAM_HOUR = 19;
   const STREAM_MIN  = 30;
-  const CHILE_TZ    = 'America/Santiago';
+  const TZ_LABEL    = 'GMT-4';
+  const OFFSET_MS   = -4 * 60 * 60 * 1000; // GMT-4 fijo, sin horario de verano
   const DAY_NAMES   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
   const DAY_FULL    = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  const WEEKDAY_MAP = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 };
 
-  function getChileParts(date) {
-    const fmt = new Intl.DateTimeFormat('en-US', {
-      timeZone: CHILE_TZ,
-      weekday: 'short',
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false
-    });
-    const map = {};
-    fmt.formatToParts(date).forEach(p => { map[p.type] = p.value; });
+  // Lee la hora "de pared" en GMT-4 fijo: al instante se le suma el offset y se lee en UTC.
+  function getStreamParts(date) {
+    const shifted = new Date(date.getTime() + OFFSET_MS);
     return {
-      year: parseInt(map.year, 10),
-      month: parseInt(map.month, 10),
-      day: parseInt(map.day, 10),
-      hour: map.hour === '24' ? 0 : parseInt(map.hour, 10),
-      minute: parseInt(map.minute, 10),
-      second: parseInt(map.second, 10),
-      weekday: WEEKDAY_MAP[map.weekday]
+      year:    shifted.getUTCFullYear(),
+      month:   shifted.getUTCMonth(), // 0-indexed, listo para Date.UTC
+      day:     shifted.getUTCDate(),
+      hour:    shifted.getUTCHours(),
+      minute:  shifted.getUTCMinutes(),
+      second:  shifted.getUTCSeconds(),
+      weekday: shifted.getUTCDay()
     };
   }
 
-  function getChileOffsetMs(date) {
-    const utcClock   = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
-    const chileClock = new Date(date.toLocaleString('en-US', { timeZone: CHILE_TZ }));
-    return chileClock.getTime() - utcClock.getTime();
-  }
-
   function getNextStreamInstant() {
-    const now      = new Date();
-    const chileNow = getChileParts(now);
-    const offsetMs = getChileOffsetMs(now);
+    const now   = new Date();
+    const tzNow = getStreamParts(now);
 
     for (let offset = 0; offset <= 7; offset++) {
-      const checkDay = (chileNow.weekday + offset) % 7;
+      const checkDay = (tzNow.weekday + offset) % 7;
       if (!STREAM_DAYS.includes(checkDay)) continue;
 
-      const fakeUTC     = Date.UTC(chileNow.year, chileNow.month - 1, chileNow.day + offset, STREAM_HOUR, STREAM_MIN, 0);
-      const realInstant = fakeUTC - offsetMs;
+      // 19:30 en GMT-4 -> instante UTC real
+      const instant = Date.UTC(tzNow.year, tzNow.month, tzNow.day + offset, STREAM_HOUR, STREAM_MIN, 0) - OFFSET_MS;
 
       if (offset === 0) {
-        if (realInstant - now.getTime() > -10800000) {
-          return { instant: realInstant, day: checkDay, isToday: true };
+        if (instant - now.getTime() > -10800000) {
+          return { instant, day: checkDay, isToday: true };
         }
       } else {
-        return { instant: realInstant, day: checkDay, isToday: false };
+        return { instant, day: checkDay, isToday: false };
       }
     }
     return null;
@@ -697,18 +862,16 @@ window.addEventListener('popstate', () => {
 
     const localLabel = localTimeLabel(info.instant);
     statusEl.textContent = info.isToday
-      ? `¡Hoy a las 19:30 hs (Chile) · ${localLabel} tu hora!`
-      : `${DAY_FULL[info.day]} a las 19:30 hs (Chile) · ${localLabel} tu hora`;
+      ? `¡Hoy a las 19:30 hs (${TZ_LABEL}) · ${localLabel} tu hora!`
+      : `${DAY_FULL[info.day]} a las 19:30 hs (${TZ_LABEL}) · ${localLabel} tu hora`;
   }
 
   function updateFaqLocalTime() {
     const el = document.getElementById('faq-local-time');
     if (!el) return;
-    const now      = new Date();
-    const offsetMs = getChileOffsetMs(now);
-    const cp       = getChileParts(now);
-    const fakeUTC  = Date.UTC(cp.year, cp.month - 1, cp.day, STREAM_HOUR, STREAM_MIN, 0);
-    const instant  = fakeUTC - offsetMs;
+    const now     = new Date();
+    const cp      = getStreamParts(now);
+    const instant = Date.UTC(cp.year, cp.month, cp.day, STREAM_HOUR, STREAM_MIN, 0) - OFFSET_MS;
     el.textContent = `(${localTimeLabel(instant)} en tu horario)`;
   }
 
