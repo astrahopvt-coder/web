@@ -23,7 +23,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       # 3. Instala dependencias (si tienes package.json)
       - name: Instalando dependencias
@@ -41,11 +41,32 @@ jobs:
         run: node script.js
 
       # 5. Guarda y sube las modificaciones de 'donadores.json' al repositorio
+      #    IMPORTANTE: el commit NO lleva [skip ci] — sin él, el push no dispara
+      #    el workflow de Pages y la web pública se quedaría con el JSON viejo.
       - name: Guardar donadores.json actualizado
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add donadores.json
-          git status
-          git diff-index --quiet HEAD || git commit -m "bot: actualizar donadores.json [skip ci]"
+          git diff-index --quiet HEAD || git commit -m "bot: actualizar donadores.json"
           git push
+
+      # 6. Si algo falló, dice qué secrets faltan (sin mostrar sus valores)
+      - name: Diagnóstico de secrets (solo si falló)
+        if: failure()
+        env:
+          HAY_ID: ${{ secrets.TWITCH_CLIENT_ID != '' }}
+          HAY_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET != '' }}
+          HAY_TOKEN: ${{ secrets.TWITCH_REFRESH_TOKEN != '' }}
+        run: |
+          echo "=== Diagnóstico de configuración ==="
+          echo "TWITCH_CLIENT_ID definido:       $HAY_ID"
+          echo "TWITCH_CLIENT_SECRET definido:   $HAY_SECRET"
+          echo "TWITCH_REFRESH_TOKEN definido:   $HAY_TOKEN"
+          echo ""
+          echo "Si alguno dice 'false': créalo en Settings → Secrets and variables → Actions → Secrets."
+          echo "Si todos dicen 'true', mira las líneas rojas del paso 'Ejecutar script de Leaderboard':"
+          echo "  - 401 invalid_client  → CLIENT_ID o CLIENT_SECRET incorrectos"
+          echo "  - 401 unauthorized... al refrescar → REFRESH_TOKEN revocado/expirado, regenéralo"
+          echo "  - 403 en Subscriptions → al token le falta el scope channel:read:subscriptions;"
+          echo "        genera el token con: bits:read channel:read:subscriptions"
