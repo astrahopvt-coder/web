@@ -125,36 +125,38 @@ async function getSubs(broadcasterId, userAccessToken) {
 
 // Descarga todas las actividades (subscriber + cheer) del feed de StreamElements.
 // Usa v3 con paginación por cursor; tope de seguridad de 40 páginas x 500 eventos.
-async function getSEActivities(channelId, jwt) {
+async function fetchSE(url, jwt, channelId) {
+  const response = await fetch(url, { headers: { 'Authorization': `bearer ${jwt}` } });
+  if (!response.ok) {
+    const errText = await response.text();
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(
+        `StreamElements rechazó el JWT (${response.status}). Cópialo de nuevo de ` +
+        `https://streamelements.com/dashboard/account/channels y actualiza el secret SE_JWT. ${errText.slice(0, 200)}`
+      );
+    }
+    if (response.status === 404) {
+      throw new Error(
+        `StreamElements: channel id "${channelId}" no encontrado (404). DEBE ser el Account ID de ` +
+        `https://streamelements.com/dashboard/account/channels (una cadena tipo 5f2de5dd9a474a2c2aaaaaaa), ` +
+        `NO tu ID numérico de Twitch. Valor recibido empieza por: "${String(channelId).slice(0, 6)}..."`
+      );
+    }
+    throw new Error(`Error en StreamElements activities: ${response.status} ${errText.slice(0, 300)}`);
+  }
+  return response.json();
+}
+
+// Pagina un endpoint de activities (v2 o v3) hasta agotar el cursor.
+async function paginarSE(urlBase, jwt, channelId, maxPaginas = 40) {
   const actividades = [];
   let cursor = '';
   let paginas = 0;
 
   while (true) {
-    const url = `https://api.streamelements.com/kappa/v3/activities/${channelId}?limit=500&types=subscriber&types=cheer${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
-    const response = await fetch(url, {
-      headers: { 'Authorization': `bearer ${jwt}` }
-    });
+    const url = urlBase + (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '');
+    const data = await fetchSE(url, jwt, channelId);
 
-    if (!response.ok) {
-      const errText = await response.text();
-      if (response.status === 401 || response.status === 403) {
-        throw new Error(
-          `StreamElements rechazó el JWT (${response.status}). Cópialo de nuevo de ` +
-          `https://streamelements.com/dashboard/account/channels y actualiza el secret SE_JWT. ${errText.slice(0, 200)}`
-        );
-      }
-      if (response.status === 404) {
-        throw new Error(
-          `StreamElements: channel id "${channelId}" no encontrado (404). DEBE ser el Account ID de ` +
-          `https://streamelements.com/dashboard/account/channels (una cadena tipo 5f2de5dd9a474a2c2aaaaaaa), ` +
-          `NO tu ID numérico de Twitch. Valor recibido empieza por: "${String(channelId).slice(0, 6)}..."`
-        );
-      }
-      throw new Error(`Error en StreamElements activities: ${response.status} ${errText.slice(0, 300)}`);
-    }
-
-    const data = await response.json();
     // La respuesta puede variar según versión: array directo, {docs}, {activities}, {items}
     const docs = Array.isArray(data)
       ? data
@@ -167,10 +169,37 @@ async function getSEActivities(channelId, jwt) {
 
     // Cursor en distintas formas según versión de la API
     cursor = data.cursor || (data._links && data._links.next && data._links.next.cursor) || '';
-    if (!cursor || !docs.length || ++paginas > 40) break;
+    if (!cursor || !docs.length || ++paginas > maxPaginas) break;
   }
 
   return actividades;
+}
+
+// Prueba varias formas de consultar el feed y devuelve la primera con datos.
+// El filtrado por tipo se hace localmente en procesarActividadesSE, así que la
+// estrategia sin filtro de tipos es válida (y es la primera candidata, porque
+// el filtro repetido 'types=' puede ser ignorado por v3).
+async function getSEActivities(channelId, jwt) {
+  const ahora = Date.now();
+  const estrategias = [
+    { nombre: 'v3 sin filtro de tipos', url: `https://api.streamelements.com/kappa/v3/activities/${channelId}?limit=500` },
+    { nombre: 'v3 con types como array JSON', url: `https://api.streamelements.com/kappa/v3/activities/${channelId}?limit=500&types=${encodeURIComponent('["subscriber","cheer"]')}` },
+    { nombre: 'v2 con rango de fechas completo', url: `https://api.streamelements.com/kappa/v2/activities/${channelId}?limit=500&after=0&before=${ahora}` }
+  ];
+
+  for (const est of estrategias) {
+    try {
+      const acts = await paginarSE(est.url, jwt, channelId);
+      console.log(`   Estrategia "${est.nombre}": ${acts.length} evento(s).`);
+      if (acts.length > 0) return acts;
+    } catch (e) {
+      console.warn(`   Estrategia "${est.nombre}" falló: ${e.message.slice(0, 160)}`);
+      // JWT inválido o channel id equivocado no se arreglan cambiando de estrategia
+      if (/JWT|channel id/.test(e.message)) throw e;
+    }
+  }
+
+  return [];
 }
 
 // Procesa el feed de StreamElements y devuelve totales exactos por usuario:
@@ -517,4 +546,4 @@ if (require.main === module) {
   fetchLeaderboard();
 }
 
-module.exports = { procesarActividadesSE, procesarSubs, construirRanking, BITS_PER_SUB };
+module.exports = { getSEActivities, procesarActividadesSE, procesarSubs, construirRanking, BITS_PER_SUB };
