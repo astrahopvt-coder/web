@@ -52,7 +52,10 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add donadores.json subs-state.json
+          git add donadores.json
+          # subs-state.json solo se genera en modo estimado (sin StreamElements);
+          # se agrega solo si existe para no romper el modo exacto.
+          if [ -f subs-state.json ]; then git add subs-state.json; fi
           git diff-index --quiet HEAD || git commit -m "bot: actualizar leaderboard y estado de subs"
           git push
 
