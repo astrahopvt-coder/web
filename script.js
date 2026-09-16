@@ -78,7 +78,7 @@ async function getSubs(broadcasterId, userAccessToken) {
   let pages = 0;
 
   while (true) {
-    const url = `https://api.twitch.tv/helix/subs?broadcaster_id=${broadcasterId}&first=100${after ? `&after=${after}` : ''}`;
+    const url = `https://api.twitch.tv/helix/subscriptions?broadcaster_id=${broadcasterId}&first=100${after ? `&after=${after}` : ''}`;
     const response = await fetch(url, {
       headers: {
         'Client-ID': TWITCH_CLIENT_ID,
