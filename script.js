@@ -144,12 +144,26 @@ async function getSEActivities(channelId, jwt) {
           `https://streamelements.com/dashboard/account/channels y actualiza el secret SE_JWT. ${errText.slice(0, 200)}`
         );
       }
+      if (response.status === 404) {
+        throw new Error(
+          `StreamElements: channel id "${channelId}" no encontrado (404). DEBE ser el Account ID de ` +
+          `https://streamelements.com/dashboard/account/channels (una cadena tipo 5f2de5dd9a474a2c2aaaaaaa), ` +
+          `NO tu ID numérico de Twitch. Valor recibido empieza por: "${String(channelId).slice(0, 6)}..."`
+        );
+      }
       throw new Error(`Error en StreamElements activities: ${response.status} ${errText.slice(0, 300)}`);
     }
 
     const data = await response.json();
-    const docs = Array.isArray(data) ? data : (data.docs || []);
+    // La respuesta puede variar según versión: array directo, {docs}, {activities}, {items}
+    const docs = Array.isArray(data)
+      ? data
+      : (data.docs || data.activities || data.items || []);
     actividades.push(...docs);
+
+    if (paginas === 0 && docs.length > 0) {
+      console.log(`   🔎 Primera página: ${docs.length} eventos. Tipos: ${[...new Set(docs.map(a => a.type))].join(', ')}.`);
+    }
 
     // Cursor en distintas formas según versión de la API
     cursor = data.cursor || (data._links && data._links.next && data._links.next.cursor) || '';
@@ -170,12 +184,20 @@ function procesarActividadesSE(actividades) {
   const regalos = {};
   const avatares = {};
   const nombres = {};
+  const tipos = {};
+  const muestras = [];
 
   const clave = s => (s || '').toLowerCase();
 
   for (const act of actividades) {
     const d = act.data || {};
     const username = d.username || d.displayName || '';
+    tipos[act.type] = (tipos[act.type] || 0) + 1;
+
+    if (act.type === 'subscriber' && muestras.length < 2) {
+      // Para diagnosticar el formato real de los eventos en el log del workflow
+      muestras.push(JSON.stringify({ type: act.type, data: { username: d.username, amount: d.amount, gifted: d.gifted, sender: d.sender } }));
+    }
 
     if (act.type === 'cheer') {
       const k = clave(username);
@@ -205,7 +227,7 @@ function procesarActividadesSE(actividades) {
     }
   }
 
-  return { bits, meses, regalos, avatares, nombres };
+  return { bits, meses, regalos, avatares, nombres, tipos, muestras };
 }
 
 // ============================================================
@@ -283,6 +305,7 @@ function procesarSubs(subsActuales, estadoPrevio, ahora = Date.now(), broadcaste
 function construirRanking({
   bitsTwitch = [],
   datosSE = null,
+  porUsuarioEstimado = new Map(),
   porUsuarioFallback = new Map(),
   regalosFallback = {},
   broadcasterLogin = ''
@@ -323,6 +346,13 @@ function construirRanking({
       if (login === broadcaster) continue;
       const u = tocar(login, datosSE.nombres[login]);
       if (u) u.regaladas = n;
+    }
+    // Relleno: subs activas de Twitch sin eventos en el feed de SE (la sub
+    // empezó antes de que SE registrara el canal). Su antigüedad se estima
+    // con el estado; el mínimo garantizado es 1 mes (la sub existe hoy).
+    for (const [login, info] of porUsuarioEstimado) {
+      const u = tocar(login, info.username);
+      if (u && u.meses === 0) u.meses = info.meses;
     }
   } else {
     // Fallback estimado
@@ -401,30 +431,48 @@ async function fetchLeaderboard() {
       const actividades = await getSEActivities(SE_CHANNEL_ID, SE_JWT);
       console.log(`   ${actividades.length} eventos históricos (subs + cheers).`);
       datosSE = procesarActividadesSE(actividades);
+      console.log(`   Desglose: ${Object.entries(datosSE.tipos).map(([t, n]) => `${t}=${n}`).join(', ') || 'SIN EVENTOS'}.`);
+      datosSE.muestras.forEach(m => console.log(`   📋 Muestra: ${m}`));
+      if (!datosSE.tipos.subscriber) {
+        console.warn('   ⚠️ CERO eventos de suscripción en el feed. Verifica que:');
+        console.warn('      1. SE_CHANNEL_ID es el Account ID de streamelements.com/dashboard/account/channels');
+        console.warn('      2. El activity feed de tu canal (dashboard de SE) realmente muestra subs');
+        console.warn('   Mientras tanto, las subs activas de Twitch se cuentan con antigüedad estimada (mínimo 1 mes).');
+      }
     } else {
       console.log('ℹ️ SE_CHANNEL_ID/SE_JWT no configurados: usando estimación con subs-state.json');
     }
 
+    // Subs activas de Twitch: en modo SE cubren a quienes tienen sub pagada
+    // sin eventos en el feed (se suscribieron antes de usar SE); en modo
+    // fallback son la base de la estimación.
+    console.log('🔄 Obteniendo suscripciones activas...');
+    const subsActuales = await getSubs(broadcaster.id, userAccessToken);
+    const estadoPrevio = await cargarEstado();
+    const resultado = procesarSubs(subsActuales, estadoPrevio, Date.now(), broadcaster.login);
+    await guardarEstado(resultado.estado);
+
     // ---- Ranking ----
     let ranking;
-    let estado = null;
 
     if (datosSE) {
-      ranking = construirRanking({ bitsTwitch: bitsEntries, datosSE, broadcasterLogin: broadcaster.login });
+      const sinHistorialSE = [...resultado.porUsuario.keys()].filter(l => !datosSE.meses[l]).length;
+      if (sinHistorialSE > 0) {
+        console.log(`ℹ️ ${sinHistorialSE} sub(s) activa(s) sin eventos en el feed de SE: se estima su antigüedad (mínimo 1 mes).`);
+      }
+      ranking = construirRanking({
+        bitsTwitch: bitsEntries,
+        datosSE,
+        porUsuarioEstimado: resultado.porUsuario,
+        broadcasterLogin: broadcaster.login
+      });
     } else {
-      console.log('🔄 Obteniendo suscripciones activas (modo estimado)...');
-      const subsActuales = await getSubs(broadcaster.id, userAccessToken);
-      console.log(`🔄 Procesando estado (subs: ${subsActuales.length})...`);
-      const estadoPrevio = await cargarEstado();
-      const resultado = procesarSubs(subsActuales, estadoPrevio, Date.now(), broadcaster.login);
-      estado = resultado.estado;
       ranking = construirRanking({
         bitsTwitch: bitsEntries,
         porUsuarioFallback: resultado.porUsuario,
-        regalosFallback: estado.regalos,
+        regalosFallback: resultado.estado.regalos,
         broadcasterLogin: broadcaster.login
       });
-      await guardarEstado(estado);
     }
 
     if (ranking.length === 0) {
