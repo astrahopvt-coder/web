@@ -1,0 +1,441 @@
+{
+  "usuarios": {
+    "nando543rwa": {
+      "login": "nando543rwa",
+      "username": "nando543rwa",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "eljuanman_actias": {
+      "login": "eljuanman_actias",
+      "username": "eljuanman_actias",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "badassman665": {
+      "login": "badassman665",
+      "username": "badassman665",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "pataderechadehoney": {
+      "login": "pataderechadehoney",
+      "username": "pataderechadehoney",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "arkanvt": {
+      "login": "arkanvt",
+      "username": "Arkanvt",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "coronelj_d": {
+      "login": "coronelj_d",
+      "username": "coronelj_d",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "fandela_astrahop"
+    },
+    "lisitokn_magalover_astral": {
+      "login": "lisitokn_magalover_astral",
+      "username": "LisitoKN_Magalover_Astral",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "nando543rwa"
+    },
+    "manu269034": {
+      "login": "manu269034",
+      "username": "manu269034",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "arturocraft_oficial": {
+      "login": "arturocraft_oficial",
+      "username": "Arturocraft_Oficial",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "angel_revivido": {
+      "login": "angel_revivido",
+      "username": "Angel_revivido",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "fran_kawuai": {
+      "login": "fran_kawuai",
+      "username": "fran_kawuai",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "asdelfi_condori": {
+      "login": "asdelfi_condori",
+      "username": "asdelfi_condori",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "didi_dragon26vt": {
+      "login": "didi_dragon26vt",
+      "username": "didi_dragon26vt",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "jose_dragon443": {
+      "login": "jose_dragon443",
+      "username": "jose_dragon443",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "antaria_esc": {
+      "login": "antaria_esc",
+      "username": "antaria_esc",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "eljuanman_actias"
+    },
+    "el_heyter": {
+      "login": "el_heyter",
+      "username": "el_heyter",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "nevi_mjaksejmenuji": {
+      "login": "nevi_mjaksejmenuji",
+      "username": "nevi_mjaksejmenuji",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "mixmaxter29": {
+      "login": "mixmaxter29",
+      "username": "mixmaxter29",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "fandela_astrahop"
+    },
+    "terry7bogard": {
+      "login": "terry7bogard",
+      "username": "terry7bogard",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "elyose_nl": {
+      "login": "elyose_nl",
+      "username": "ElYose_NL",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "alister00_": {
+      "login": "alister00_",
+      "username": "Alister00_",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "nyxebo": {
+      "login": "nyxebo",
+      "username": "Nyxebo",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "sparda_eliz": {
+      "login": "sparda_eliz",
+      "username": "Sparda_Eliz",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "distancedotexe": {
+      "login": "distancedotexe",
+      "username": "DistanceDotExe",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "mrstarbunny": {
+      "login": "mrstarbunny",
+      "username": "mrstarbunny",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "mount_lite_o3o": {
+      "login": "mount_lite_o3o",
+      "username": "Mount_Lite_o3o",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "elyose_nl"
+    },
+    "mysteryman5002": {
+      "login": "mysteryman5002",
+      "username": "mysteryman5002",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "elyose_nl"
+    },
+    "socrex_": {
+      "login": "socrex_",
+      "username": "Socrex_",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "fandela_astrahop"
+    },
+    "zero_lordofcalamity": {
+      "login": "zero_lordofcalamity",
+      "username": "zero_lordofcalamity",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "edangry": {
+      "login": "edangry",
+      "username": "Edangry",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "jdonkka": {
+      "login": "jdonkka",
+      "username": "jdonkka",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "nishikinomiyanazu": {
+      "login": "nishikinomiyanazu",
+      "username": "NishikinomiyaNazu",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "lerna_vtuber": {
+      "login": "lerna_vtuber",
+      "username": "lerna_vtuber",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "wilycruzz": {
+      "login": "wilycruzz",
+      "username": "wilycruzz",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "decko4321": {
+      "login": "decko4321",
+      "username": "decko4321",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "hover23_": {
+      "login": "hover23_",
+      "username": "Hover23_",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "spiderdoodles1w5": {
+      "login": "spiderdoodles1w5",
+      "username": "SpiderDoodles1w5",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": 0,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": "maki_115"
+    },
+    "maki_115": {
+      "login": "maki_115",
+      "username": "maki_115",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "kaiserkat77": {
+      "login": "kaiserkat77",
+      "username": "Kaiserkat77",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "darki717": {
+      "login": "darki717",
+      "username": "darki717",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "desesperaciondefinitiva2": {
+      "login": "desesperaciondefinitiva2",
+      "username": "desesperaciondefinitiva2",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "fandela_astrahop": {
+      "login": "fandela_astrahop",
+      "username": "fandela_astrahop",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "1000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    },
+    "astrahopvt": {
+      "login": "astrahopvt",
+      "username": "AstraHopVT",
+      "desde": 1789545003942,
+      "meses": 1,
+      "regaloCicloContado": -1,
+      "tier": "3000",
+      "vistoUltimaVez": 1789545003942,
+      "gifterUltimo": ""
+    }
+  },
+  "regalos": {
+    "fandela_astrahop": 3,
+    "nando543rwa": 1,
+    "eljuanman_actias": 8,
+    "elyose_nl": 2,
+    "maki_115": 7
+  }
+}
