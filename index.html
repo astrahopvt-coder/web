@@ -31,7 +31,7 @@
   <meta name="twitter:description" content="Streams de viernes a lunes a las 7:30 pm (GMT-4). Lore, juegos y la galería de fanarts del Proyecto ASTRA.">
   <meta name="twitter:image" content="https://www.astrahopvt.online/img/astra-model.webp">
 
-  <link rel="stylesheet" href="style.css?v=20260915">
+  <link rel="stylesheet" href="style.css?v=20260916">
 
   <script defer src="https://cdn.ko-fi.tools/v2/js/shop.js"></script>
 </head>
@@ -307,7 +307,13 @@ function cargarFanarts() {
   fanartsCargados = true;
 
   fetch('fanarts.json', { cache: 'no-cache' })
-    .then(res => (res.ok ? res.json() : {}))
+    .then(res => {
+      if (!res.ok) return {}; // archivo ausente: se usa "Anónimo" para todo
+      return res.json().catch(err => {
+        console.error('fanarts.json tiene un error de sintaxis (¿coma final? ¿comillas?), revisa la consola:', err.message);
+        return {};
+      });
+    })
     .then(meta => {
       Object.entries(meta).forEach(([archivo, datos]) => {
         const num = parseInt(archivo, 10);
@@ -1023,9 +1029,81 @@ window.addEventListener('popstate', () => {
         wrapper.addEventListener('click', e => { if (moved) e.preventDefault(); }, true);
     }
 
+    // Auto-scroll lento del carrusel: avanza solo; se detiene mientras estás
+    // interactuando (drag, hover, rueda, touch) y se reanuda 3s después.
+    function setupAutoScroll() {
+        const wrapper = document.getElementById('carrusel-wrapper');
+        if (!wrapper) return;
+
+        const VELOCIDAD_PX_POR_SEG = 25;   // píxeles por segundo
+        const PAUSA_REANUDAR_MS = 3000;    // tiempo tras dejar de interactuar
+
+        // El avance es por intervalos: cada incremento debe ser instantáneo,
+        // si no, el scroll-behavior: smooth del CSS lo vuelve entrecortado.
+        wrapper.style.scrollBehavior = 'auto';
+
+        let enPausa = false;
+        let reanudarTimer = null;
+        let ultimoTiempo = performance.now();
+
+        // Toda pausa (salvo hover) es temporal: se reanuda sola en 3s.
+        // Así un evento espúrio nunca deja el carrusel congelado para siempre.
+        // Algunos navegadores redondean scrollLeft a enteros: la posición
+        // fraccional se acumula en 'posicion' y se escribe ya redondeada.
+        let posicion = wrapper.scrollLeft;
+
+        function pausarTemporal(duracion) {
+            posicion = wrapper.scrollLeft;
+            enPausa = true;
+            clearTimeout(reanudarTimer);
+            reanudarTimer = setTimeout(() => { enPausa = false; }, duracion || PAUSA_REANUDAR_MS);
+        }
+
+        function pausarMirando() {
+            posicion = wrapper.scrollLeft;
+            pausarTemporal(8000); // el hover también reanuda solo (por si el cursor queda quieto encima)
+        }
+
+        // Detener cuando estás mirando / manipulando
+        wrapper.addEventListener('mouseenter', pausarMirando);
+        wrapper.addEventListener('mouseleave', pausarTemporal);
+        wrapper.addEventListener('mousedown', pausarTemporal);
+        wrapper.addEventListener('touchstart', pausarTemporal, { passive: true });
+        wrapper.addEventListener('wheel', pausarTemporal, { passive: true });
+
+        // Loop por intervalo con delta de tiempo: mantiene la velocidad exacta
+        // aunque el navegador ralentice los timers (pestaña de fondo) y no
+        // depende de requestAnimationFrame, que se congela sin render activo.
+        let reBobinando = false;
+
+        setInterval(() => {
+            const ahora = performance.now();
+            const dt = Math.min((ahora - ultimoTiempo) / 1000, 0.5); // tope anti-saltos
+            ultimoTiempo = ahora;
+
+            if (enPausa || reBobinando) return;
+            const maximo = wrapper.scrollWidth - wrapper.clientWidth;
+            if (maximo <= 2) return;
+
+            posicion += VELOCIDAD_PX_POR_SEG * dt;
+
+            if (posicion >= maximo - 1) {
+                // Llegó al final: vuelve al principio sin salto brusco
+                reBobinando = true;
+                posicion = 0;
+                wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+                setTimeout(() => { reBobinando = false; }, 900);
+            } else {
+                wrapper.scrollLeft = Math.floor(posicion);
+            }
+        }, 30);
+
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         cargarAstrosLeyenda();
         setupCarruselDrag();
+        setupAutoScroll();
     });
 </script>
 
