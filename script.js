@@ -7,8 +7,22 @@ const TWITCH_REFRESH_TOKEN = process.env.TWITCH_REFRESH_TOKEN;
 // Login del canal (opcional). Si no se define, se detecta solo con el token de usuario.
 const BROADCASTER_LOGIN = (process.env.BROADCASTER_LOGIN || '').trim();
 
-// Equivalencia para el conteo: cada sub activa vale 100 bits (independientemente del tier).
+// StreamElements (opcional pero recomendado): da el histórico EXACTO de meses
+// acumulados y subs regaladas desde su Activity Feed.
+// - SE_CHANNEL_ID: https://streamelements.com/dashboard/account/channels (público)
+// - SE_JWT: mismo lugar (privado, va como secret)
+const SE_CHANNEL_ID = (process.env.SE_CHANNEL_ID || '').trim();
+const SE_JWT = (process.env.SE_JWT || '').trim();
+
+// Equivalencia para el conteo: cada mes de suscripción y cada sub regalada valen 100 bits.
 const BITS_PER_SUB = 100;
+
+// Estado persistente para el modo fallback (sin StreamElements): estima meses.
+const ESTADO_FILE = 'subs-state.json';
+
+const DIA_MS = 24 * 3600 * 1000;
+const DIAS_POR_MES = 30.44;
+const DIAS_RESET_SUB = 90;
 
 async function getUserAccessToken() {
   const url = `https://id.twitch.tv/oauth2/token?client_id=${TWITCH_CLIENT_ID}&client_secret=${TWITCH_CLIENT_SECRET}&grant_type=refresh_token&refresh_token=${encodeURIComponent(TWITCH_REFRESH_TOKEN)}`;
@@ -31,8 +45,7 @@ async function getTwitchAppToken() {
   return data.access_token;
 }
 
-// Resuelve el ID del canal: el indicado en BROADCASTER_LOGIN o el dueño del token de usuario.
-async function getBroadcasterId(userAccessToken) {
+async function getBroadcaster(userAccessToken) {
   const url = BROADCASTER_LOGIN
     ? `https://api.twitch.tv/helix/users?login=${encodeURIComponent(BROADCASTER_LOGIN)}`
     : 'https://api.twitch.tv/helix/users';
@@ -51,10 +64,9 @@ async function getBroadcasterId(userAccessToken) {
     throw new Error(`No se encontró el canal${BROADCASTER_LOGIN ? ` "${BROADCASTER_LOGIN}"` : ' dueño del token'}.`);
   }
   console.log(`📺 Canal: ${user.display_name} (${user.id})`);
-  return user.id;
+  return { id: user.id, login: user.login.toLowerCase() };
 }
 
-// Bits Leaderboard completo (límite máximo permitido por Twitch: 100).
 async function getBitsLeaderboard(userAccessToken) {
   const url = 'https://api.twitch.tv/helix/bits/leaderboard?period=all&count=100';
   const response = await fetch(url, {
@@ -71,9 +83,9 @@ async function getBitsLeaderboard(userAccessToken) {
   return data.data || [];
 }
 
-// Subs activas del canal, paginado de 100 en 100. Devuelve Map user_login -> { username, count }.
+// Subs activas del canal (para el modo fallback), paginado de 100 en 100.
 async function getSubs(broadcasterId, userAccessToken) {
-  const subsByUser = new Map();
+  const subs = [];
   let after = '';
   let pages = 0;
 
@@ -97,28 +109,250 @@ async function getSubs(broadcasterId, userAccessToken) {
     }
 
     const data = await response.json();
-    for (const sub of data.data || []) {
-      const login = sub.user_login.toLowerCase();
-      const current = subsByUser.get(login);
-      if (current) {
-        current.count += 1;
-      } else {
-        subsByUser.set(login, { username: sub.user_name, count: 1 });
-      }
-    }
+    subs.push(...(data.data || []));
 
     const cursor = data.pagination && data.pagination.cursor;
     if (!cursor || !(data.data || []).length || ++pages > 20) break;
     after = cursor;
   }
 
-  return subsByUser;
+  return subs;
+}
+
+// ============================================================
+// StreamElements: histórico exacto desde el Activity Feed
+// ============================================================
+
+// Descarga todas las actividades (subscriber + cheer) del feed de StreamElements.
+// Usa v3 con paginación por cursor; tope de seguridad de 40 páginas x 500 eventos.
+async function getSEActivities(channelId, jwt) {
+  const actividades = [];
+  let cursor = '';
+  let paginas = 0;
+
+  while (true) {
+    const url = `https://api.streamelements.com/kappa/v3/activities/${channelId}?limit=500&types=subscriber&types=cheer${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `bearer ${jwt}` }
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      if (response.status === 401 || response.status === 403) {
+        throw new Error(
+          `StreamElements rechazó el JWT (${response.status}). Cópialo de nuevo de ` +
+          `https://streamelements.com/dashboard/account/channels y actualiza el secret SE_JWT. ${errText.slice(0, 200)}`
+        );
+      }
+      throw new Error(`Error en StreamElements activities: ${response.status} ${errText.slice(0, 300)}`);
+    }
+
+    const data = await response.json();
+    const docs = Array.isArray(data) ? data : (data.docs || []);
+    actividades.push(...docs);
+
+    // Cursor en distintas formas según versión de la API
+    cursor = data.cursor || (data._links && data._links.next && data._links.next.cursor) || '';
+    if (!cursor || !docs.length || ++paginas > 40) break;
+  }
+
+  return actividades;
+}
+
+// Procesa el feed de StreamElements y devuelve totales exactos por usuario:
+// - bits: suma de todos los cheers históricos
+// - meses: los meses acumulados REALES del último evento de cada suscriptor
+// - regalos: total histórico de subs regaladas por gifter
+// - avatares: último avatar visto en el feed (fallback si Twitch falla)
+function procesarActividadesSE(actividades) {
+  const bits = {};
+  const meses = {};
+  const regalos = {};
+  const avatares = {};
+  const nombres = {};
+
+  const clave = s => (s || '').toLowerCase();
+
+  for (const act of actividades) {
+    const d = act.data || {};
+    const username = d.username || d.displayName || '';
+
+    if (act.type === 'cheer') {
+      const k = clave(username);
+      if (!k) continue;
+      bits[k] = (bits[k] || 0) + (d.amount || 0);
+      if (d.avatar) avatares[k] = d.avatar;
+      nombres[k] = username;
+    } else if (act.type === 'subscriber') {
+      const k = clave(username);
+      if (!k) continue;
+
+      // Los meses acumulados reales vienen en data.amount (1 en sub nueva,
+      // N en un resub de N meses). Nos quedamos con el mayor visto.
+      const mesesEvento = d.amount || 1;
+      meses[k] = Math.max(meses[k] || 0, mesesEvento);
+
+      // Sub regalada: credita al sender/gifter. Los eventos individuales son la
+      // fuente de verdad; communityGiftPurchase es solo el resumen y se ignora
+      // para no duplicar.
+      if (d.gifted && d.sender) {
+        const gifter = clave(d.sender);
+        if (gifter) regalos[gifter] = (regalos[gifter] || 0) + 1;
+      }
+
+      if (d.avatar) avatares[k] = d.avatar;
+      nombres[k] = username;
+    }
+  }
+
+  return { bits, meses, regalos, avatares, nombres };
+}
+
+// ============================================================
+// Fallback sin StreamElements: estimación con estado persistente
+// ============================================================
+
+async function cargarEstado() {
+  try {
+    const raw = await fs.readFile(ESTADO_FILE, 'utf8');
+    const estado = JSON.parse(raw);
+    return { usuarios: estado.usuarios || {}, regalos: estado.regalos || {} };
+  } catch {
+    return { usuarios: {}, regalos: {} };
+  }
+}
+
+async function guardarEstado(estado) {
+  await fs.writeFile(ESTADO_FILE, JSON.stringify(estado, null, 2));
+}
+
+function procesarSubs(subsActuales, estadoPrevio, ahora = Date.now(), broadcasterLogin = '') {
+  const estado = {
+    usuarios: { ...estadoPrevio.usuarios },
+    regalos: { ...estadoPrevio.regalos }
+  };
+  const broadcaster = (broadcasterLogin || '').toLowerCase();
+
+  for (const sub of subsActuales) {
+    const login = (sub.user_login || '').toLowerCase();
+    if (!login) continue;
+
+    const previo = estado.usuarios[login];
+    const hueco = previo ? ahora - (previo.vistoUltimaVez || 0) : Infinity;
+    const registro = previo && hueco <= DIAS_RESET_SUB * DIA_MS
+      ? previo
+      : { login, username: sub.user_name, desde: ahora, meses: 1, regaloCicloContado: -1 };
+
+    // 'desde' acepta fecha ISO legible (p. ej. "2026-03-01") para sembrar a mano
+    // el estado con meses reales de subs anteriores a este sistema.
+    const inicio = typeof registro.desde === 'number' ? registro.desde : Date.parse(registro.desde);
+    registro.desde = isNaN(inicio) ? ahora : inicio;
+
+    registro.username = sub.user_name || registro.username;
+    registro.tier = sub.tier || registro.tier;
+    registro.vistoUltimaVez = ahora;
+
+    const dias = (ahora - registro.desde) / DIA_MS;
+    registro.meses = Math.max(1, Math.floor(dias / DIAS_POR_MES) + 1);
+    const ciclo = Math.floor(dias / DIAS_POR_MES);
+
+    const gifter = sub.is_gift && sub.gifter_login ? sub.gifter_login.toLowerCase() : '';
+    if (gifter && gifter !== broadcaster && registro.regaloCicloContado !== ciclo) {
+      registro.regaloCicloContado = ciclo;
+      registro.gifterUltimo = gifter;
+      estado.regalos[gifter] = (estado.regalos[gifter] || 0) + 1;
+    } else if (!gifter) {
+      registro.gifterUltimo = '';
+    }
+
+    estado.usuarios[login] = registro;
+  }
+
+  const porUsuario = new Map();
+  for (const [login, r] of Object.entries(estado.usuarios)) {
+    porUsuario.set(login, { username: r.username, meses: r.meses || 0 });
+  }
+
+  return { estado, porUsuario };
+}
+
+// ============================================================
+// Ranking final
+// ============================================================
+
+function construirRanking({
+  bitsTwitch = [],
+  datosSE = null,
+  porUsuarioFallback = new Map(),
+  regalosFallback = {},
+  broadcasterLogin = ''
+} = {}) {
+  const usuarios = new Map();
+
+  const tocar = (login, username) => {
+    const key = (login || '').toLowerCase();
+    if (!key) return null;
+    let u = usuarios.get(key);
+    if (!u) {
+      u = { login: key, username: username || key, bits: 0, meses: 0, regaladas: 0 };
+      usuarios.set(key, u);
+    }
+    if (username) u.username = username;
+    return u;
+  };
+
+  // Bits: el leaderboard de Twitch es autoritativo para el total de cada usuario.
+  for (const b of bitsTwitch) {
+    const u = tocar(b.user_login, b.user_name);
+    if (u) u.bits = b.score;
+  }
+
+  const broadcaster = (broadcasterLogin || '').toLowerCase();
+
+  if (datosSE) {
+    // Modo exacto: meses y regalos desde el histórico de StreamElements.
+    for (const [login, total] of Object.entries(datosSE.bits)) {
+      const u = tocar(login, datosSE.nombres[login]);
+      if (u) u.bits = Math.max(u.bits, total);
+    }
+    for (const [login, m] of Object.entries(datosSE.meses)) {
+      const u = tocar(login, datosSE.nombres[login]);
+      if (u) u.meses = m;
+    }
+    for (const [login, n] of Object.entries(datosSE.regalos)) {
+      if (login === broadcaster) continue;
+      const u = tocar(login, datosSE.nombres[login]);
+      if (u) u.regaladas = n;
+    }
+  } else {
+    // Fallback estimado
+    for (const [login, info] of porUsuarioFallback) {
+      const u = tocar(login, info.username);
+      if (u) u.meses = info.meses;
+    }
+    for (const [login, n] of Object.entries(regalosFallback)) {
+      if (login === broadcaster) continue;
+      const u = tocar(login);
+      if (u) u.regaladas = n;
+    }
+  }
+
+  return [...usuarios.values()]
+    .map(u => ({
+      login: u.login,
+      username: u.username,
+      bits: u.bits,
+      mesesSub: u.meses,
+      regaladas: u.regaladas,
+      subsEquivalentes: u.meses + u.regaladas,
+      total_donated: u.bits + (u.meses + u.regaladas) * BITS_PER_SUB
+    }))
+    .sort((a, b) => b.total_donated - a.total_donated);
 }
 
 async function getTwitchAvatars(logins, appAccessToken) {
   if (logins.length === 0) return {};
 
-  // Dividimos en bloques de 100 por seguridad en caso de que en el futuro consultes más datos
   const chunkSize = 100;
   const avatarMap = {};
 
@@ -150,37 +384,6 @@ async function getTwitchAvatars(logins, appAccessToken) {
   return avatarMap;
 }
 
-// Fusiona bits + subs en el ranking final: total_donated = bits + subs × BITS_PER_SUB.
-// El orden final es por total, de mayor a menor.
-function buildLeaderboard(bitsEntries, subsEntries) {
-  const totals = new Map();
-
-  for (const entry of bitsEntries) {
-    const login = entry.user_login.toLowerCase();
-    totals.set(login, { login, username: entry.user_name, bits: entry.score, subs: 0 });
-  }
-
-  for (const [login, { username, count }] of subsEntries) {
-    const existing = totals.get(login);
-    if (existing) {
-      existing.subs = count;
-      if (username) existing.username = username;
-    } else {
-      totals.set(login, { login, username: username || login, bits: 0, subs: count });
-    }
-  }
-
-  return [...totals.values()]
-    .map(t => ({
-      login: t.login,
-      username: t.username,
-      bits: t.bits,
-      subs: t.subs,
-      total_donated: t.bits + t.subs * BITS_PER_SUB
-    }))
-    .sort((a, b) => b.total_donated - a.total_donated);
-}
-
 async function fetchLeaderboard() {
   try {
     console.log('🔄 Refrescando token de usuario de Twitch...');
@@ -189,11 +392,42 @@ async function fetchLeaderboard() {
     console.log('🔄 Obteniendo Bits Leaderboard...');
     const bitsEntries = await getBitsLeaderboard(userAccessToken);
 
-    console.log('🔄 Obteniendo suscripciones activas...');
-    const broadcasterId = await getBroadcasterId(userAccessToken);
-    const subsEntries = await getSubs(broadcasterId, userAccessToken);
+    const broadcaster = await getBroadcaster(userAccessToken);
 
-    if (bitsEntries.length === 0 && subsEntries.size === 0) {
+    // ---- Modo exacto con StreamElements ----
+    let datosSE = null;
+    if (SE_CHANNEL_ID && SE_JWT) {
+      console.log('🔄 Obteniendo histórico de StreamElements (activity feed)...');
+      const actividades = await getSEActivities(SE_CHANNEL_ID, SE_JWT);
+      console.log(`   ${actividades.length} eventos históricos (subs + cheers).`);
+      datosSE = procesarActividadesSE(actividades);
+    } else {
+      console.log('ℹ️ SE_CHANNEL_ID/SE_JWT no configurados: usando estimación con subs-state.json');
+    }
+
+    // ---- Ranking ----
+    let ranking;
+    let estado = null;
+
+    if (datosSE) {
+      ranking = construirRanking({ bitsTwitch: bitsEntries, datosSE, broadcasterLogin: broadcaster.login });
+    } else {
+      console.log('🔄 Obteniendo suscripciones activas (modo estimado)...');
+      const subsActuales = await getSubs(broadcaster.id, userAccessToken);
+      console.log(`🔄 Procesando estado (subs: ${subsActuales.length})...`);
+      const estadoPrevio = await cargarEstado();
+      const resultado = procesarSubs(subsActuales, estadoPrevio, Date.now(), broadcaster.login);
+      estado = resultado.estado;
+      ranking = construirRanking({
+        bitsTwitch: bitsEntries,
+        porUsuarioFallback: resultado.porUsuario,
+        regalosFallback: estado.regalos,
+        broadcasterLogin: broadcaster.login
+      });
+      await guardarEstado(estado);
+    }
+
+    if (ranking.length === 0) {
       await fs.writeFile('donadores.json', JSON.stringify([], null, 2));
       console.log('✅ Sin bits ni subs, donadores.json actualizado (vacío).');
       return;
@@ -201,33 +435,38 @@ async function fetchLeaderboard() {
 
     console.log('🔄 Consultando fotos de perfil en Twitch...');
     const appAccessToken = await getTwitchAppToken();
-    const ranking = buildLeaderboard(bitsEntries, subsEntries);
     const avatarMap = await getTwitchAvatars(ranking.map(d => d.login), appAccessToken);
 
     const leaderboardFinal = ranking.map(donator => {
       const twitchAvatar = avatarMap[donator.login];
+      const seAvatar = datosSE ? datosSE.avatares[donator.login] : null;
       const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(donator.username)}&background=random&color=fff`;
       return {
         username: donator.username,
-        avatar: twitchAvatar || fallbackAvatar,
+        avatar: twitchAvatar || seAvatar || fallbackAvatar,
         total_donated: donator.total_donated,
         bits: donator.bits,
-        subs: donator.subs
+        subs: {
+          meses: donator.mesesSub,
+          regaladas: donator.regaladas,
+          equivalentes: donator.subsEquivalentes
+        }
       };
     });
 
     await fs.writeFile('donadores.json', JSON.stringify(leaderboardFinal, null, 2));
-    const totalSubs = leaderboardFinal.reduce((acc, d) => acc + d.subs, 0);
-    console.log(`✅ donadores.json generado: ${leaderboardFinal.length} personas, ${totalSubs} subs activas (cada sub = ${BITS_PER_SUB} bits).`);
+    const totalMeses = leaderboardFinal.reduce((acc, d) => acc + d.subs.meses, 0);
+    const totalRegaladas = leaderboardFinal.reduce((acc, d) => acc + d.subs.regaladas, 0);
+    console.log(`✅ donadores.json generado: ${leaderboardFinal.length} personas.`);
+    console.log(`   📅 ${totalMeses} meses de sub · 🎁 ${totalRegaladas} regaladas · 1 mes/regalo = ${BITS_PER_SUB} bits.`);
   } catch (error) {
     console.error('❌ Error en el proceso:', error.message);
     process.exit(1);
   }
 }
 
-// Solo se ejecuta al correr el script directamente (node script.js), no al hacer require para tests.
 if (require.main === module) {
   fetchLeaderboard();
 }
 
-module.exports = { buildLeaderboard, BITS_PER_SUB };
+module.exports = { procesarActividadesSE, procesarSubs, construirRanking, BITS_PER_SUB };
