@@ -46,8 +46,8 @@
   {
     "username": "nando543rwa",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a200e564-cff4-49f2-971b-f959bee52852-profile_image-300x300.jpeg",
-    "total_donated": 3539,
-    "bits": 3439,
+    "total_donated": 3624,
+    "bits": 3524,
     "subs": {
       "meses": 1,
       "regaladas": 0,
@@ -90,8 +90,8 @@
   {
     "username": "eljuanman_actias",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/5f16b010-7af7-413c-8b4b-2e625cc04c2b-profile_image-300x300.png",
-    "total_donated": 1300,
-    "bits": 1200,
+    "total_donated": 1500,
+    "bits": 1400,
     "subs": {
       "meses": 1,
       "regaladas": 0,
@@ -365,8 +365,8 @@
   {
     "username": "all2846",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/c2856c83-3a8b-46a2-a153-614568e9fcbf-profile_image-300x300.png",
-    "total_donated": 148,
-    "bits": 148,
+    "total_donated": 149,
+    "bits": 149,
     "subs": {
       "meses": 0,
       "regaladas": 0,
@@ -440,6 +440,17 @@
     }
   },
   {
+    "username": "Kaiserkat77",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/ed293b9a-4ad0-4161-9503-345d2a91ceb9-profile_image-300x300.png",
+    "total_donated": 104,
+    "bits": 4,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
     "username": "SerGioPerez1118",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/9f56b3f0-3414-4a04-81ad-ebb5c12ed2ca-profile_image-300x300.png",
     "total_donated": 100,
@@ -496,7 +507,7 @@
   },
   {
     "username": "asdelfi_condori",
-    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebe4cd89-b4f4-4cd9-adac-2f30151b4209-profile_image-300x300.png",
+    "avatar": "https://ui-avatars.com/api/?name=asdelfi_condori&background=random&color=fff",
     "total_donated": 100,
     "bits": 0,
     "subs": {
@@ -704,17 +715,6 @@
     }
   },
   {
-    "username": "Kaiserkat77",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/ed293b9a-4ad0-4161-9503-345d2a91ceb9-profile_image-300x300.png",
-    "total_donated": 100,
-    "bits": 0,
-    "subs": {
-      "meses": 1,
-      "regaladas": 0,
-      "equivalentes": 1
-    }
-  },
-  {
     "username": "fandela_astrahop",
     "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-300x300.png",
     "total_donated": 100,
@@ -728,6 +728,94 @@
   {
     "username": "AstraHopVT",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/8acdcecd-5269-4ede-bc9d-a69f78649141-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "fran_lovers",
+    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebe4cd89-b4f4-4cd9-adac-2f30151b4209-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "1583erick",
+    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/de130ab0-def7-11e9-b668-784f43822e80-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "marcelo_reguero2004",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/782a8994-0c8f-49fa-ac09-2a3b79002151-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "flecha_hearth",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/3fa07635-bad8-4865-b845-1c59ef05169b-profile_image-300x300.jpeg",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "Xuy_68",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/33182fe8-7909-487a-a10c-f22fa2f2daf1-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "lionslv14",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/1abfd603-a8be-414e-bc29-1a1bb61ebf6a-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "medina9318",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/23544ac1-fcdf-4598-8556-5cd79f97866c-profile_image-300x300.jpeg",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "TheRaykizer",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/486f2042-6a7b-415a-8d14-aa9bbef55396-profile_image-300x300.png",
     "total_donated": 100,
     "bits": 0,
     "subs": {
@@ -1366,17 +1454,6 @@
   {
     "username": "soy__nutria",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/ee049e67-e175-4d77-aabc-abe8ac79e805-profile_image-300x300.jpeg",
-    "total_donated": 1,
-    "bits": 1,
-    "subs": {
-      "meses": 0,
-      "regaladas": 0,
-      "equivalentes": 0
-    }
-  },
-  {
-    "username": "leo_0287",
-    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ce57700a-def9-11e9-842d-784f43822e80-profile_image-300x300.png",
     "total_donated": 1,
     "bits": 1,
     "subs": {
