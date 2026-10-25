@@ -46,8 +46,8 @@
   {
     "username": "nando543rwa",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a200e564-cff4-49f2-971b-f959bee52852-profile_image-300x300.jpeg",
-    "total_donated": 3724,
-    "bits": 3524,
+    "total_donated": 3819,
+    "bits": 3619,
     "subs": {
       "meses": 2,
       "regaladas": 0,
@@ -319,6 +319,28 @@
     }
   },
   {
+    "username": "zero_lordofcalamity",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/94c639ac-91b9-4888-a4aa-18072fa7681d-profile_image-300x300.jpeg",
+    "total_donated": 200,
+    "bits": 0,
+    "subs": {
+      "meses": 2,
+      "regaladas": 0,
+      "equivalentes": 2
+    }
+  },
+  {
+    "username": "fandela_astrahop",
+    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-300x300.png",
+    "total_donated": 200,
+    "bits": 0,
+    "subs": {
+      "meses": 2,
+      "regaladas": 0,
+      "equivalentes": 2
+    }
+  },
+  {
     "username": "AstraHopVT",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/8acdcecd-5269-4ede-bc9d-a69f78649141-profile_image-300x300.png",
     "total_donated": 200,
@@ -365,8 +387,8 @@
   {
     "username": "all2846",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/c2856c83-3a8b-46a2-a153-614568e9fcbf-profile_image-300x300.png",
-    "total_donated": 157,
-    "bits": 157,
+    "total_donated": 159,
+    "bits": 159,
     "subs": {
       "meses": 0,
       "regaladas": 0,
@@ -671,17 +693,6 @@
     }
   },
   {
-    "username": "zero_lordofcalamity",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/94c639ac-91b9-4888-a4aa-18072fa7681d-profile_image-300x300.jpeg",
-    "total_donated": 100,
-    "bits": 0,
-    "subs": {
-      "meses": 1,
-      "regaladas": 0,
-      "equivalentes": 1
-    }
-  },
-  {
     "username": "jdonkka",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/09653626-1b6a-4e38-a8a4-affa3fafa687-profile_image-300x300.jpeg",
     "total_donated": 100,
@@ -739,17 +750,6 @@
   {
     "username": "Kaiserkat77",
     "avatar": "https://ui-avatars.com/api/?name=Kaiserkat77&background=random&color=fff",
-    "total_donated": 100,
-    "bits": 0,
-    "subs": {
-      "meses": 1,
-      "regaladas": 0,
-      "equivalentes": 1
-    }
-  },
-  {
-    "username": "fandela_astrahop",
-    "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-300x300.png",
     "total_donated": 100,
     "bits": 0,
     "subs": {
@@ -913,7 +913,7 @@
     }
   },
   {
-    "username": "anto_sanchzy",
+    "username": "ANTO_SANCHZY",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/e1dd1b7a-314e-490b-9b14-961b62ed2a5e-profile_image-300x300.jpeg",
     "total_donated": 66,
     "bits": 66,
