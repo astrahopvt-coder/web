@@ -79,8 +79,8 @@
   {
     "username": "coronelj_d",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a79150a3-e0f4-4924-b1e3-5708263fa35a-profile_image-300x300.png",
-    "total_donated": 1705,
-    "bits": 1505,
+    "total_donated": 1709,
+    "bits": 1509,
     "subs": {
       "meses": 2,
       "regaladas": 0,
@@ -198,6 +198,17 @@
     }
   },
   {
+    "username": "patitas_cristob",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/b0c4a8d2-9dce-4954-abd3-7a1be93d9a23-profile_image-300x300.jpeg",
+    "total_donated": 438,
+    "bits": 238,
+    "subs": {
+      "meses": 2,
+      "regaladas": 0,
+      "equivalentes": 2
+    }
+  },
+  {
     "username": "desesperaciondefinitiva2",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/e189cc72-0673-4dae-b7e8-15e7faea07fb-profile_image-300x300.jpeg",
     "total_donated": 300,
@@ -217,17 +228,6 @@
       "meses": 2,
       "regaladas": 0,
       "equivalentes": 2
-    }
-  },
-  {
-    "username": "patitas_cristob",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/b0c4a8d2-9dce-4954-abd3-7a1be93d9a23-profile_image-300x300.jpeg",
-    "total_donated": 295,
-    "bits": 195,
-    "subs": {
-      "meses": 1,
-      "regaladas": 0,
-      "equivalentes": 1
     }
   },
   {
@@ -860,6 +860,17 @@
   {
     "username": "SpiderBoy1w55",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/e0f1e1c8-2dd8-4c8d-9ec5-13dbba187dc1-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "elias_de_leon_shy",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/dfb28456-76e9-40d8-ab12-9a23dfb690e0-profile_image-300x300.jpeg",
     "total_donated": 100,
     "bits": 0,
     "subs": {
