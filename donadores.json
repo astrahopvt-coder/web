@@ -35,12 +35,12 @@
   {
     "username": "terry7bogard",
     "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-300x300.png",
-    "total_donated": 6700,
-    "bits": 6600,
+    "total_donated": 7800,
+    "bits": 7600,
     "subs": {
-      "meses": 1,
+      "meses": 2,
       "regaladas": 0,
-      "equivalentes": 1
+      "equivalentes": 2
     }
   },
   {
@@ -275,6 +275,17 @@
     }
   },
   {
+    "username": "all2846",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/c2856c83-3a8b-46a2-a153-614568e9fcbf-profile_image-300x300.png",
+    "total_donated": 266,
+    "bits": 166,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
     "username": "mysteryman5002",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/94822f64-c845-45d9-93b3-f79d2dbd831f-profile_image-300x300.png",
     "total_donated": 245,
@@ -382,17 +393,6 @@
       "meses": 2,
       "regaladas": 0,
       "equivalentes": 2
-    }
-  },
-  {
-    "username": "all2846",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/c2856c83-3a8b-46a2-a153-614568e9fcbf-profile_image-300x300.png",
-    "total_donated": 165,
-    "bits": 165,
-    "subs": {
-      "meses": 0,
-      "regaladas": 0,
-      "equivalentes": 0
     }
   },
   {
@@ -926,6 +926,17 @@
   {
     "username": "tomasklh",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2e13c3ee-3619-48f9-81f4-19cc8b15095f-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "Cynet_StarDragon",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/f53322c7-1101-4843-8a0a-4835fdf301c7-profile_image-300x300.jpeg",
     "total_donated": 100,
     "bits": 0,
     "subs": {
@@ -1508,7 +1519,7 @@
   },
   {
     "username": "Meisho_Dotto",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/7819ca52-7664-4013-a0c4-22f74035ba13-profile_image-300x300.jpeg",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/3167604c-244c-42ea-b2a6-3f12f3f28197-profile_image-300x300.jpeg",
     "total_donated": 3,
     "bits": 3,
     "subs": {
