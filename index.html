@@ -282,7 +282,9 @@ document.addEventListener("click", () => {
 // La galería descubre sola los fanarts (1.webp, 2.webp, ...) y toma autor/descripción
 // opcionales de fanarts.json. Para añadir un fanart: sube N.webp y listo.
 const FANARTS_POR_PAGINA = 12;
-const MAX_HUECOS = 3; // números webp inexistentes seguidos que tolera antes de parar
+const SONDEO_LOTE = 6;   // cuántos números se comprueban a la vez
+const MAX_HUECOS = 3;    // números nuevos seguidos que tolera antes de parar
+const SONDEO_MAX = 300;  // tope de seguridad por si el servidor responde 200 a todo
 const fanartSrcs = [];   // [{ num, src }] en orden ascendente
 const fanartMeta  = {};  // num -> { autor, descripcion }
 let fanartVisibles = []; // índices (sobre fanartSrcs) visibles según página y filtro
@@ -319,21 +321,80 @@ function cargarFanarts() {
         const num = parseInt(archivo, 10);
         if (!isNaN(num) && datos) fanartMeta[num] = datos;
       });
-      descubrirFanarts(1, 0);
+      descubrirFanarts();
     })
-    .catch(() => descubrirFanarts(1, 0));
+    .catch(() => descubrirFanarts());
 }
 
-function descubrirFanarts(num, huecos) {
-  if (huecos >= MAX_HUECOS) return finalizarFanarts();
-  const img = new Image();
-  img.decoding = 'async';
-  img.onload = () => {
-    fanartSrcs.push({ num, src: `fanarts/${num}.webp` });
-    descubrirFanarts(num + 1, 0);
+// Comprueba si un fanart existe sin descargar la imagen (solo cabeceras).
+// Si el servidor no admite HEAD, se cae a un GET normal que además queda en caché.
+function existeFanart(num) {
+  const url = `fanarts/${num}.webp`;
+  // Si el servidor devuelve HTML (fallback de SPA) no es un fanart.
+  const esImagen = res => {
+    const tipo = res.headers.get('content-type') || '';
+    return !tipo || /^image\//i.test(tipo);
   };
-  img.onerror = () => descubrirFanarts(num + 1, huecos + 1);
-  img.src = `fanarts/${num}.webp`;
+
+  return fetch(url, { method: 'HEAD' })
+    .then(res => {
+      if (res.ok) return esImagen(res);
+      if (res.status === 405 || res.status === 501) {
+        return fetch(url).then(r => r.ok && esImagen(r)).catch(() => false);
+      }
+      return false;
+    })
+    .catch(() => false);
+}
+
+// Descubre los fanarts en paralelo: los que ya están en fanarts.json se dan por
+// existentes y solo se sondean (por lotes) los números nuevos. Antes se cargaban
+// una por una y en serie todas las imágenes completas, lo que tardaba muchísimo.
+function descubrirFanarts() {
+  const conocidos = Object.keys(fanartMeta)
+    .map(n => parseInt(n, 10))
+    .filter(n => !isNaN(n) && n > 0)
+    .sort((a, b) => a - b);
+  const conocidosSet = new Set(conocidos);
+  const maxConocido = conocidos.length ? conocidos[conocidos.length - 1] : 0;
+  const encontrados = new Set(conocidos);
+  let siguiente = 1;
+
+  function comprobar(num) {
+    if (conocidosSet.has(num)) return Promise.resolve(true);
+    return existeFanart(num);
+  }
+
+  function sondearLote() {
+    if (siguiente > SONDEO_MAX) return Promise.resolve();
+    // Más allá de lo ya listado se prueba en ventanas más chicas: alcanza con
+    // MAX_HUECOS para detectar un fanart nuevo sin llenar la consola de 404.
+    const tam = maxConocido > 0 && siguiente > maxConocido ? MAX_HUECOS : SONDEO_LOTE;
+    const lote = [];
+    for (let i = 0; i < tam; i++) lote.push(siguiente++);
+
+    return Promise.all(lote.map(comprobar)).then(resultados => {
+      let hubo = false;
+      resultados.forEach((ok, i) => {
+        if (ok) { encontrados.add(lote[i]); hubo = true; }
+      });
+
+      // Solo se deja de buscar cuando un lote entero posterior a lo ya
+      // conocido no encuentra nada (tolerancia parecida a MAX_HUECOS).
+      const loteEsNuevo = lote[0] > maxConocido;
+      if (loteEsNuevo && !hubo) return;
+      return sondearLote();
+    });
+  }
+
+  sondearLote()
+    .catch(() => {})
+    .then(() => {
+      fanartSrcs.length = 0;
+      [...encontrados].sort((a, b) => a - b)
+        .forEach(num => fanartSrcs.push({ num, src: `fanarts/${num}.webp` }));
+      finalizarFanarts();
+    });
 }
 
 function finalizarFanarts() {
