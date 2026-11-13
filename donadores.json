@@ -220,17 +220,6 @@
     }
   },
   {
-    "username": "desesperaciondefinitiva2",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/e189cc72-0673-4dae-b7e8-15e7faea07fb-profile_image-300x300.jpeg",
-    "total_donated": 300,
-    "bits": 100,
-    "subs": {
-      "meses": 2,
-      "regaladas": 0,
-      "equivalentes": 2
-    }
-  },
-  {
     "username": "Arkanvt",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/2f9419a3-160b-471e-90c4-b0165a654b44-profile_image-300x300.png",
     "total_donated": 300,
@@ -343,6 +332,17 @@
   {
     "username": "zero_lordofcalamity",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/94c639ac-91b9-4888-a4aa-18072fa7681d-profile_image-300x300.jpeg",
+    "total_donated": 200,
+    "bits": 0,
+    "subs": {
+      "meses": 2,
+      "regaladas": 0,
+      "equivalentes": 2
+    }
+  },
+  {
+    "username": "desesperaciondefinitiva2",
+    "avatar": "https://ui-avatars.com/api/?name=desesperaciondefinitiva2&background=random&color=fff",
     "total_donated": 200,
     "bits": 0,
     "subs": {
@@ -508,6 +508,17 @@
   {
     "username": "SerGioPerez1118",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/9f56b3f0-3414-4a04-81ad-ebb5c12ed2ca-profile_image-300x300.png",
+    "total_donated": 100,
+    "bits": 100,
+    "subs": {
+      "meses": 0,
+      "regaladas": 0,
+      "equivalentes": 0
+    }
+  },
+  {
+    "username": "desesperacion_definitiva2",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/e189cc72-0673-4dae-b7e8-15e7faea07fb-profile_image-300x300.jpeg",
     "total_donated": 100,
     "bits": 100,
     "subs": {
