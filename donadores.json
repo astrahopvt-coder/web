@@ -35,8 +35,8 @@
   {
     "username": "terry7bogard",
     "avatar": "https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-300x300.png",
-    "total_donated": 7800,
-    "bits": 7600,
+    "total_donated": 8900,
+    "bits": 8700,
     "subs": {
       "meses": 2,
       "regaladas": 0,
@@ -90,8 +90,8 @@
   {
     "username": "coronelj_d",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/a79150a3-e0f4-4924-b1e3-5708263fa35a-profile_image-300x300.png",
-    "total_donated": 1710,
-    "bits": 1510,
+    "total_donated": 1718,
+    "bits": 1518,
     "subs": {
       "meses": 2,
       "regaladas": 0,
@@ -400,6 +400,17 @@
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/f53322c7-1101-4843-8a0a-4835fdf301c7-profile_image-300x300.jpeg",
     "total_donated": 167,
     "bits": 67,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
+    "username": "ryushugoyami",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/bc99f0fe-8286-41f6-b642-9fdfcd1b39b5-profile_image-300x300.png",
+    "total_donated": 165,
+    "bits": 65,
     "subs": {
       "meses": 1,
       "regaladas": 0,
@@ -957,6 +968,17 @@
     }
   },
   {
+    "username": "agonyy311340",
+    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/97dff98f-b7ae-4617-8598-d1cbaf305422-profile_image-300x300.jpeg",
+    "total_donated": 100,
+    "bits": 0,
+    "subs": {
+      "meses": 1,
+      "regaladas": 0,
+      "equivalentes": 1
+    }
+  },
+  {
     "username": "Chap_GPT",
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/418f3741-3bd1-4a40-bb9a-527917913bd3-profile_image-300x300.png",
     "total_donated": 89,
@@ -1005,17 +1027,6 @@
     "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/e1dd1b7a-314e-490b-9b14-961b62ed2a5e-profile_image-300x300.jpeg",
     "total_donated": 66,
     "bits": 66,
-    "subs": {
-      "meses": 0,
-      "regaladas": 0,
-      "equivalentes": 0
-    }
-  },
-  {
-    "username": "ryushugoyami",
-    "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/bc99f0fe-8286-41f6-b642-9fdfcd1b39b5-profile_image-300x300.png",
-    "total_donated": 65,
-    "bits": 65,
     "subs": {
       "meses": 0,
       "regaladas": 0,
